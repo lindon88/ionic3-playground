@@ -1,0 +1,92 @@
+.login-background {
+  background-color: $primaryColor;
+  .login-container {
+    height: 100%;
+  }
+}
+
+.login-background:before {
+  content: ' ';
+  display: inline-block;
+  vertical-align: middle;
+  height: 10%;
+}
+
+.logo-header-container {
+  //width: 55%;
+  margin-bottom: 65px;
+  margin-top: 65px;
+
+  > img {
+    width: 55%;
+    margin: 0 auto;
+  }
+
+  .sub-logo-container {
+    margin-left: 50%;
+    color: #ffffff;
+    padding-top: 8px;
+
+    span {
+      font-size: 12px;
+    }
+
+    img {
+      height: 22px;
+      margin-left: 5px;
+    }
+  }
+}
+
+// should be bigger
+.login-button {
+  color: #fff;
+  height: 50px;
+}
+
+.reset-password-button {
+  color: $secondaryColor;
+  height: 50px;
+}
+
+ion-input {
+  background-color: #fff;
+}
+
+.synergysuitelogo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 300px;
+}
+
+#login-form {
+  max-width: 500px;
+  margin: 0 auto;
+
+  ion-list {
+    ion-item {
+      margin-bottom: 5px;
+    }
+  }
+}
+
+.login-container {
+  /*  max-width: 500px;*/
+  padding: 50px 30px 31% 30px;
+  margin: 0 auto;
+  /*	display: inline-block;*/
+  vertical-align: middle;
+  background-color: #fafafa;
+}
+
+// remove item-border bottom
+.list-md .item-block .item-inner {
+  border-bottom: none;
+}
+
+.item-md.item-block .item-inner {
+  padding-right: 8px;
+  border-bottom: none;
+}
