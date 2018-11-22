@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 2732 2732" style="enable-background:new 0 0 2732 2732;" xml:space="preserve">
+<style type="text/css">
+
+	/*-------------------
+	Keayframes
+	---------------------*/
+@keyframes offset {
+	100% {
+		stroke-dashoffset: 0;
+	}
+}
+
+@keyframes fill-it {
+	100% {
+		fill: #3FB6DF;
+	}
+}
+	/*-------------------
+	SVG style
+	--------------------*/
+
+
+	svg {
+	  display: block;
+	  margin: 2em auto 0;
+	  width: 40%;
+	}
+
+	.st0{
+	  stroke: #3FB6DF;
+	  stroke-width: 5;
+		stroke-dasharray: 8000;
+		stroke-dashoffset: 8000;
+
+	animation: offset 2s linear forwards, fill-it .8s 1.8s forwards ;
+
+</style>
+<polygon class="st0" fill="transparent" points="1659.6,1020.7 1341.3,1573.7 1339.6,1020.7 1339.6,1020.7 31.9,1020.7 31.9,1101.9 1254.9,1101.9
+	1254.9,1710.9 1360.4,1710.9 1714.9,1101.9 2697.6,1101.9 2697.6,1020.7 "/>
+</svg>

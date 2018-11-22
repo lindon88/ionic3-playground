@@ -14,7 +14,7 @@ export class LandingPage {
 
   ngOnInit() {
     // timeout for calling redirect function
-    Observable.interval(5000).take(1).subscribe(() => this.redirect());
+    // Observable.interval(5000).take(1).subscribe(() => this.redirect());
   }
 
   public redirect() {
