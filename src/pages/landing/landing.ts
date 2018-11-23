@@ -7,6 +7,15 @@ import {Observable} from "rxjs";
   templateUrl: 'landing.html'
 })
 export class LandingPage {
+  public animation: any;
+
+  animationOption = {
+    loop: false,
+    renderer: 'svg',
+    autoplay: true,
+    autoloadSegments: true,
+    path: '../../../assets/animations/data.json'
+  };
 
   constructor(public navCtrl: NavController) {
 
