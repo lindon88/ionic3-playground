@@ -7,9 +7,13 @@ import {IonicPage, NavController} from 'ionic-angular';
   templateUrl: 'login.html'
 })
 export class LoginPage {
-
   constructor(public navCtrl: NavController) {
 
   }
+
+  ionAfterViewInit() {
+    this.navCtrl.setRoot("LoginPage");
+  }
+
 
 }

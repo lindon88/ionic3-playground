@@ -6,6 +6,10 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
 import {LandingPageModule} from "../pages/landing/landing.module";
+import { ServerProvider } from '../providers/server/server';
+import {HttpClientModule} from "@angular/common/http";
+import { ApiProvider } from '../providers/api/api';
+import { TokenProvider } from '../providers/token/token';
 
 @NgModule({
   declarations: [
@@ -14,7 +18,8 @@ import {LandingPageModule} from "../pages/landing/landing.module";
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    LandingPageModule
+    LandingPageModule,
+    HttpClientModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -23,7 +28,10 @@ import {LandingPageModule} from "../pages/landing/landing.module";
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    ServerProvider,
+    ApiProvider,
+    TokenProvider
   ]
 })
 export class AppModule {}
