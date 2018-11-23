@@ -10,6 +10,7 @@ import { ServerProvider } from '../providers/server/server';
 import {HttpClientModule} from "@angular/common/http";
 import { ApiProvider } from '../providers/api/api';
 import { TokenProvider } from '../providers/token/token';
+import { AuthenticationProvider } from '../providers/authentication/authentication';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { TokenProvider } from '../providers/token/token';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ServerProvider,
     ApiProvider,
-    TokenProvider
+    TokenProvider,
+    AuthenticationProvider
   ]
 })
 export class AppModule {}

@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import {IonicPage, NavController} from 'ionic-angular';
+import {AlertController, IonicPage, NavController} from 'ionic-angular';
+import {ServerProvider} from "../../providers/server/server";
+import {AuthenticationProvider} from "../../providers/authentication/authentication";
 
 @IonicPage()
 @Component({
@@ -7,12 +9,41 @@ import {IonicPage, NavController} from 'ionic-angular';
   templateUrl: 'login.html'
 })
 export class LoginPage {
-  constructor(public navCtrl: NavController) {
+  public userinfo: any;
+
+  constructor(public navCtrl: NavController, private serverProvider: ServerProvider, public alertCtrl: AlertController, public authProvider: AuthenticationProvider) {
 
   }
 
   ionAfterViewInit() {
     this.navCtrl.setRoot("LoginPage");
+  }
+
+  public login(data: any) {
+    let username = data.email;
+    let password = data.password;
+    let connectionStatus = this.serverProvider.checkConnection();
+    connectionStatus.then((data: any) => {
+      if(!data.connected) {
+        this.alertCtrl.create({
+          title: 'Connection Error',
+          message: 'SynergySuite app requires network connection. Please check your connection and try again',
+        });
+      } else if (data.connectionScore < 20) {
+        this.alertCtrl.create({
+          title: 'Poor Connection',
+          message: 'SynergySuite app detects a weak connection in your current location. Please move to a location with stronger connection and try again',
+        });
+      } else {
+        console.log('Username ' + username);
+        console.log('Password ' + password);
+
+        this.authProvider.login(username, password).then((result) => {
+          this.userinfo = result;
+          console.log(this.userinfo.userRoles);
+        })
+      }
+    })
   }
 
 

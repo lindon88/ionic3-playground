@@ -8,18 +8,18 @@
   </div>
 
   <div class="login-container">
-    <form name="loginform" role="form" autocomplete="off" id="login-form">
+    <form name="loginform" (ngSubmit)="login(loginForm.value)" #loginForm="ngForm" role="form" autocomplete="off" id="login-form">
       <ion-list>
         <ion-item>
           <ion-label><ion-icon name="person" item-start></ion-icon></ion-label>
-          <ion-input type="text" placeholder="Email"></ion-input>
+          <ion-input type="text" [ngModel]="email" name="email" placeholder="Email"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label><ion-icon name="lock" item-start></ion-icon></ion-label>
-          <ion-input type="password" placeholder="Password"></ion-input>
+          <ion-input type="password" [ngModel]="password" name="password" placeholder="Password"></ion-input>
         </ion-item>
       </ion-list>
-      <button ion-button color="secondary" block class="login-button" margin-bottom>Login</button>
+      <button ion-button color="secondary" type="submit"  block class="login-button" margin-bottom>Login</button>
       <button ion-button color="no-color" block class="reset-password-button">Reset Password</button>
     </form>
   </div>
