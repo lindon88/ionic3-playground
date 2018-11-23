@@ -41,6 +41,30 @@ export class LoginPage {
         this.authProvider.login(username, password).then((result) => {
           this.userinfo = result;
           console.log(this.userinfo.userRoles);
+          console.log(this.userinfo);
+          if (this.userinfo.userPin === null || this.userinfo.userPin === undefined) {
+            // ask a user if he wants to add a pin
+            let alert = this.alertCtrl.create({
+              title: "You don't have a PIN",
+              subTitle: "Do You want to setup one?",
+              buttons: [
+                {
+                  text: 'Agree',
+                  handler: () => {
+                    // go to create pin view
+                    this.navCtrl.setRoot("PinCreatePage");
+                  }
+                },
+                {
+                  text: 'Disagree',
+                  handler: () => {
+                    // go to home
+                  }
+                }
+              ]
+            });
+            alert.present();
+          }
         })
       }
     })

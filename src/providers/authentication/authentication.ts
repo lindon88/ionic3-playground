@@ -22,7 +22,8 @@ export class AuthenticationProvider {
           userRoles: result.permission.roles.length,
           allowedCompanies: result.permission.allowedCompanies,
           corporateId: result.permission.allowedCompanies[0].corporateId,
-          userId: result.userId
+          userId: result.userId,
+          userPin: result.userPin
         };
         localStorage.setItem('userInfo', JSON.stringify(this.userInfo));
         if (result.userPIN !== null) {
