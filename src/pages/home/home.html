@@ -11,8 +11,8 @@
       <button ion-item menuClose="menu1" detail-none>
         Close menu
       </button>
-      <button ion-item (click)="testShow = 1;" menuClose="menu1">Test 1</button>
-      <button ion-item (click)="testShow = 2;" menuClose="menu1">Test 2</button>
+      <button ion-item (click)="pageMenu.setPage(1);" menuClose="menu1">Test 1</button>
+      <button ion-item (click)="pageMenu.setPage(2)" menuClose="menu1">Test 2</button>
     </ion-list>
   </ion-content>
 
@@ -32,7 +32,6 @@
 
 </ion-header>
 <ion-content #content padding>
-Home page <br>
-  <test1 *ngIf="testShow == 1"></test1>
-  <test2 *ngIf="testShow == 2"></test2>
+  <test1 *ngIf="pageMenu.getPage() == 1"></test1>
+  <test2 *ngIf="pageMenu.getPage() == 2"></test2>
 </ion-content>
