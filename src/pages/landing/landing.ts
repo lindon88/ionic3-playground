@@ -32,7 +32,7 @@ export class LandingPage {
   public redirect() {
     let userToken = localStorage['accessToken'];
     let serverUrl = localStorage['serverUrl'];
-    let pin = localStorage['pin'];
+    let pin = localStorage['PIN'];
 
     if (userToken === undefined || userToken === null || serverUrl === undefined || serverUrl === null || pin === undefined || pin === null) {
       this.navCtrl.setRoot("LoginPage");
@@ -51,6 +51,7 @@ export class LandingPage {
         this.navCtrl.setRoot("LoginPage");
       }
       // this.navCtrl.push("PinEntry")
+      this.navCtrl.setRoot("PinConfirmPage");
     }).catch((err) => {
       console.log(err);
       this.navCtrl.setRoot("LoginPage")

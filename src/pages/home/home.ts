@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import {IonicPage, NavController} from 'ionic-angular';
-import {MenuPageProvider} from "../../providers/menu-page/menu-page";
 
 @IonicPage()
 @Component({
@@ -9,12 +8,7 @@ import {MenuPageProvider} from "../../providers/menu-page/menu-page";
 })
 export class HomePage {
 
-  constructor(public navCtrl: NavController, public pageMenu: MenuPageProvider) {
-    // default-ni view
-    this.pageMenu.setPage(1);
-  }
-
-  ionAfterViewInit () {
+  constructor(public navCtrl: NavController) {
 
   }
 

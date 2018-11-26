@@ -12,7 +12,6 @@ import { ApiProvider } from '../providers/api/api';
 import { TokenProvider } from '../providers/token/token';
 import { AuthenticationProvider } from '../providers/authentication/authentication';
 import { PinProvider } from '../providers/pin/pin';
-import { MenuPageProvider } from '../providers/menu-page/menu-page';
 
 @NgModule({
   declarations: [
@@ -20,7 +19,7 @@ import { MenuPageProvider } from '../providers/menu-page/menu-page';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, { swipeBackEnabled: false }),
     LandingPageModule,
     HttpClientModule
   ],
@@ -37,8 +36,6 @@ import { MenuPageProvider } from '../providers/menu-page/menu-page';
     TokenProvider,
     AuthenticationProvider,
     PinProvider,
-    MenuPageProvider,
-    MenuPageProvider
   ]
 })
 export class AppModule {}
