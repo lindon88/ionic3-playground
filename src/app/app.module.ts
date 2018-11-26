@@ -11,6 +11,7 @@ import {HttpClientModule} from "@angular/common/http";
 import { ApiProvider } from '../providers/api/api';
 import { TokenProvider } from '../providers/token/token';
 import { AuthenticationProvider } from '../providers/authentication/authentication';
+import { PinProvider } from '../providers/pin/pin';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { AuthenticationProvider } from '../providers/authentication/authenticati
     ServerProvider,
     ApiProvider,
     TokenProvider,
-    AuthenticationProvider
+    AuthenticationProvider,
+    PinProvider
   ]
 })
 export class AppModule {}

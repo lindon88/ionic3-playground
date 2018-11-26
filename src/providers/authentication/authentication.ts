@@ -16,6 +16,8 @@ export class AuthenticationProvider {
         userName: username,
         password: password
       }).subscribe((result: any) => {
+        console.log("AUTH RESULT");
+        console.log(result);
         headers.set('synergy-login-token', result.loginToken);
         this.userInfo = {
           accessToken: result.loginToken,
@@ -23,11 +25,11 @@ export class AuthenticationProvider {
           allowedCompanies: result.permission.allowedCompanies,
           corporateId: result.permission.allowedCompanies[0].corporateId,
           userId: result.userId,
-          userPin: result.userPin
+          userPIN: result.userPIN
         };
         localStorage.setItem('userInfo', JSON.stringify(this.userInfo));
-        if (result.userPIN !== null) {
-          localStorage.setItem('PIN', result.userPin);
+        if (result.userPIN !== null || result.userPIN !== undefined) {
+          localStorage.setItem('PIN', result.userPIN);
         }
         localStorage.setItem('username', result.username);
         localStorage.setItem('accessToken', result.loginToken);

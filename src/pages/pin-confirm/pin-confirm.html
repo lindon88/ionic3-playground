@@ -1,12 +1,12 @@
 <ion-header>
 
   <ion-navbar color="primary" [hideBackButton]="true">
-    <ion-title>
-      PIN Entry
-    </ion-title>
+    <ion-title>Confirm PIN</ion-title>
   </ion-navbar>
 
 </ion-header>
+
+
 <ion-content padding>
   <div style="position:relative">
     <div class="text-center fixed-lock">
@@ -16,7 +16,7 @@
       <div class="row fixed-PIN">
         <ion-item class="no-border-bottom">
           <ion-input type="password" [ngModel]="pin" name="pincode" placeholder="Enter PIN" [readonly]="true"></ion-input>
-          <button ion-button class="pin-forward" [large]="true" item-right>
+          <button ion-button class="pin-forward" (click)="verifyPIN(pin)" [large]="true" item-right>
             <ion-icon name="arrow-round-forward"></ion-icon>
           </button>
         </ion-item>

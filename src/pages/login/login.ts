@@ -12,7 +12,6 @@ export class LoginPage {
   public userinfo: any;
 
   constructor(public navCtrl: NavController, private serverProvider: ServerProvider, public alertCtrl: AlertController, public authProvider: AuthenticationProvider) {
-
   }
 
   ionAfterViewInit() {
@@ -42,7 +41,7 @@ export class LoginPage {
           this.userinfo = result;
           console.log(this.userinfo.userRoles);
           console.log(this.userinfo);
-          if (this.userinfo.userPin === null || this.userinfo.userPin === undefined) {
+          if (this.userinfo.userPIN === null || this.userinfo.userPIN === undefined) {
             // ask a user if he wants to add a pin
             let alert = this.alertCtrl.create({
               title: "You don't have a PIN",
@@ -64,6 +63,9 @@ export class LoginPage {
               ]
             });
             alert.present();
+          } else {
+            // pin already exists, goto pin confirm
+            this.navCtrl.setRoot("PinConfirmPage")
           }
         })
       }
