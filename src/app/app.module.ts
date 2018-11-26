@@ -13,6 +13,7 @@ import { TokenProvider } from '../providers/token/token';
 import { AuthenticationProvider } from '../providers/authentication/authentication';
 import { PinProvider } from '../providers/pin/pin';
 import { EmployeeProvider } from '../providers/employee/employee';
+import { CompanyProvider } from '../providers/company/company';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,8 @@ import { EmployeeProvider } from '../providers/employee/employee';
     AuthenticationProvider,
     PinProvider,
     EmployeeProvider,
+    CompanyProvider,
+    CompanyProvider,
   ]
 })
 export class AppModule {}
