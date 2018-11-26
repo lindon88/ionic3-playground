@@ -12,6 +12,7 @@ import { ApiProvider } from '../providers/api/api';
 import { TokenProvider } from '../providers/token/token';
 import { AuthenticationProvider } from '../providers/authentication/authentication';
 import { PinProvider } from '../providers/pin/pin';
+import { EmployeeProvider } from '../providers/employee/employee';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { PinProvider } from '../providers/pin/pin';
     TokenProvider,
     AuthenticationProvider,
     PinProvider,
+    EmployeeProvider,
   ]
 })
 export class AppModule {}
