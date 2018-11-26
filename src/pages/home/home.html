@@ -1,11 +1,38 @@
+<ion-menu [content]="content" id="menu1">
+
+  <ion-header>
+    <ion-toolbar color="secondary">
+      <ion-title>SynergySuite</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-list>
+      <button ion-item menuClose="menu1" detail-none>
+        Close menu
+      </button>
+      <button ion-item (click)="testShow = 1;" menuClose="menu1">Test 1</button>
+      <button ion-item (click)="testShow = 2;" menuClose="menu1">Test 2</button>
+    </ion-list>
+  </ion-content>
+
+</ion-menu>
+
 <ion-header>
+
+
   <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>
-      HOME PAGE
+      SynergySuite
     </ion-title>
   </ion-navbar>
-</ion-header>
 
-<ion-content padding>
-Home page
+</ion-header>
+<ion-content #content padding>
+Home page <br>
+  <test1 *ngIf="testShow == 1"></test1>
+  <test2 *ngIf="testShow == 2"></test2>
 </ion-content>
