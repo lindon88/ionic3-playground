@@ -38,7 +38,7 @@ $black: #000;
 }
 
 // clearfix after sidemenu header
-.sidemenu-header::after {
+.sidemenu-header::after, .main-header::after, .clearfix {
   content: "";
   display: block;
   clear: both;

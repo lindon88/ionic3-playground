@@ -24,7 +24,7 @@ import { WorkflowProvider } from '../providers/workflow/workflow';
     BrowserModule,
     IonicModule.forRoot(MyApp, { swipeBackEnabled: false }),
     LandingPageModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [

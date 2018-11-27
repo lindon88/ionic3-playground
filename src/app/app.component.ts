@@ -45,14 +45,17 @@ export class MyApp {
   }
 
   public getUserInfo() {
-    this.employeeProvider.getEmployee(null, this.userInfo.userId).then((res) => {
-      this.user = res;
-    }, (err) => {
-      console.error(err);
-    })
+    if(this.userInfo !== undefined && this.userInfo!==null) {
+      this.employeeProvider.getEmployee(null, this.userInfo.userId).then((res) => {
+        this.user = res;
+      }, (err) => {
+        console.error(err);
+      })
+    }
   }
 
   public getAllowedCompanies() {
+    if(this.userInfo !== undefined && this.userInfo!==null){
     console.log(this.userInfo);
     console.log("Current company id: " + this.companyId);
     console.log("Current user id: " + this.userInfo.userId);
@@ -67,6 +70,7 @@ export class MyApp {
     }, (err) => {
       console.error(err);
     })
+  }
   }
 }
 

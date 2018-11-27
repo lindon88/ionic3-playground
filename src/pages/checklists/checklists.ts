@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Content, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {WorkflowProvider} from "../../providers/workflow/workflow";
 import {DatePipe} from "@angular/common";
 
@@ -17,6 +17,7 @@ import {DatePipe} from "@angular/common";
 })
 export class ChecklistsPage {
   @ViewChild(DatePipe) datePipe: DatePipe = new DatePipe('en-US');
+  @ViewChild(Content) content: Content;
   public isAllowedEdit: boolean = false;
   public currentCompanyId: any = localStorage.getItem('currentCompanyId');
   public userInfo:any = JSON.parse(localStorage.getItem('userInfo'));
@@ -28,6 +29,7 @@ export class ChecklistsPage {
   private nowMinusFourHours: any = new Date(this.now.getTime() - 14400000);
 
   public tasks: any;
+  public item: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public workflowProvider: WorkflowProvider) {
     console.log("loading tasks....");
@@ -42,6 +44,7 @@ export class ChecklistsPage {
       console.log("GET SUCCESSFUL!");
       this.tasks = data;
       console.log(this.tasks);
+      this.content.resize();
     }, (error) => {
       console.log(error);
     })
@@ -50,6 +53,28 @@ export class ChecklistsPage {
   public onOutletChange(selectedCompany) {
     this.currentCompanyId = selectedCompany;
     this.loadTasks();
+  }
+
+  public getCompletedTasksCount(task) {
+    let count = 0;
+    for(let i = 0; i < task.subtasks.length; i++) {
+      if(task.subtasks[i].complete === true) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  public getProgressColor(task) {
+    let progressColor = '#eaeaea';
+    if(this.getCompletedTasksCount(task) > 0) {
+      progressColor = '#3fb6df';
+    }
+    return progressColor;
+  }
+
+  resize() {
+    return this.content.resize();
   }
 
 }
