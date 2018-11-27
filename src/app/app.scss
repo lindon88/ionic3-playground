@@ -19,3 +19,54 @@ $secondaryColor: #3fb6df;
 
 
 $black: #000;
+
+.toolbar-title {
+  overflow: visible;
+  //text-align: left;
+}
+
+.sidemenu-title {
+  padding: 0!important;
+}
+
+.sidemenu-title-icon {
+  font-size: 70px;
+}
+
+.sidemenu-header, .sidemenu-toolbar, .sidemenu-title {
+  height: 80px!important;
+}
+
+// clearfix after sidemenu header
+.sidemenu-header::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.sidemenu-title {
+  tr td:first-child {
+    padding: 10px;
+    text-align: center;
+  }
+
+  tr td {
+    padding: 10px;
+    text-align: left;
+  }
+}
+
+/**
+Style for main header
+-- Even though header is always defined in single pages, it's style and structure is the same throughout the pages,
+so we define it in main stylesheet
+ */
+.main-header, .main-navbar, .main-title {
+  height: 60px;
+}
+
+.main-title {
+  img {
+    padding: 10px;
+  }
+}
