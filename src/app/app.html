@@ -20,6 +20,10 @@
       <button ion-item menuClose="menu1" detail-none>
         Close menu
       </button>
+      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+        <!--<ion-icon name="p.icon_name" md="p.icon_md"></ion-icon> {{p.title}}-->
+        <ion-icon name="{{p.icon_name}}" md="{{p.icon_md}}"></ion-icon> {{p.title}}
+      </button>
     </ion-list>
   </ion-content>
 </ion-menu>

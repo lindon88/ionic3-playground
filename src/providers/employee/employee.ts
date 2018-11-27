@@ -20,4 +20,38 @@ export class EmployeeProvider {
     })
   }
 
+  // shifts
+  public getAvailableShifts() {
+    return new Promise((resolve, reject) => {
+      let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
+      this.http.get(this.serverProvider.getServerURL() + 'hrm/shiftRequest/myAvailableShifts', {headers: headers}).subscribe((result: any) => {
+        resolve(result);
+      }, (err) => {
+        reject(err);
+      })
+    })
+  }
+
+  public getShiftDetails(shiftType: any, shiftId: any) {
+    return new Promise((resolve, reject) => {
+      let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
+      this.http.get(this.serverProvider.getServerURL() + 'hrm/shiftRequest/shiftDetails/' + shiftType + '/' + shiftId, {headers: headers}).subscribe((result: any) => {
+        resolve(result);
+      }, (err) => {
+        reject(err);
+      })
+    })
+  }
+
+  public getPersonShiftRequests(personId: any) {
+    return new Promise((resolve, reject) => {
+      let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
+      this.http.get(this.serverProvider.getServerURL() + 'hrm/shiftRequest/person/' + personId, {headers: headers}).subscribe((result: any) => {
+        resolve(result);
+      }, (err) => {
+        reject(err);
+      })
+    })
+  }
+
 }
