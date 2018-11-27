@@ -12,6 +12,7 @@ export class MyApp {
   // root page should be landing page
   rootPage:any = LandingPage;
   public user: any;
+  public company; any;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, menuCtrl: MenuController, public events: Events) {
     platform.ready().then(() => {
@@ -23,6 +24,9 @@ export class MyApp {
       events.subscribe("user:received", (user) => {
         this.user = user;
         console.log(this.user);
+      });
+      events.subscribe("company:received", (company) => {
+        this.company = company;
       })
     });
   }

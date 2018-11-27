@@ -36,9 +36,12 @@ export class HomePage {
       for(let i = 0; i < this.companies.length; i++) {
         if(this.companies[i].id === this.companyId) {
           this.company = this.companies[i];
+          this.events.publish("company:received", this.company);
           console.log(this.company);
         }
       }
+    }, (err) => {
+      console.error(err);
     })
   }
 

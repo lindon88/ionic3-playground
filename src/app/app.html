@@ -1,9 +1,13 @@
 <ion-menu [content]="content" id="menu1">
 
   <ion-header>
-    <ion-toolbar color="secondary">
-      <ion-title *ngIf="user">{{user.firstName}} {{user.lastName}}</ion-title>
+    <ion-toolbar color="primary">
+      <ion-title *ngIf="user && company">
+        {{user.firstName}} {{user.lastName}} <br>
+        {{company.name}}
+      </ion-title>
     </ion-toolbar>
+
   </ion-header>
 
   <ion-content>
