@@ -24,7 +24,7 @@
       </ion-select>
     </ion-item>
   </ion-toolbar>
-  <ion-item *ngFor="let item of tasks">
+  <ion-item *ngFor="let item of tasks | order: 'rank'">
     <ion-icon item-start><round-progress [current]="getCompletedTasksCount(item)" [max]="item.subtasks.length" [radius]="120" [color]="getProgressColor(item)" [stroke]="30" [semicircle]="false" [rounded]="true" [clockwise]="true" [responsive]="true" [duration]="2000"  [animationDelay]="0"></round-progress></ion-icon>
     {{item.name}}
   </ion-item>
