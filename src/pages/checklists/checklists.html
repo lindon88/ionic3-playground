@@ -1,0 +1,29 @@
+<ion-header class="main-header">
+  <ion-navbar hideBackButton="true" color="primary" class="main-navbar">
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+
+    <ion-title class="main-title">
+      <img src="./assets/imgs/Cover-logo-blue.png" alt="Cover">
+    </ion-title>
+    <ion-buttons right>
+      <button ion-button><ion-icon name="funnel"></ion-icon></button>
+    </ion-buttons>
+
+  </ion-navbar>
+  <ion-toolbar padding>
+    <ion-item style="background-color: transparent">
+      <ion-label>Select outlet</ion-label>
+      <ion-select [(ngModel)]="currentCompanyId">
+        <ion-option *ngFor="let allowedOutlet of allowedOutlets" [value]="allowedOutlet.id">{{allowedOutlet.companyName}}</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-toolbar>
+
+</ion-header>
+<ion-content>
+  <ion-item *ngFor="let item of tasks">
+    {{item.name}}
+  </ion-item>
+</ion-content>

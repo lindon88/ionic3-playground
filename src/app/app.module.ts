@@ -14,6 +14,7 @@ import { AuthenticationProvider } from '../providers/authentication/authenticati
 import { PinProvider } from '../providers/pin/pin';
 import { EmployeeProvider } from '../providers/employee/employee';
 import { CompanyProvider } from '../providers/company/company';
+import { WorkflowProvider } from '../providers/workflow/workflow';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { CompanyProvider } from '../providers/company/company';
     EmployeeProvider,
     CompanyProvider,
     CompanyProvider,
+    WorkflowProvider,
   ]
 })
 export class AppModule {}

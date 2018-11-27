@@ -35,7 +35,8 @@ export class MyApp {
     });
     // define pages for sidemenu
     this.pages = [
-      { icon_name: 'calendar', icon_md: 'md-calendar', title: 'Open Shifts', component: "EmployeeOpenShiftPage" }
+      { icon_name: 'calendar', icon_md: 'md-calendar', title: 'Open Shifts', component: "EmployeeOpenShiftPage" },
+      { icon_name: 'checkbox-outline', icon_md: 'md-checkbox-outline', title: 'Checklists', component: "ChecklistsPage" }
     ];
   }
 
@@ -52,6 +53,9 @@ export class MyApp {
   }
 
   public getAllowedCompanies() {
+    console.log(this.userInfo);
+    console.log("Current company id: " + this.companyId);
+    console.log("Current user id: " + this.userInfo.userId);
     this.companyProvider.getAllAllowedCompanies(this.userInfo.userId).then( (res) => {
       this.companies = res;
       for(let i = 0; i < this.companies.length; i++) {

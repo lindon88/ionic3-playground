@@ -56,6 +56,14 @@ $black: #000;
   }
 }
 
+.item-ios.item-block .item-inner {
+  border-bottom: none;
+}
+
+.select-text {
+  overflow: visible;
+}
+
 /**
 Style for main header
 -- Even though header is always defined in single pages, it's style and structure is the same throughout the pages,
