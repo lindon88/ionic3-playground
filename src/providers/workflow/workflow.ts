@@ -45,6 +45,13 @@ export class WorkflowProvider {
     })
   }
 
+  /**
+   * Set task as completed
+   * @param subtaskId
+   * @param userId
+   * @param companyId
+   * @param date
+   */
   public markComplete(subtaskId, userId, companyId, date) {
     const params = {
       subtaskId: subtaskId,
@@ -66,6 +73,14 @@ export class WorkflowProvider {
     })
   }
 
+  /**
+   * Set task complete = false
+   * @param subtaskId
+   * @param subtaskResultId
+   * @param userId
+   * @param companyId
+   * @param date
+   */
   public markUncomplete(subtaskId, subtaskResultId, userId, companyId, date) {
     const params = {
       subtaskId: subtaskId,

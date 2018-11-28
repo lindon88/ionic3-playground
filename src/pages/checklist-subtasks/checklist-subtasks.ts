@@ -25,6 +25,8 @@ export class ChecklistSubtasksPage {
   title: string;
   subtasks: any;
   showView: boolean;
+  currentPersonId: string;
+  currentDate: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public workflowProvider: WorkflowProvider, public companyProvider: CompanyProvider) {
 
@@ -34,15 +36,18 @@ export class ChecklistSubtasksPage {
     this.getCompanyCurrentDate(this.navParams.get('companyId')).then(dateSuccess => {
       console.log(dateSuccess);
       this.loadWorkflowTask(this.navParams.get('taskId'), this.navParams.get('companyId'), dateSuccess);
+      this.currentDate = dateSuccess;
     }, dateError => {
       console.log(dateError);
       this.loadWorkflowTask(this.navParams.get('taskId'), this.navParams.get('companyId'), dateError);
+      this.currentDate = dateError;
     });
     this.task = this.navParams.get('task');
     console.log(this.task);
     if(this.task === null || this.task === undefined || this.task.length === 0) {
       this.navCtrl.setRoot("ChecklistsPage");
     }
+    this.currentPersonId = localStorage.getItem('currentPersonId');
   }
 
   public loadWorkflowTask(taskId, companyId, date) {
@@ -89,7 +94,23 @@ export class ChecklistSubtasksPage {
   public toggleTaskStatus(task) {
     if(!task.complete) {
       task.complete = true;
-
+      this.workflowProvider.markComplete(task.id, this.currentPersonId, this.navParams.get('companyId'), this.currentDate).then((response) => {
+        let expanded = task.expanded;
+        task.expanded = expanded;
+        console.log('UPDATED STATUS');
+      }, error => {
+        task.complete = false;
+      })
+    } else {
+      task.complete = false;
+      // mark task as uncomplete
+      this.workflowProvider.markUncomplete(task.id, task.resultId, this.currentPersonId, this.navParams.get('companyId'), this.currentDate).then(result => {
+        let expanded = task.expanded;
+        task.expanded = expanded;
+        console.log('UPDATED STATUS!!!');
+      }, error => {
+        task.complete = true;
+      })
     }
   }
 

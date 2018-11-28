@@ -24,9 +24,9 @@
       <ion-row *ngFor="let item of subtasks | order: 'rank'">
         <ion-col col-2>
           <ion-item detail-none>
-            <ion-checkbox *ngIf="item.complete" color="secondary" [checked]="true">
+            <ion-checkbox *ngIf="item.complete" color="secondary" [checked]="true" (ionChange)="toggleTaskStatus(item)">
             </ion-checkbox>
-            <ion-checkbox *ngIf="!item.complete" color="secondary"></ion-checkbox>
+            <ion-checkbox *ngIf="!item.complete" color="secondary" (ionChange)="toggleTaskStatus(item)"></ion-checkbox>
           </ion-item>
         </ion-col>
         <ion-col col-10>
