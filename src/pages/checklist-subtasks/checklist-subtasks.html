@@ -1,0 +1,47 @@
+<ion-header class="main-header">
+  <ion-navbar color="primary" class="main-navbar clearfix">
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title class="main-title">
+      <img src="./assets/imgs/Cover-logo-blue.png" alt="Cover">
+    </ion-title>
+    <ion-buttons right>
+      <button ion-button><ion-icon name="funnel"></ion-icon></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-toolbar padding class="clearfix">
+    <ion-item style="background-color: transparent" *ngIf="task">
+      <h1>{{task['name']}}</h1><br>
+      <span>{{task['description']}}</span>
+    </ion-item>
+  </ion-toolbar>
+  <ion-list>
+    <!--<ion-item detail-none (click)="toggleExpanded(item)" *ngFor="let item of subtasks | order: 'rank'">-->
+      <!--<ion-checkbox color="secondary"></ion-checkbox>-->
+      <!--<ion-label>{{item.name}}</ion-label>-->
+      <!--<div *ngIf="item.expanded">{{item.description}}</div>-->
+    <!--</ion-item>-->
+    <!---->
+    <ion-grid>
+      <ion-row *ngFor="let item of subtasks | order: 'rank'">
+        <ion-col col-2>
+          <ion-item detail-none>
+            <ion-checkbox color="secondary">
+            </ion-checkbox>
+          </ion-item>
+        </ion-col>
+        <ion-col col-10>
+          <ion-item detail-none (click)="toggleExpanded(item)">
+            <span class="task-title">{{item.name}}</span><br>
+            <div class="task-subtitle" *ngIf="item.expanded">{{item.description}}</div>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </ion-list>
+</ion-content>

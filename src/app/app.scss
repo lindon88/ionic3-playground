@@ -78,3 +78,12 @@ so we define it in main stylesheet
     padding: 10px;
   }
 }
+
+.ion-item-with-border {
+  box-shadow:
+    1px 0 0 0 #ddd,
+    0 1px 0 0 #ddd,
+    1px 1px 0 0 #ddd,   /* Just to fix the corner */
+
+    0 1px 0 0 #ddd inset;
+}

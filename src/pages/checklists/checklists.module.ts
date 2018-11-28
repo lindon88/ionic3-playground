@@ -2,14 +2,14 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { ChecklistsPage } from './checklists';
 import { RoundProgressModule } from 'angular-svg-round-progressbar';
-import {OrderPipe} from "../../pipes/order/order";
+import {PipesModule} from "../../pipes/pipes.module";
 
 @NgModule({
   declarations: [
-    ChecklistsPage, OrderPipe
+    ChecklistsPage,
   ],
   imports: [
-    IonicPageModule.forChild(ChecklistsPage), RoundProgressModule
+    IonicPageModule.forChild(ChecklistsPage), RoundProgressModule, PipesModule
   ],
 })
 export class ChecklistsPageModule {}

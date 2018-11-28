@@ -21,4 +21,16 @@ export class CompanyProvider {
     })
   }
 
+  public getCurrentBusinessDate(companyId) {
+    return new Promise((resolve, reject) => {
+      let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
+
+      this.http.get(this.serverProvider.getServerURL() + 'companyDates/currentBusinessDate/' + companyId, {headers: headers}).subscribe((result: any) => {
+        resolve(result);
+      }, (error) => {
+        reject(error);
+      })
+    })
+  }
+
 }

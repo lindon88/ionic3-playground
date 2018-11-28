@@ -15,6 +15,7 @@ import { PinProvider } from '../providers/pin/pin';
 import { EmployeeProvider } from '../providers/employee/employee';
 import { CompanyProvider } from '../providers/company/company';
 import { WorkflowProvider } from '../providers/workflow/workflow';
+import {PipesModule} from "../pipes/pipes.module";
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { WorkflowProvider } from '../providers/workflow/workflow';
     IonicModule.forRoot(MyApp, { swipeBackEnabled: false }),
     LandingPageModule,
     HttpClientModule,
+    PipesModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

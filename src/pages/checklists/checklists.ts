@@ -44,7 +44,6 @@ export class ChecklistsPage {
       console.log("GET SUCCESSFUL!");
       this.tasks = data;
       console.log(this.tasks);
-      this.content.resize();
     }, (error) => {
       console.log(error);
     })
@@ -73,8 +72,12 @@ export class ChecklistsPage {
     return progressColor;
   }
 
-  resize() {
-    return this.content.resize();
+  public openTasksView(task) {
+    if (task === undefined || task === null) {
+      return;
+    }
+    this.navCtrl.push("checklist-subtasks", {'companyId': this.currentCompanyId, 'taskId': task.id, 'task': task});
+    // console.log(task);
   }
 
 }
