@@ -1,8 +1,9 @@
 import {Component} from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {IonicPage, NavController, NavParams, PopoverController} from 'ionic-angular';
 import {WorkflowProvider} from "../../providers/workflow/workflow";
 import {CompanyProvider} from "../../providers/company/company";
 import {DatePipe} from "@angular/common";
+import {ChecklistSubtasksPopoverPage} from "../checklist-subtasks-popover/checklist-subtasks-popover";
 
 /**
  * Generated class for the ChecklistSubtasksPage page.
@@ -28,7 +29,7 @@ export class ChecklistSubtasksPage {
   currentPersonId: string;
   currentDate: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public workflowProvider: WorkflowProvider, public companyProvider: CompanyProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public workflowProvider: WorkflowProvider, public companyProvider: CompanyProvider, public popoverCtrl: PopoverController) {
 
   }
 
@@ -112,6 +113,14 @@ export class ChecklistSubtasksPage {
         task.complete = true;
       })
     }
+  }
+
+  public showFilterMenu(event) {
+    console.log(event);
+    let popover = this.popoverCtrl.create(ChecklistSubtasksPopoverPage, {}, { cssClass: ' custom-popover ' });
+    popover.present({
+      ev: event
+    });
   }
 
   /**

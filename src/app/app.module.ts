@@ -16,6 +16,7 @@ import { EmployeeProvider } from '../providers/employee/employee';
 import { CompanyProvider } from '../providers/company/company';
 import { WorkflowProvider } from '../providers/workflow/workflow';
 import {PipesModule} from "../pipes/pipes.module";
+import {ChecklistSubtasksPopoverPageModule} from "../pages/checklist-subtasks-popover/checklist-subtasks-popover.module";
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import {PipesModule} from "../pipes/pipes.module";
     IonicModule.forRoot(MyApp, { swipeBackEnabled: false, backButtonText: '' }),
     LandingPageModule,
     HttpClientModule,
-    PipesModule
+    PipesModule,
+    ChecklistSubtasksPopoverPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
