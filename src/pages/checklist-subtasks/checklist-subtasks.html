@@ -20,12 +20,6 @@
     </ion-item>
   </ion-toolbar>
   <ion-list>
-    <!--<ion-item detail-none (click)="toggleExpanded(item)" *ngFor="let item of subtasks | order: 'rank'">-->
-      <!--<ion-checkbox color="secondary"></ion-checkbox>-->
-      <!--<ion-label>{{item.name}}</ion-label>-->
-      <!--<div *ngIf="item.expanded">{{item.description}}</div>-->
-    <!--</ion-item>-->
-    <!---->
     <ion-grid>
       <ion-row *ngFor="let item of subtasks | order: 'rank'">
         <ion-col col-2>

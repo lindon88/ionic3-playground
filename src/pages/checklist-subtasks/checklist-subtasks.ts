@@ -71,6 +71,10 @@ export class ChecklistSubtasksPage {
     return tasks;
   }
 
+  /**
+   * Accordion - show or hide task description
+   * @param task
+   */
   public toggleExpanded(task) {
     this.subtasks.map((item) => {
       if(task.id === item.id) {
@@ -80,6 +84,13 @@ export class ChecklistSubtasksPage {
       }
     });
     return !task.expanded;
+  }
+
+  public toggleTaskStatus(task) {
+    if(!task.complete) {
+      task.complete = true;
+
+    }
   }
 
   /**

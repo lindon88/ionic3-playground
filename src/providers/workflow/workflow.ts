@@ -44,4 +44,47 @@ export class WorkflowProvider {
       })
     })
   }
+
+  public markComplete(subtaskId, userId, companyId, date) {
+    const params = {
+      subtaskId: subtaskId,
+      companyId: companyId,
+      personId: userId,
+      date: date
+    };
+    let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
+    return new Promise((resolve, reject) => {
+      this.http.get(this.serverProvider.getServerURL() + 'workflow/markComplete', {params: params, headers: headers}).subscribe(data => {
+        if(data !== undefined){
+          resolve(data);
+        } else {
+          resolve(null);
+        }
+      }, error => {
+        reject(error);
+      })
+    })
+  }
+
+  public markUncomplete(subtaskId, subtaskResultId, userId, companyId, date) {
+    const params = {
+      subtaskId: subtaskId,
+      subtaskResultId: subtaskResultId,
+      companyId: companyId,
+      personId: userId,
+      date: date
+    };
+    let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
+    return new Promise((resolve, reject) => {
+      this.http.get(this.serverProvider.getServerURL() + 'workflow/markUncomplete', {params: params, headers: headers}).subscribe(result => {
+        if(result !== undefined) {
+          resolve(result);
+        } else {
+          resolve(null);
+        }
+      }, error => {
+        reject(error);
+      })
+    })
+  }
 }
