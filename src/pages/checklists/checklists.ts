@@ -33,6 +33,10 @@ export class ChecklistsPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public workflowProvider: WorkflowProvider) {
     console.log("loading tasks....");
+    // this.loadTasks();
+  }
+
+  ionViewDidEnter() {
     this.loadTasks();
   }
 
@@ -40,7 +44,8 @@ export class ChecklistsPage {
     // show loading
 
     // get workflow
-    this.workflowProvider.getWorkflow(this.currentCompanyId, this.datePipe.transform(this.nowMinusFourHours, 'dd/MM/yyyy'), 'CHECK_LIST').then((data: any) => {
+    let datePipe: DatePipe = new DatePipe('en-US');
+    this.workflowProvider.getWorkflow(this.currentCompanyId, datePipe.transform(this.nowMinusFourHours, 'dd/MM/yyyy'), 'CHECK_LIST').then((data: any) => {
       console.log("GET SUCCESSFUL!");
       this.tasks = data;
       console.log(this.tasks);
