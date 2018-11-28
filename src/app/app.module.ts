@@ -23,7 +23,7 @@ import {PipesModule} from "../pipes/pipes.module";
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp, { swipeBackEnabled: false }),
+    IonicModule.forRoot(MyApp, { swipeBackEnabled: false, backButtonText: '' }),
     LandingPageModule,
     HttpClientModule,
     PipesModule
