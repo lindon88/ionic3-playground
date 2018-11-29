@@ -1,14 +1,8 @@
 import {Component, ViewChild} from '@angular/core';
-import {Content, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {Content, IonicPage, NavController, NavParams, PopoverController} from 'ionic-angular';
 import {WorkflowProvider} from "../../providers/workflow/workflow";
 import {DatePipe} from "@angular/common";
-
-/**
- * Generated class for the ChecklistsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import {ChecklistFilterPopoverPage} from "../checklist-filter-popover/checklist-filter-popover";
 
 @IonicPage()
 @Component({
@@ -31,9 +25,10 @@ export class ChecklistsPage {
   public tasks: any;
   public item: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public workflowProvider: WorkflowProvider) {
+  public showAll: boolean = true;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public workflowProvider: WorkflowProvider, public popoverCtrl: PopoverController) {
     console.log("loading tasks....");
-    // this.loadTasks();
   }
 
   ionViewDidEnter() {
@@ -83,6 +78,17 @@ export class ChecklistsPage {
     }
     this.navCtrl.push("checklist-subtasks", {'companyId': this.currentCompanyId, 'taskId': task.id, 'task': task});
     // console.log(task);
+  }
+
+  public showFilterMenu(event) {
+    let popover = this.popoverCtrl.create(ChecklistFilterPopoverPage, {}, { cssClass: ' custom-popover ' });
+    popover.present({
+      ev: event
+    });
+    popover.onDidDismiss(data => {
+      console.log("Selected data: " + data);
+      this.showAll = data;
+    })
   }
 
 }

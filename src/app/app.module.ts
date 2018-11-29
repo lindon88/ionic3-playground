@@ -17,6 +17,7 @@ import { CompanyProvider } from '../providers/company/company';
 import { WorkflowProvider } from '../providers/workflow/workflow';
 import {PipesModule} from "../pipes/pipes.module";
 import {ChecklistSubtasksPopoverPageModule} from "../pages/checklist-subtasks-popover/checklist-subtasks-popover.module";
+import {ChecklistFilterPopoverPageModule} from "../pages/checklist-filter-popover/checklist-filter-popover.module";
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import {ChecklistSubtasksPopoverPageModule} from "../pages/checklist-subtasks-po
     LandingPageModule,
     HttpClientModule,
     PipesModule,
-    ChecklistSubtasksPopoverPageModule
+    ChecklistSubtasksPopoverPageModule,
+    ChecklistFilterPopoverPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

@@ -1,13 +1,6 @@
 import { Component } from '@angular/core';
 import {IonicPage, ViewController} from 'ionic-angular';
 
-/**
- * Generated class for the ChecklistSubtasksPopoverPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
   selector: 'page-checklist-subtasks-popover',
@@ -30,7 +23,7 @@ export class ChecklistSubtasksPopoverPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ChecklistSubtasksPopoverPage');
+
   }
 
   close() {
