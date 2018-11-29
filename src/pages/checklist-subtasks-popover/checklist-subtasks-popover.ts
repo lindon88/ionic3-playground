@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {IonicPage, ViewController} from 'ionic-angular';
+import {IonicPage, NavParams, ViewController} from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -18,16 +18,22 @@ import {IonicPage, ViewController} from 'ionic-angular';
   `,
 })
 export class ChecklistSubtasksPopoverPage {
+  public checked: boolean;
 
-  constructor(private viewCtrl: ViewController) {
+  constructor(private viewCtrl: ViewController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
-
+    this.checked = this.navParams.get('checked');
   }
 
   close() {
     this.viewCtrl.dismiss();
+  }
+
+  public popoverItemClick(event, value) {
+    this.checked = this.navParams.get('checked');
+    this.viewCtrl.dismiss(value);
   }
 
 }

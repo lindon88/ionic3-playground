@@ -24,7 +24,7 @@ import {IonicPage, NavParams, ViewController} from 'ionic-angular';
   `,
 })
 export class ChecklistFilterPopoverPage {
-  public checked: boolean;
+  public checked: boolean = true;
   constructor(private viewCtrl: ViewController, public navParams: NavParams) {
   }
 

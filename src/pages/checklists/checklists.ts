@@ -87,7 +87,11 @@ export class ChecklistsPage {
     });
     popover.onDidDismiss(data => {
       console.log("Selected data: " + data);
-      this.showAll = data;
+      if(data !== null) {
+        this.showAll = data;
+      } else {
+        return;
+      }
     })
   }
 
