@@ -81,7 +81,7 @@ export class ChecklistsPage {
   }
 
   public showFilterMenu(event) {
-    let popover = this.popoverCtrl.create(ChecklistFilterPopoverPage, {}, { cssClass: ' custom-popover ' });
+    let popover = this.popoverCtrl.create(ChecklistFilterPopoverPage, { 'checked':this.showAll }, { cssClass: ' custom-popover ' });
     popover.present({
       ev: event
     });
