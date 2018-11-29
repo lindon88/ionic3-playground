@@ -21,7 +21,7 @@
   </ion-toolbar>
   <ion-list>
     <ion-grid>
-      <ion-row *ngFor="let item of subtasks | order: 'rank'">
+      <ion-row [hidden]="item.complete && showAll === false" *ngFor="let item of subtasks | order: 'rank'">
         <ion-col col-2>
           <ion-item detail-none>
             <ion-checkbox *ngIf="item.complete" color="secondary" [checked]="true" (ionChange)="toggleTaskStatus(item)">
