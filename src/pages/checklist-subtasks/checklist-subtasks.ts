@@ -86,13 +86,17 @@ export class ChecklistSubtasksPage {
     return !task.expanded;
   }
 
-  public toggleTaskStatus(task) {
+  public toggleTaskStatus(task, i) {
     if(!task.complete) {
       task.complete = true;
-      this.workflowProvider.markComplete(task.id, this.currentPersonId, this.navParams.get('companyId'), this.currentDate).then((response) => {
-        let expanded = task.expanded;
-        task.expanded = expanded;
-        console.log('UPDATED STATUS');
+      this.workflowProvider.markComplete(task.id, this.currentPersonId, this.navParams.get('companyId'), this.currentDate).then((response: any) => {
+        console.log(response);
+        console.log(i);
+        if(response) {
+          this.subtasks[i] = response;
+          console.log(this.subtasks);
+          console.log('UPDATED STATUS');
+        }
       }, error => {
         task.complete = false;
       })
