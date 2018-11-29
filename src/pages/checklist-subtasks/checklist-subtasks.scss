@@ -47,8 +47,49 @@
 .select-modal {
   background: rgba(0,0,0,0.5) !important;
   padding: 40% 10% !important;
+  .modal-wrapper {
+    height: 280px;
+    width: 250px;
+    margin: 0 auto;
+
+    page-modal-task-note ion-content{
+      background-color: rgba(255, 255, 255, 0.9);
+    }
+  }
+}
+
+ion-textarea {
+  background: #fff;
+  padding: 2px;
+  min-height: 100px;
 }
 
 .full-width {
   width: 100%!important;
+}
+
+.modal-header {
+  padding: 15px 10px;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+  color: #58595b;
+
+  h3 {
+    font-weight: 400;
+  }
+}
+
+.textarea-wrapper {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.save-button-modal {
+  background-color: rgb(56, 126, 245);
+}
+
+.modal-footer {
+  button {
+    border-radius: 0;
+  }
 }

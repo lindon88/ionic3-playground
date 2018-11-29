@@ -56,9 +56,9 @@ $black: #000;
   }
 }
 
-.item-ios.item-block .item-inner {
-  border-bottom: none;
-}
+//.item-ios.item-block .item-inner {
+//  border-bottom: none;
+//}
 
 .select-text {
   overflow: visible;
@@ -86,4 +86,19 @@ so we define it in main stylesheet
     1px 1px 0 0 #ddd,   /* Just to fix the corner */
 
     0 1px 0 0 #ddd inset;
+}
+
+.item {
+  color: #444;
+  padding-left: 0;
+  .item-inner {
+    padding: 8px 49px 8px 16px;
+    .input-wrapper {
+      .label {
+        .task-status-icon {
+          line-height: 27px;
+        }
+      }
+    }
+  }
 }

@@ -131,8 +131,8 @@ export class ChecklistSubtasksPage {
     })
   }
 
-  public addTaskNote() {
-    let modal = this.modalCtrl.create(ModalTaskNotePage, {}, {cssClass: 'select-modal' });
+  public addTaskNote(data) {
+    let modal = this.modalCtrl.create(ModalTaskNotePage, { 'data': data }, {cssClass: 'select-modal' });
     modal.present();
   }
 
