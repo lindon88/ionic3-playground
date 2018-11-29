@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams, PopoverController} from 'ionic-angular';
+import {IonicPage, ModalController, NavController, NavParams, PopoverController} from 'ionic-angular';
 import {WorkflowProvider} from "../../providers/workflow/workflow";
 import {CompanyProvider} from "../../providers/company/company";
 import {DatePipe} from "@angular/common";
 import {ChecklistSubtasksPopoverPage} from "../checklist-subtasks-popover/checklist-subtasks-popover";
+import {ModalTaskNotePage} from "../modal-task-note/modal-task-note";
 
 @IonicPage({
   name: 'checklist-subtasks',
@@ -23,7 +24,7 @@ export class ChecklistSubtasksPage {
   currentDate: any;
   public showAll: boolean = true;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public workflowProvider: WorkflowProvider, public companyProvider: CompanyProvider, public popoverCtrl: PopoverController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public workflowProvider: WorkflowProvider, public companyProvider: CompanyProvider, public popoverCtrl: PopoverController, public modalCtrl: ModalController) {
 
   }
 
@@ -128,6 +129,11 @@ export class ChecklistSubtasksPage {
         return;
       }
     })
+  }
+
+  public addTaskNote() {
+    let modal = this.modalCtrl.create(ModalTaskNotePage, {}, {cssClass: 'select-modal' });
+    modal.present();
   }
 
 

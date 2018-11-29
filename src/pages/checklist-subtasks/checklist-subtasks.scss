@@ -35,8 +35,7 @@
   &.full-width {
     display: inline-block !important;
     margin: 10px 10px 0 10px;
-    padding: 5px;
-    padding-right: 10px;
+    padding: 5px 10px 5px 5px;
     text-align: left;
 
     i {
@@ -45,6 +44,11 @@
   }
 }
 
-.chat-bubble {
-  content: "\f075";
+.select-modal {
+  background: rgba(0,0,0,0.5) !important;
+  padding: 40% 10% !important;
+}
+
+.full-width {
+  width: 100%!important;
 }

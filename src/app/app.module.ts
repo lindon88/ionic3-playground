@@ -18,6 +18,7 @@ import { WorkflowProvider } from '../providers/workflow/workflow';
 import {PipesModule} from "../pipes/pipes.module";
 import {ChecklistSubtasksPopoverPageModule} from "../pages/checklist-subtasks-popover/checklist-subtasks-popover.module";
 import {ChecklistFilterPopoverPageModule} from "../pages/checklist-filter-popover/checklist-filter-popover.module";
+import {ModalTaskNotePageModule} from "../pages/modal-task-note/modal-task-note.module";
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import {ChecklistFilterPopoverPageModule} from "../pages/checklist-filter-popove
     HttpClientModule,
     PipesModule,
     ChecklistSubtasksPopoverPageModule,
-    ChecklistFilterPopoverPageModule
+    ChecklistFilterPopoverPageModule,
+    ModalTaskNotePageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

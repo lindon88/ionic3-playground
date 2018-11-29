@@ -81,14 +81,14 @@ export class ChecklistsPage {
   }
 
   public showFilterMenu(event) {
-    let popover = this.popoverCtrl.create(ChecklistFilterPopoverPage, { 'checked':this.showAll }, { cssClass: ' custom-popover ' });
+    let popover = this.popoverCtrl.create(ChecklistFilterPopoverPage, {'checked': this.showAll}, {cssClass: ' custom-popover '});
     popover.present({
       ev: event
     });
     popover.onDidDismiss(data => {
       console.log("Selected data: " + data);
       // if backdrop is clicked
-      if(data !== null) {
+      if (data !== null) {
         this.showAll = data;
       } else {
         return;
