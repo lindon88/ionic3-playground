@@ -13,23 +13,26 @@
 </ion-header>
 
 <ion-content>
-  <ion-toolbar padding class="clearfix">
-    <ion-item style="background-color: transparent" *ngIf="task">
-      <h1>{{task['name']}}</h1><br>
+  <ion-toolbar padding class="clearfix" class="subchecklist-header" *ngIf="task">
+
+      <h5>{{task['name']}}</h5><br>
       <span>{{task['description']}}</span>
-    </ion-item>
+
   </ion-toolbar>
   <ion-list>
       <ion-item-sliding [hidden]="item.complete && showAll === false" *ngFor="let item of subtasks | order: 'rank'; index as i">
             <ion-item>
               <ion-icon *ngIf="item.complete" class="task-status-icon" ios="ios-checkmark-circle" color="secondary" md="md-checkmark-circle" (click)="toggleTaskStatus(item, i)"></ion-icon>
               <ion-icon *ngIf="!item.complete" class="task-status-icon" ios="ios-radio-button-off" md="md-radio-button-off" (click)="toggleTaskStatus(item, i)"></ion-icon>
-              <span class="task-title" (click)="toggleExpanded(item)">{{item.name}}</span><br>
+              <div class="task-title" (click)="toggleExpanded(item)">
+                {{item.name}}
+              </div>
               <div class="task-subtitle" *ngIf="item.expanded">{{item.description}}</div>
-              <div *ngIf="item.complete && item.expanded" class="task-badge full-width">
+              <div *ngIf="item.complete && item.expanded" class="task-badge">
                 <ion-icon ios="ios-checkmark-circle" md="md-checkmark-circle"></ion-icon>
                 <span>Completed by: {{item.completePerson}} at {{item.completeTime}}</span>
               </div>
+
             </ion-item>
         <ion-item-options>
           <button ion-button color="secondary" (click)="addTaskNote(item)"><i class="fa fa-comment"></i></button>
