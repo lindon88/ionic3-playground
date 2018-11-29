@@ -87,6 +87,7 @@ export class ChecklistsPage {
     });
     popover.onDidDismiss(data => {
       console.log("Selected data: " + data);
+      // if backdrop is clicked
       if(data !== null) {
         this.showAll = data;
       } else {

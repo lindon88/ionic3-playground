@@ -5,13 +5,6 @@ import {CompanyProvider} from "../../providers/company/company";
 import {DatePipe} from "@angular/common";
 import {ChecklistSubtasksPopoverPage} from "../checklist-subtasks-popover/checklist-subtasks-popover";
 
-/**
- * Generated class for the ChecklistSubtasksPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage({
   name: 'checklist-subtasks',
   segment: 'checklist-subtasks/:companyId/:taskId'
@@ -28,6 +21,7 @@ export class ChecklistSubtasksPage {
   showView: boolean;
   currentPersonId: string;
   currentDate: any;
+  public showAll: boolean = true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public workflowProvider: WorkflowProvider, public companyProvider: CompanyProvider, public popoverCtrl: PopoverController) {
 
@@ -46,7 +40,7 @@ export class ChecklistSubtasksPage {
     this.task = this.navParams.get('task');
     console.log(this.task);
     if(this.task === null || this.task === undefined || this.task.length === 0) {
-      this.navCtrl.setRoot("ChecklistsPage");
+      this.task = this.loadWorkflowTask(this.navParams.get('taskId'), this.navParams.get('companyId'), this.currentDate);
     }
     this.currentPersonId = localStorage.getItem('currentPersonId');
   }
@@ -115,13 +109,23 @@ export class ChecklistSubtasksPage {
     }
   }
 
+
   public showFilterMenu(event) {
-    console.log(event);
-    let popover = this.popoverCtrl.create(ChecklistSubtasksPopoverPage, {}, { cssClass: ' custom-popover ' });
+    let popover = this.popoverCtrl.create(ChecklistSubtasksPopoverPage, { 'checked':this.showAll }, { cssClass: ' custom-popover ' });
     popover.present({
       ev: event
     });
+    popover.onDidDismiss(data => {
+      console.log("Selected data: " + data);
+      // if backdrop is clicked
+      if(data !== null) {
+        this.showAll = data;
+      } else {
+        return;
+      }
+    })
   }
+
 
   /**
    * Format single tasks
@@ -166,5 +170,7 @@ export class ChecklistSubtasksPage {
       return formattedDate;
     })
   }
+
+
 
 }
