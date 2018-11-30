@@ -14,8 +14,8 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <ion-toolbar padding class="clearfix">
-    <ion-item style="background-color: transparent">
+  <ion-toolbar padding class="clearfix toolbar-checklist">
+    <ion-item>
       <ion-label>Select outlet</ion-label>
       <ion-select [(ngModel)]="currentCompanyId">
         <ion-option *ngFor="let allowedOutlet of allowedOutlets" [value]="allowedOutlet.id">{{allowedOutlet.companyName}}</ion-option>

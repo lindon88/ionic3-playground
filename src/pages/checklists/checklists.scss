@@ -17,3 +17,17 @@ page-checklists {
 ion-label {
   line-height: 34px;
 }
+
+.toolbar-checklist {
+  padding: 0!important;
+  .toolbar-content {
+    ion-item {
+      .item-inner {
+        border-bottom: none;
+        .input-wrapper {
+          padding: 14px;
+        }
+      }
+    }
+  }
+}
