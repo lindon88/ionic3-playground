@@ -102,4 +102,27 @@ export class WorkflowProvider {
       })
     })
   }
+
+  public setSubtaskResultNote(subtaskId, userId, companyId, date, note) {
+    const params = {
+      subtaskId: subtaskId,
+      companyId: companyId,
+      personId: userId,
+      note: note,
+      date: date
+    };
+
+    let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
+    return new Promise((resolve, reject) => {
+      this.http.get(this.serverProvider.getServerURL() + 'workflow/setSubtaskResultNote', {params: params, headers: headers}).subscribe(result => {
+        if(result !== undefined) {
+          resolve(result);
+        } else {
+          resolve(null);
+        }
+      }, error => {
+        reject(error);
+      })
+    })
+  }
 }
