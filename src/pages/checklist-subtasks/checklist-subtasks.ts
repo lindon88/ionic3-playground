@@ -6,6 +6,7 @@ import {DatePipe} from "@angular/common";
 import {ChecklistSubtasksPopoverPage} from "../checklist-subtasks-popover/checklist-subtasks-popover";
 import {ModalTaskNotePage} from "../modal-task-note/modal-task-note";
 import {Navbar} from "ionic-angular";
+import {LoadingProvider} from "../../providers/loading/loading";
 
 
 @IonicPage({
@@ -27,11 +28,12 @@ export class ChecklistSubtasksPage {
   public showAll: boolean = true;
   @ViewChild(Navbar) navBar: Navbar;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public workflowProvider: WorkflowProvider, public companyProvider: CompanyProvider, public popoverCtrl: PopoverController, public modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public workflowProvider: WorkflowProvider, public companyProvider: CompanyProvider, public popoverCtrl: PopoverController, public modalCtrl: ModalController, public loadingProvider: LoadingProvider) {
 
   }
 
   ionViewDidLoad() {
+    this.loadingProvider.showLoader();
     this.getCompanyCurrentDate(this.navParams.get('companyId')).then(dateSuccess => {
       console.log(dateSuccess);
       this.loadWorkflowTask(this.navParams.get('taskId'), this.navParams.get('companyId'), dateSuccess);
@@ -47,7 +49,7 @@ export class ChecklistSubtasksPage {
       this.task = this.loadWorkflowTask(this.navParams.get('taskId'), this.navParams.get('companyId'), this.currentDate);
     }
     this.currentPersonId = localStorage.getItem('currentPersonId');
-
+    this.loadingProvider.hideLoader();
   }
 
   // Go back to checklist

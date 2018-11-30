@@ -19,6 +19,7 @@ import {PipesModule} from "../pipes/pipes.module";
 import {ChecklistSubtasksPopoverPageModule} from "../pages/checklist-subtasks-popover/checklist-subtasks-popover.module";
 import {ChecklistFilterPopoverPageModule} from "../pages/checklist-filter-popover/checklist-filter-popover.module";
 import {ModalTaskNotePageModule} from "../pages/modal-task-note/modal-task-note.module";
+import { LoadingProvider } from '../providers/loading/loading';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import {ModalTaskNotePageModule} from "../pages/modal-task-note/modal-task-note.
     CompanyProvider,
     CompanyProvider,
     WorkflowProvider,
+    LoadingProvider,
   ]
 })
 export class AppModule {}
