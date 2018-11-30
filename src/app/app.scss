@@ -74,8 +74,14 @@ so we define it in main stylesheet
 }
 
 .main-title {
-  img {
-    padding: 10px;
+  .toolbar-title {
+    height: 60px;
+    img {
+      height: 70%;
+      margin-top: 8px;
+      vertical-align: middle;
+
+    }
   }
 }
 
@@ -105,7 +111,8 @@ so we define it in main stylesheet
 }
 
 .custom-popover .popover-content {
-  width: 80%;
+  width: 250px;
+  float: right;
 }
 
 .custom-popover {
