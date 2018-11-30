@@ -17,7 +17,7 @@
   <ion-toolbar padding class="clearfix toolbar-checklist">
     <ion-item>
       <ion-label>Select outlet</ion-label>
-      <ion-select [(ngModel)]="currentCompanyId">
+      <ion-select [(ngModel)]="currentCompanyId" (ionChange)="onOutletChange()">
         <ion-option *ngFor="let allowedOutlet of allowedOutlets" [value]="allowedOutlet.id">{{allowedOutlet.companyName}}</ion-option>
       </ion-select>
     </ion-item>

@@ -66,8 +66,8 @@ export class ChecklistsPage {
     this.loadingProvider.hideLoader();
   }
 
-  public onOutletChange(selectedCompany) {
-    this.currentCompanyId = selectedCompany;
+  public onOutletChange() {
+    console.log(this.currentCompanyId);
     this.loadTasks();
   }
 
