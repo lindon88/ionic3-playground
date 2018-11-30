@@ -65,11 +65,16 @@ h5 {
 
 .select-modal {
   background: rgba(0, 0, 0, 0.5) !important;
-  padding: 40% 10% !important;
+  //padding: 40% 10% !important;
   .modal-wrapper {
-    height: 280px;
     width: 250px;
-    margin: 0 auto;
+    height: 280px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    margin-top: 150px;
+    border: 0;
 
     page-modal-task-note ion-content {
       background-color: rgba(255, 255, 255, 0.9);

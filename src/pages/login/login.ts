@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {AlertController, IonicPage, NavController} from 'ionic-angular';
 import {ServerProvider} from "../../providers/server/server";
 import {AuthenticationProvider} from "../../providers/authentication/authentication";
+import {LoadingProvider} from "../../providers/loading/loading";
 
 @IonicPage()
 @Component({
@@ -11,7 +12,7 @@ import {AuthenticationProvider} from "../../providers/authentication/authenticat
 export class LoginPage {
   public userinfo: any;
 
-  constructor(public navCtrl: NavController, private serverProvider: ServerProvider, public alertCtrl: AlertController, public authProvider: AuthenticationProvider) {
+  constructor(public navCtrl: NavController, private serverProvider: ServerProvider, public alertCtrl: AlertController, public authProvider: AuthenticationProvider, public loadingProvider: LoadingProvider) {
   }
 
   ionAfterViewInit() {
@@ -42,6 +43,7 @@ export class LoginPage {
         console.log('Username ' + username);
         console.log('Password ' + password);
 
+        this.loadingProvider.showLoader();
         this.authProvider.login(username, password).then((result) => {
           this.userinfo = result;
           console.log(this.userinfo.userRoles);
@@ -73,6 +75,7 @@ export class LoginPage {
             this.navCtrl.setRoot("PinConfirmPage")
           }
         })
+        this.loadingProvider.hideLoader();
       }
     })
   }
