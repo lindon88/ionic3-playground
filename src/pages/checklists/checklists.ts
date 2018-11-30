@@ -2,7 +2,6 @@ import {Component, ViewChild} from '@angular/core';
 import {
   Content,
   IonicPage,
-  LoadingController,
   MenuController,
   NavController,
   NavParams,
@@ -11,6 +10,7 @@ import {
 import {WorkflowProvider} from "../../providers/workflow/workflow";
 import {DatePipe} from "@angular/common";
 import {ChecklistFilterPopoverPage} from "../checklist-filter-popover/checklist-filter-popover";
+import {LoadingProvider} from "../../providers/loading/loading";
 
 @IonicPage()
 @Component({
@@ -35,7 +35,7 @@ export class ChecklistsPage {
 
   public showAll: boolean = true;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public workflowProvider: WorkflowProvider, public popoverCtrl: PopoverController, public menuCtrl: MenuController, public loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public workflowProvider: WorkflowProvider, public popoverCtrl: PopoverController, public menuCtrl: MenuController, public loadingProvider: LoadingProvider) {
     console.log("loading tasks....");
   }
 
@@ -54,8 +54,7 @@ export class ChecklistsPage {
 
   public loadTasks() {
     // get workflow
-    let loading = this.loadingMethod();
-    loading.present();
+    this.loadingProvider.showLoader();
     let datePipe: DatePipe = new DatePipe('en-US');
     this.workflowProvider.getWorkflow(this.currentCompanyId, datePipe.transform(this.nowMinusFourHours, 'dd/MM/yyyy'), 'CHECK_LIST').then((data: any) => {
       console.log("GET SUCCESSFUL!");
@@ -64,7 +63,7 @@ export class ChecklistsPage {
     }, (error) => {
       console.log(error);
     });
-    loading.dismiss();
+    this.loadingProvider.hideLoader();
   }
 
   public onOutletChange(selectedCompany) {
@@ -112,16 +111,6 @@ export class ChecklistsPage {
         return;
       }
     })
-  }
-
-  private loadingMethod() {
-    return this.loadingCtrl.create({
-      spinner: 'hide',
-      content: `
-      <div class="custom-spinner-container">
-        <div class="custom-spinner-box"><img src="assets/imgs/Gear_Set.svg" alt=""></div>
-      </div>`,
-    });
   }
 
 }
