@@ -16,6 +16,11 @@ export class LoginPage {
 
   ionAfterViewInit() {
     this.navCtrl.setRoot("LoginPage");
+    let userToken = localStorage['accessToken'];
+    let pin = localStorage['PIN'];
+    if(userToken !== undefined && userToken !== null) {
+      this.navCtrl.setRoot("PinConfirmPage");
+    }
   }
 
   public login(data: any) {

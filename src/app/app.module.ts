@@ -26,7 +26,7 @@ import {ModalTaskNotePageModule} from "../pages/modal-task-note/modal-task-note.
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp, { swipeBackEnabled: false, backButtonText: '' }),
+    IonicModule.forRoot(MyApp, { swipeBackEnabled: false, backButtonText: '', mode: 'ios' }),
     LandingPageModule,
     HttpClientModule,
     PipesModule,
