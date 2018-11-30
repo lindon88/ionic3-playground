@@ -131,8 +131,23 @@ export class ChecklistSubtasksPage {
     })
   }
 
-  public addTaskNote(data) {
+  public addTaskNote(data, i) {
     let modal = this.modalCtrl.create(ModalTaskNotePage, { 'data': data }, {cssClass: 'select-modal' });
+    modal.onDidDismiss(data => {
+      console.log(data.task);
+      console.log(data.note);
+      console.log('task id: ' + data.task.id);
+      console.log('person id: ' + this.currentPersonId);
+      console.log('company id: ' + this.navParams.get('companyId'));
+      console.log('current date: ' + this.currentDate);
+      if(data.note === null || data.note === undefined || data.note === '') return;
+      this.workflowProvider.setSubtaskResultNote(data.task.id, this.currentPersonId, this.navParams.get('companyId'), this.currentDate, data.note).then(result => {
+        console.log(result);
+        this.subtasks[i] = result;
+      }, error => {
+        console.error(error);
+      })
+    });
     modal.present();
   }
 
