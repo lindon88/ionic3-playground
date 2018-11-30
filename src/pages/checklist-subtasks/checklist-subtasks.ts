@@ -6,7 +6,7 @@ import {DatePipe} from "@angular/common";
 import {ChecklistSubtasksPopoverPage} from "../checklist-subtasks-popover/checklist-subtasks-popover";
 import {ModalTaskNotePage} from "../modal-task-note/modal-task-note";
 import {Navbar} from "ionic-angular";
-import {ChecklistsPage} from "../checklists/checklists";
+
 
 @IonicPage({
   name: 'checklist-subtasks',

@@ -103,3 +103,38 @@ so we define it in main stylesheet
     }
   }
 }
+
+.custom-popover .popover-content {
+  width: 80%;
+}
+
+.custom-popover {
+  margin-top: 20px;
+  .popover-wrapper {
+    .popover-arrow {
+      display: none;
+    }
+  }
+}
+
+.popover-content {
+  border-radius: 0!important;
+}
+
+.filter-radio-list {
+  button.item {
+    height: 40px;
+    div.item-inner{
+      height: 40px;
+    }
+    ion-radio {
+      margin-right: 0!important;
+      button.item-cover {
+        height: 40px;
+      }
+    }
+  }
+  button.item:first-child {
+    border-bottom: 0.55px solid #eaeaea;
+  }
+}

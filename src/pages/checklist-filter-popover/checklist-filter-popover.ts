@@ -11,15 +11,15 @@ import {IonicPage, NavParams, ViewController} from 'ionic-angular';
 @Component({
   selector: 'page-checklist-filter-popover',
   template: `
-    <ion-list radio-group>
+    <ion-list class="filter-radio-list" radio-group>
       <button ion-item detail-none>
-        <ion-radio color="secondary" (click)="popoverItemClick($event, true)" item-start [checked]="checked === true"></ion-radio>
-        <ion-label color="secondary">Show All Tasks</ion-label>
+        <ion-radio color="link" (click)="popoverItemClick($event, true)" item-start [checked]="checked === true"></ion-radio>
+        <ion-label color="link">Show All Tasks</ion-label>
       </button>
-      <ion-item  class="ion-item-with-border">
-        <ion-radio color="secondary" (click)="popoverItemClick($event, false)" item-start [checked]="checked === false"></ion-radio>
-        <ion-label color="secondary">Show Incomplete Tasks</ion-label>
-      </ion-item>
+      <button ion-item detail-none>
+        <ion-radio color="link" (click)="popoverItemClick($event, false)" item-start [checked]="checked === false"></ion-radio>
+        <ion-label color="link">Show Incomplete Tasks</ion-label>
+      </button>
     </ion-list>
   `,
 })
