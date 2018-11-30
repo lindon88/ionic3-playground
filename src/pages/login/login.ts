@@ -13,15 +13,17 @@ export class LoginPage {
   public userinfo: any;
 
   constructor(public navCtrl: NavController, private serverProvider: ServerProvider, public alertCtrl: AlertController, public authProvider: AuthenticationProvider, public loadingProvider: LoadingProvider) {
+    let userToken = localStorage['accessToken'];
+    console.log(userToken);
+    let pin = localStorage['PIN'];
+    if(userToken) {
+      this.navCtrl.setRoot("PinConfirmPage");
+    }
   }
 
   ionAfterViewInit() {
     this.navCtrl.setRoot("LoginPage");
-    let userToken = localStorage['accessToken'];
-    let pin = localStorage['PIN'];
-    if(userToken !== undefined && userToken !== null) {
-      this.navCtrl.setRoot("PinConfirmPage");
-    }
+
   }
 
   public login(data: any) {
