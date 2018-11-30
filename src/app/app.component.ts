@@ -16,7 +16,7 @@ export class MyApp {
   rootPage:any = LandingPage;
   public user: any;
   public company; any;
-  pages: Array<{icon_name: any, icon_md: any, title: string, component: any}>;
+  pages: Array<{icon: string, title: string, component: any}>;
   public userInfo: any = JSON.parse(localStorage.getItem('userInfo'));
   public companyId: any = localStorage.getItem('currentCompanyId');
 
@@ -35,8 +35,8 @@ export class MyApp {
     });
     // define pages for sidemenu
     this.pages = [
-      { icon_name: 'calendar', icon_md: 'md-calendar', title: 'Open Shifts', component: "EmployeeOpenShiftPage" },
-      { icon_name: 'checkbox-outline', icon_md: 'md-checkbox-outline', title: 'Checklists', component: "ChecklistsPage" }
+      { icon: 'fa fa-calendar', title: 'Open Shifts', component: "EmployeeOpenShiftPage" },
+      { icon: 'fa fa-check-square-o', title: 'Checklists', component: "ChecklistsPage" }
     ];
   }
 

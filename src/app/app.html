@@ -5,7 +5,7 @@
       <ion-title class="sidemenu-title" *ngIf="user && company">
         <table>
           <tr>
-            <td rowspan="2"><ion-icon class="sidemenu-title-icon" name="person"></ion-icon></td>
+            <td rowspan="2"><i class="sidemenu-title-icon fa fa-user"></i></td>
             <td>{{user.firstName}} {{user.lastName}} <br>
               {{company.name}}</td>
           </tr>
@@ -17,12 +17,9 @@
 
   <ion-content>
     <ion-list>
-      <button ion-item menuClose="menu1" detail-none>
-        Close menu
-      </button>
       <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
         <!--<ion-icon name="p.icon_name" md="p.icon_md"></ion-icon> {{p.title}}-->
-        <ion-icon name="{{p.icon_name}}" md="{{p.icon_md}}"></ion-icon> {{p.title}}
+        <i ngClass="{{p.icon}}"></i> {{p.title}}
       </button>
     </ion-list>
   </ion-content>

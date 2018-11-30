@@ -35,6 +35,15 @@ export class ChecklistsPage {
     this.loadTasks();
   }
 
+  public ionViewWillEnter(): void {
+    this.navCtrl.swipeBackEnabled = true;
+  }
+
+  public ionViewDidLeave(): void {
+    this.navCtrl.swipeBackEnabled = false;
+  }
+
+
   public loadTasks() {
     // show loading
 
