@@ -1,3 +1,19 @@
 page-checklists {
 
 }
+
+.checklist-progress-icon {
+  height: 30px;
+  width: 30px;
+  display: inline-block;
+  vertical-align: middle;
+  round-progress {
+    svg {
+      height: 30px!important;
+    }
+  }
+}
+
+ion-label {
+  line-height: 34px;
+}
