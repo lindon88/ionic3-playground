@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {Content, IonicPage, NavController, NavParams, PopoverController} from 'ionic-angular';
+import {Content, IonicPage, MenuController, NavController, NavParams, PopoverController} from 'ionic-angular';
 import {WorkflowProvider} from "../../providers/workflow/workflow";
 import {DatePipe} from "@angular/common";
 import {ChecklistFilterPopoverPage} from "../checklist-filter-popover/checklist-filter-popover";
@@ -27,7 +27,7 @@ export class ChecklistsPage {
 
   public showAll: boolean = true;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public workflowProvider: WorkflowProvider, public popoverCtrl: PopoverController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public workflowProvider: WorkflowProvider, public popoverCtrl: PopoverController, public menuCtrl: MenuController) {
     console.log("loading tasks....");
   }
 
@@ -36,11 +36,11 @@ export class ChecklistsPage {
   }
 
   public ionViewWillEnter(): void {
-    this.navCtrl.swipeBackEnabled = true;
+    this.menuCtrl.swipeEnable(true, 'menu1');
   }
 
-  public ionViewDidLeave(): void {
-    this.navCtrl.swipeBackEnabled = false;
+  public ionViewWillLeave(): void {
+    this.menuCtrl.swipeEnable(false, 'menu1');
   }
 
 
