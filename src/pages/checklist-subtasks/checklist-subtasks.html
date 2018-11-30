@@ -1,7 +1,7 @@
 <ion-header class="main-header">
-  <ion-navbar color="primary" class="main-navbar clearfix">
-    <button ion-button icon-only menuToggle>
-      <ion-icon name="menu"></ion-icon>
+  <ion-navbar color="primary" [hideBackButton]="true" class="main-navbar clearfix">
+    <button ion-button icon-only  (click)="goToChecklist()">
+      <ion-icon name="arrow-back"></ion-icon>
     </button>
     <ion-title class="main-title">
       <img src="./assets/imgs/Cover-logo-blue.png" alt="Cover">

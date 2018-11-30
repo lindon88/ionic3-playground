@@ -1,10 +1,12 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams, PopoverController} from 'ionic-angular';
 import {WorkflowProvider} from "../../providers/workflow/workflow";
 import {CompanyProvider} from "../../providers/company/company";
 import {DatePipe} from "@angular/common";
 import {ChecklistSubtasksPopoverPage} from "../checklist-subtasks-popover/checklist-subtasks-popover";
 import {ModalTaskNotePage} from "../modal-task-note/modal-task-note";
+import {Navbar} from "ionic-angular";
+import {ChecklistsPage} from "../checklists/checklists";
 
 @IonicPage({
   name: 'checklist-subtasks',
@@ -23,6 +25,7 @@ export class ChecklistSubtasksPage {
   currentPersonId: string;
   currentDate: any;
   public showAll: boolean = true;
+  @ViewChild(Navbar) navBar: Navbar;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public workflowProvider: WorkflowProvider, public companyProvider: CompanyProvider, public popoverCtrl: PopoverController, public modalCtrl: ModalController) {
 
@@ -44,6 +47,12 @@ export class ChecklistSubtasksPage {
       this.task = this.loadWorkflowTask(this.navParams.get('taskId'), this.navParams.get('companyId'), this.currentDate);
     }
     this.currentPersonId = localStorage.getItem('currentPersonId');
+
+  }
+
+  // Go back to checklist
+  public goToChecklist() {
+    this.navCtrl.setRoot("ChecklistsPage");
   }
 
   public loadWorkflowTask(taskId, companyId, date) {
