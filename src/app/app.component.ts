@@ -6,6 +6,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { LandingPage } from "../pages/landing/landing";
 import {EmployeeProvider} from "../providers/employee/employee";
 import {CompanyProvider} from "../providers/company/company";
+import {AuthenticationProvider} from "../providers/authentication/authentication";
 
 @Component({
   templateUrl: 'app.html'
@@ -16,14 +17,14 @@ export class MyApp {
   rootPage:any = LandingPage;
   public user: any;
   public company; any;
-  pages: Array<{icon: string, title: string, component: any}>;
+  pages: Array<{icon: string, title: string, component: any, click: any}>;
   public userInfo: any = JSON.parse(localStorage.getItem('userInfo'));
   public companyId: any = localStorage.getItem('currentCompanyId');
 
   public userName: string = '';
   public companies: any;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, menuCtrl: MenuController, public events: Events, public employeeProvider: EmployeeProvider, public companyProvider: CompanyProvider) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, menuCtrl: MenuController, public events: Events, public employeeProvider: EmployeeProvider, public companyProvider: CompanyProvider, public authenticationProvider: AuthenticationProvider) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -35,12 +36,17 @@ export class MyApp {
     });
     // define pages for sidemenu
     this.pages = [
-      { icon: 'fa fa-calendar', title: 'Open Shifts', component: "EmployeeOpenShiftPage" },
-      { icon: 'fa fa-check-square-o', title: 'Checklists', component: "ChecklistsPage" }
+      { icon: 'fa fa-calendar', title: 'Open Shifts', component: "EmployeeOpenShiftPage", click: null },
+      { icon: 'fa fa-check-square-o', title: 'Checklists', component: "ChecklistsPage", click: null },
+      { icon: 'fa fa-sign-out', title: 'Log out', component: null, click: 'logout' }
     ];
   }
 
   openPage(page) {
+    if(page.click === 'logout') {
+      this.logout();
+      return;
+    }
     this.navCtrl.setRoot(page.component);
   }
 
@@ -52,6 +58,14 @@ export class MyApp {
         console.error(err);
       })
     }
+  }
+
+  public logout() {
+    this.authenticationProvider.logout().then(response => {
+      this.navCtrl.setRoot("LoginPage");
+    }, error => {
+      console.log(error);
+    })
   }
 
   public getAllowedCompanies() {

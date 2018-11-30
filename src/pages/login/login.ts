@@ -14,8 +14,6 @@ export class LoginPage {
 
   constructor(public navCtrl: NavController, private serverProvider: ServerProvider, public alertCtrl: AlertController, public authProvider: AuthenticationProvider, public loadingProvider: LoadingProvider) {
     let userToken = localStorage['accessToken'];
-    console.log(userToken);
-    let pin = localStorage['PIN'];
     if(userToken) {
       this.navCtrl.setRoot("PinConfirmPage");
     }
