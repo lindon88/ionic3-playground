@@ -45,39 +45,30 @@ export class AuthenticationProvider {
   }
 
   public logout() {
-    let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
+    // let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
+    if (localStorage.getItem('accessToken')) {
+      localStorage.removeItem('accessToken');
+    }
 
-    return new Promise((resolve, reject) => {
-      this.http.post(this.serverProvider.getServerURL() + 'RestWebServiceManager/logout', {}, {headers: headers}).subscribe((result) => {
-        if (localStorage.getItem('accessToken')) {
-          localStorage.removeItem('accessToken');
-        }
+    if (localStorage.getItem('PIN')) {
+      localStorage.removeItem('PIN');
+    }
 
-        if (localStorage.getItem('PIN')) {
-          localStorage.removeItem('PIN');
-        }
+    if (localStorage.getItem('currentCompanyId')) {
+      localStorage.removeItem('currentCompanyId');
+    }
 
-        if (localStorage.getItem('currentCompanyId')) {
-          localStorage.removeItem('currentCompanyId');
-        }
+    if (localStorage.getItem('currentCorporateId')) {
+      localStorage.removeItem('currentCorporateId');
+    }
 
-        if (localStorage.getItem('currentCorporateId')) {
-          localStorage.removeItem('currentCorporateId');
-        }
+    if (localStorage.getItem('currentPersonId')) {
+      localStorage.removeItem('currentPersonId');
+    }
 
-        if (localStorage.getItem('currentPersonId')) {
-          localStorage.removeItem('currentPersonId');
-        }
-
-        if (localStorage.getItem('userInfo')) {
-          localStorage.removeItem('userInfo');
-        }
-        this.userInfo = null;
-        resolve(result);
-      }, (error) => {
-        reject(error);
-      })
-    })
+    if (localStorage.getItem('userInfo')) {
+      localStorage.removeItem('userInfo');
+    }
 
   }
 }
