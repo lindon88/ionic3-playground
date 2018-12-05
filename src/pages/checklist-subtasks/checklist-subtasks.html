@@ -22,7 +22,7 @@
   <ion-list>
       <ion-item-sliding class="task" [hidden]="item.complete && showAll === false" *ngFor="let item of subtasks | order: 'rank'; index as i">
             <ion-item>
-              <ion-icon *ngIf="item.complete" class="task-status-icon" ios="ios-checkmark-circle" color="secondary" md="md-checkmark-circle" (click)="toggleTaskStatus(item, i)"></ion-icon>
+              <ion-icon *ngIf="item.complete" class="task-status-icon" name="md-checkmark-circle" color="secondary" md="md-checkmark-circle" (click)="toggleTaskStatus(item, i)"></ion-icon>
               <ion-icon *ngIf="!item.complete" class="task-status-icon" ios="ios-radio-button-off" md="md-radio-button-off" (click)="toggleTaskStatus(item, i)"></ion-icon>
               <div class="task-title" (click)="toggleExpanded(item)">
                 {{item.name}}

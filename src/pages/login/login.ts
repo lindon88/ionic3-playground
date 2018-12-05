@@ -15,7 +15,7 @@ export class LoginPage {
   constructor(public navCtrl: NavController, private serverProvider: ServerProvider, public alertCtrl: AlertController, public authProvider: AuthenticationProvider, public loadingProvider: LoadingProvider) {
     let userToken = localStorage['accessToken'];
     if(userToken) {
-      this.navCtrl.setRoot("PinConfirmPage");
+      this.navCtrl.setRoot("HomePage");
     }
   }
 
@@ -72,7 +72,7 @@ export class LoginPage {
             alert.present();
           } else {
             // pin already exists, goto pin confirm
-            this.navCtrl.setRoot("PinConfirmPage")
+            this.navCtrl.setRoot("HomePage")
           }
         })
         this.loadingProvider.hideLoader();

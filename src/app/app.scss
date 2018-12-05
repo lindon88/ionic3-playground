@@ -152,8 +152,8 @@ ion-icon {
     mask-position: 50% 50%;
     mask-repeat: no-repeat;
     background: currentColor;
-    width: 1.8em;
-    height: 1.8em;
+    width: 32px;
+    height: 33px;
   }
   &[class*="custom-funnel"] {
     mask-image: url(../assets/icon/funnel.svg);
@@ -177,5 +177,25 @@ ion-menu.show-menu + ion-nav {
     z-index: 101!important;
     opacity: 0.5;
     display: block!important;
+  }
+}
+
+.synergy-sidemenu-footer {
+  div.toolbar-background {
+    background: #fff;
+    border-top: none;
+  }
+  ion-title {
+    padding: 0;
+  }
+  span{
+    font-size: 12px;
+    vertical-align: bottom;
+    line-height: 14px;
+  }
+
+  img{
+    height: 22px;
+    margin-left: 5px;
   }
 }
