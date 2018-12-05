@@ -1,3 +1,22 @@
 .landing-page {
   background-color: $primaryColor;
 }
+
+body {
+  height: 100%;
+}
+
+@media(min-width: 820px) {
+  div.animation-wrapper {
+    text-align: center;
+    lottie-animation-view {
+      div {
+        margin: 0 auto;
+        svg {
+          max-width: 760px!important;
+          margin: 0 auto;
+        }
+      }
+    }
+  }
+}
