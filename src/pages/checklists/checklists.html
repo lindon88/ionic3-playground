@@ -24,7 +24,7 @@
   </ion-toolbar>
   <ion-list class="task">
     <ion-item [hidden]="getCompletedTasksCount(item) === item.subtasks.length && showAll === false" *ngFor="let item of tasks | order: 'rank'" (click)="openTasksView(item)">
-      <ion-row justify-content-center align-items-center>
+      <ion-row align-items-center>
         <ion-col col-1>
           <round-progress [current]="getCompletedTasksCount(item)" [max]="item.subtasks.length" [radius]="120" [color]="getProgressColor(item)" [stroke]="30" [semicircle]="false" [rounded]="true" [clockwise]="true" [responsive]="true" [duration]="2000"  [animationDelay]="0"></round-progress>
         </ion-col>
