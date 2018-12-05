@@ -22,7 +22,7 @@
       </ion-select>
     </ion-item>
   </ion-toolbar>
-  <ion-list>
+  <ion-list class="task">
     <ion-item [hidden]="getCompletedTasksCount(item) === item.subtasks.length && showAll === false" *ngFor="let item of tasks | order: 'rank'" (click)="openTasksView(item)">
       <ion-row justify-content-center align-items-center>
         <ion-col col-1>
