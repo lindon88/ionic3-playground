@@ -160,3 +160,22 @@ ion-icon {
   }
 
 }
+
+.main-menu-overlay {
+  position: absolute;
+  display: none;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 99!important;
+}
+
+ion-menu.show-menu + ion-nav {
+  div.nav-decor {
+    z-index: 101!important;
+    opacity: 0.5;
+    display: block!important;
+  }
+}
