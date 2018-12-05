@@ -20,6 +20,10 @@ $secondaryColor: #3fb6df;
 
 $black: #000;
 
+.menu-inner {
+  width: 260px!important;
+}
+
 .toolbar-title {
   overflow: visible;
   //text-align: left;
@@ -45,6 +49,9 @@ $black: #000;
 }
 
 .sidemenu-title {
+  div {
+    padding-left: 20px;
+  }
   tr td:first-child {
     padding: 10px;
     text-align: center;
@@ -53,6 +60,7 @@ $black: #000;
   tr td {
     padding: 10px;
     text-align: left;
+    font-size: 16px;
   }
 }
 
@@ -192,10 +200,12 @@ ion-menu.show-menu + ion-nav {
     font-size: 12px;
     vertical-align: bottom;
     line-height: 14px;
+    font-weight: 500;
   }
 
   img{
     height: 22px;
     margin-left: 5px;
+    vertical-align: bottom;
   }
 }
