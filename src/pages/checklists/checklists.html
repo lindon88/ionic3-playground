@@ -4,8 +4,8 @@
       <ion-icon name="menu"></ion-icon>
     </button>
 
-    <ion-title class="main-title">
-      <img src="./assets/imgs/Cover-logo-blue.png" alt="Cover">
+    <ion-title class="main-title" >
+      <img (click)="navCtrl.setRoot('HomePage')" src="./assets/imgs/Cover-logo-blue.png" alt="Cover">
     </ion-title>
     <ion-buttons right>
       <button ion-button (click)="showFilterMenu($event)"><ion-icon name="funnel"></ion-icon></button>
@@ -24,9 +24,14 @@
   </ion-toolbar>
   <ion-list>
     <ion-item [hidden]="getCompletedTasksCount(item) === item.subtasks.length && showAll === false" *ngFor="let item of tasks | order: 'rank'" (click)="openTasksView(item)">
-
-        <div class="checklist-progress-icon"><round-progress [current]="getCompletedTasksCount(item)" [max]="item.subtasks.length" [radius]="120" [color]="getProgressColor(item)" [stroke]="30" [semicircle]="false" [rounded]="true" [clockwise]="true" [responsive]="true" [duration]="2000"  [animationDelay]="0"></round-progress></div>
-        {{item.name}}
+      <ion-row justify-content-center align-items-center>
+        <ion-col col-1>
+          <round-progress [current]="getCompletedTasksCount(item)" [max]="item.subtasks.length" [radius]="120" [color]="getProgressColor(item)" [stroke]="30" [semicircle]="false" [rounded]="true" [clockwise]="true" [responsive]="true" [duration]="2000"  [animationDelay]="0"></round-progress>
+        </ion-col>
+        <ion-col col-11>
+          <span class="checklist-title">{{item.name}}</span>
+        </ion-col>
+      </ion-row>
     </ion-item>
   </ion-list>
 </ion-content>

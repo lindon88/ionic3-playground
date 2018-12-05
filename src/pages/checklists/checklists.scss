@@ -3,19 +3,15 @@ page-checklists {
 }
 
 .checklist-progress-icon {
-  height: 30px;
-  width: 30px;
+
   display: inline-block;
   vertical-align: middle;
   round-progress {
     svg {
-      height: 30px!important;
+      min-height: 24px!important;
+      max-height: 45px!important;
     }
   }
-}
-
-ion-label {
-  line-height: 34px;
 }
 
 .toolbar-checklist {
@@ -25,9 +21,19 @@ ion-label {
       .item-inner {
         border-bottom: none;
         .input-wrapper {
-          padding: 14px;
+          padding: 0;
         }
       }
     }
   }
+}
+
+.checklist-title {
+  font-weight: bold;
+  margin-left: 8px;
+  vertical-align: center;
+}
+
+.label-ios {
+  margin: 0!important;
 }

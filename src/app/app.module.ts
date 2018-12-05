@@ -27,7 +27,7 @@ import { LoadingProvider } from '../providers/loading/loading';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp, { swipeBackEnabled: false, backButtonText: '', mode: 'ios' }),
+    IonicModule.forRoot(MyApp, { swipeBackEnabled: false, backButtonText: '', mode: 'ios', menuType: 'push' }),
     LandingPageModule,
     HttpClientModule,
     PipesModule,

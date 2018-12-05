@@ -146,3 +146,17 @@ so we define it in main stylesheet
   }
 }
 
+ion-icon {
+  &[class*="custom-"] {
+    mask-size: contain;
+    mask-position: 50% 50%;
+    mask-repeat: no-repeat;
+    background: currentColor;
+    width: 1.8em;
+    height: 1.8em;
+  }
+  &[class*="custom-funnel"] {
+    mask-image: url(../assets/icon/funnel.svg);
+  }
+
+}
