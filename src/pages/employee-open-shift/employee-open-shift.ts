@@ -39,6 +39,7 @@ export class EmployeeOpenShiftPage {
 
   // list of shifts
   availableShifts: any;
+  myRequests: any;
 
   // sections
   sections: any;
@@ -79,6 +80,11 @@ export class EmployeeOpenShiftPage {
     this.shiftsProvider.getMyAvailableShifts(datePipe.transform(startDate, 'yyyy-MM-dd'), datePipe.transform(endDate, 'yyyy-MM-dd')).then(result => {
       this.availableShifts = result;
       console.log(this.availableShifts);
+    });
+
+    this.shiftsProvider.getMyRequests(datePipe.transform(startDate, 'yyyy-MM-dd'), datePipe.transform(endDate, 'yyyy-MM-dd')).then(result => {
+      this.myRequests = result;
+      console.log(this.myRequests);
     })
   }
 

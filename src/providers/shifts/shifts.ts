@@ -27,4 +27,23 @@ export class ShiftsProvider {
       }
     });
   }
+
+  public getMyRequests(start, end) {
+    return new Promise((resolve, reject) => {
+      let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
+      if(!start) {
+        reject("Start date must be defined");
+      } else {
+        const params = {
+          start: start,
+          end: end
+        };
+        this.http.get(this.serverProvider.getServerURL() + 'hrm/shiftRequest/myRequests', {params: params, headers: headers}).subscribe(result => {
+          resolve(result);
+        }, error => {
+          reject(error);
+        });
+      }
+    });
+  }
 }
