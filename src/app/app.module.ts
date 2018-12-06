@@ -21,6 +21,7 @@ import {ChecklistFilterPopoverPageModule} from "../pages/checklist-filter-popove
 import {ModalTaskNotePageModule} from "../pages/modal-task-note/modal-task-note.module";
 import { LoadingProvider } from '../providers/loading/loading';
 
+
 @NgModule({
   declarations: [
     MyApp,
@@ -33,7 +34,7 @@ import { LoadingProvider } from '../providers/loading/loading';
     PipesModule,
     ChecklistSubtasksPopoverPageModule,
     ChecklistFilterPopoverPageModule,
-    ModalTaskNotePageModule
+    ModalTaskNotePageModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [

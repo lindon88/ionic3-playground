@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, ViewEncapsulation} from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+
 
 /**
  * Generated class for the EmployeeOpenShiftPage page.
@@ -14,4 +15,9 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'employee-open-shift.html',
 })
 export class EmployeeOpenShiftPage {
+
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  }
+
+
 }
