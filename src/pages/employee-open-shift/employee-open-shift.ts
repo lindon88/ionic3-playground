@@ -70,6 +70,7 @@ export class EmployeeOpenShiftPage {
   }
 
   public loadOpenShifts() {
+    this.availableShifts = {};
     const datePipe = new DatePipe('en-US');
 
     const startDate = new Date();
@@ -78,33 +79,48 @@ export class EmployeeOpenShiftPage {
     const d = datePipe.transform(endDate, 'yyyy-MM-dd');
     console.log(d);
 
-    this.shiftsProvider.getMyAvailableShifts(datePipe.transform(startDate, 'yyyy-MM-dd'), datePipe.transform(endDate, 'yyyy-MM-dd')).then(result => {
-      this.availableShifts = result;
-      console.log(this.availableShifts);
-    });
-
-    this.shiftsProvider.getMyRequests(datePipe.transform(startDate, 'yyyy-MM-dd'), datePipe.transform(endDate, 'yyyy-MM-dd')).then(result => {
-      this.myRequests = result;
-      console.log(this.myRequests);
-    });
-
     Observable.forkJoin(this.getMyAvailableShifts(datePipe.transform(startDate, 'yyyy-MM-dd'), datePipe.transform(endDate, 'yyyy-MM-dd')), this.getMyRequests(datePipe.transform(startDate, 'yyyy-MM-dd'), datePipe.transform(endDate, 'yyyy-MM-dd')))
       .subscribe(results => {
-        console.log(results);
+        const [availableShifts, requests] = results;
+        for(let i = 0; i < (<any>availableShifts).length; i++) {
+          let item = availableShifts[i];
+          if(requests && (<any>requests).length > 0) {
+            for(let j = 0; j < (<any>requests).length; j++) {
+              let request = requests[j];
+              if(item.shiftId == request.shiftId) {
+                item.status = request.status;
+                item.requestType = request.requestType;
+                item.requesterEmployee = request.requesterEmployee;
+                item.requestId = request.id;
+
+                (<any>requests).splice(j, 1);
+                break;
+              }
+            }
+          }
+          this.formatShift(item);
+          this.availableShifts.push(item);
+        }
       });
   }
 
   private getMyAvailableShifts(start, end) {
     return this.shiftsProvider.getMyAvailableShifts(start, end).then(result => {
-      return this.availableShifts = result;
+      return result;
     });
   }
 
   private getMyRequests(start, end) {
     return this.shiftsProvider.getMyRequests(start, end).then(result => {
-      return this.myRequests = result;
-
+      return result;
     });
+  }
+
+  private formatShift(shift) {
+    const date = new Date(shift.shiftDate);
+    shift.monthText = date.getMonth();
+
+    console.log(shift.monthText);
   }
 
 
