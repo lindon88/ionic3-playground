@@ -20,6 +20,7 @@ import {ChecklistSubtasksPopoverPageModule} from "../pages/checklist-subtasks-po
 import {ChecklistFilterPopoverPageModule} from "../pages/checklist-filter-popover/checklist-filter-popover.module";
 import {ModalTaskNotePageModule} from "../pages/modal-task-note/modal-task-note.module";
 import { LoadingProvider } from '../providers/loading/loading';
+import { ShiftsProvider } from '../providers/shifts/shifts';
 
 
 @NgModule({
@@ -54,6 +55,7 @@ import { LoadingProvider } from '../providers/loading/loading';
     CompanyProvider,
     WorkflowProvider,
     LoadingProvider,
+    ShiftsProvider,
   ]
 })
 export class AppModule {}
