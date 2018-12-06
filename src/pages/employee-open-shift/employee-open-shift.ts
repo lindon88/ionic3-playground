@@ -1,8 +1,9 @@
 import {Component} from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {DatePipe} from "@angular/common";
 import {ShiftsProvider} from "../../providers/shifts/shifts";
 import {Observable} from "rxjs";
+import {ModalEosCancelPage} from "../modal-eos-cancel/modal-eos-cancel";
 
 
 /**
@@ -58,7 +59,7 @@ export class EmployeeOpenShiftPage {
   monthTextFormat: string = 'MMMM';
   dayTextFormat: string = 'EEEE';
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public shiftsProvider: ShiftsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public shiftsProvider: ShiftsProvider, public modalCtrl: ModalController) {
   }
 
   ionViewDidLoad() {
@@ -193,5 +194,10 @@ export class EmployeeOpenShiftPage {
     }, error => {
       console.log(error);
     })
+  }
+
+  public onShiftClick() {
+    let modal = this.modalCtrl.create(ModalEosCancelPage, {}, {cssClass: 'select-modal'});
+    modal.present();
   }
 }

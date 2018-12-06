@@ -49,7 +49,7 @@
     </tab>
     <tab [tabTitle]="'Drop Request'">
       <div *ngFor="let shift of availableShifts">
-        <ion-grid class="card" *ngIf="shift.tab === 2">
+        <ion-grid class="card" (click)="onShiftClick()" *ngIf="shift.tab === 2">
           <ion-row class="item row employee-shift-item">
             <ion-col col-2 class="date-column col col-2">
               <div class="dates">

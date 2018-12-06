@@ -21,6 +21,7 @@ import {ChecklistFilterPopoverPageModule} from "../pages/checklist-filter-popove
 import {ModalTaskNotePageModule} from "../pages/modal-task-note/modal-task-note.module";
 import { LoadingProvider } from '../providers/loading/loading';
 import { ShiftsProvider } from '../providers/shifts/shifts';
+import {ModalEosCancelPageModule} from "../pages/modal-eos-cancel/modal-eos-cancel.module";
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import { ShiftsProvider } from '../providers/shifts/shifts';
     ChecklistSubtasksPopoverPageModule,
     ChecklistFilterPopoverPageModule,
     ModalTaskNotePageModule,
+    ModalEosCancelPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
