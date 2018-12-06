@@ -1,17 +1,19 @@
 <ion-header class="eos-cansel-header">
   <div class="modal-header">
-    <h3 >Modal</h3>
+    <h3>Cancel Request</h3>
   </div>
 </ion-header>
-<ion-content class="cancel-eos">
+<ion-content class="cancel-eos" *ngIf="data">
   <div>Drop Shift Request</div>
-  <div class="drop-shift">12/07, 8:56a-12:30a</div>
-  <div class="drop-shift">General Manager, Manager</div>
+  <div class="drop-shift" >{{data.shiftText.time12Hr}}</div>
+  <div class="drop-shift" *ngIf="data.job != null">{{data.job.description}} | {{data.section.description}}</div>
+  <div class="drop-shift" *ngIf="data.job == null">{{data.section.description}}</div>
 
   <br>
   <div>Your request will be cancelled</div><div>and you cannot undo this</div><div>action.</div>
+  <br>
   <div class="textarea-wrapper">
-    <ion-textarea placeholder="Request message, reason, etc.">
+    <ion-textarea placeholder="Request message, reason, etc." maxlength="200" rows="5">
     </ion-textarea>
     <p class="textarea-info">Maximum 200 characters</p>
   </div>
