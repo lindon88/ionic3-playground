@@ -197,7 +197,7 @@ export class EmployeeOpenShiftPage {
   }
 
   public onShiftClick() {
-    let modal = this.modalCtrl.create(ModalEosCancelPage, {}, {cssClass: 'select-modal'});
+    let modal = this.modalCtrl.create(ModalEosCancelPage, {}, {cssClass: 'cancelation-modal'});
     modal.present();
   }
 }
