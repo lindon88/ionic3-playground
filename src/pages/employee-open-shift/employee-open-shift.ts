@@ -70,7 +70,7 @@ export class EmployeeOpenShiftPage {
   }
 
   public loadOpenShifts() {
-    this.availableShifts = {};
+    this.availableShifts = [];
     const datePipe = new DatePipe('en-US');
 
     const startDate = new Date();
@@ -82,6 +82,9 @@ export class EmployeeOpenShiftPage {
     Observable.forkJoin(this.getMyAvailableShifts(datePipe.transform(startDate, 'yyyy-MM-dd'), datePipe.transform(endDate, 'yyyy-MM-dd')), this.getMyRequests(datePipe.transform(startDate, 'yyyy-MM-dd'), datePipe.transform(endDate, 'yyyy-MM-dd')))
       .subscribe(results => {
         const [availableShifts, requests] = results;
+        console.log(results);
+
+        // format shifts
         for(let i = 0; i < (<any>availableShifts).length; i++) {
           let item = availableShifts[i];
           if(requests && (<any>requests).length > 0) {
@@ -101,6 +104,19 @@ export class EmployeeOpenShiftPage {
           this.formatShift(item);
           this.availableShifts.push(item);
         }
+
+        // define other requests
+        if((<any>requests).length > 0) {
+          for(let k = 0; k < (<any>requests).length; k++) {
+            let request = requests[k];
+            this.fillRequestWithData(request).then(data => {
+              this.formatShift(data);
+              this.availableShifts.push(data);
+            }, error => {
+              console.log(error);
+            })
+          }
+        }
       });
   }
 
@@ -118,10 +134,64 @@ export class EmployeeOpenShiftPage {
 
   private formatShift(shift) {
     const date = new Date(shift.shiftDate);
-    shift.monthText = date.getMonth();
+    let locale = "en-us";
+    let month = date.toLocaleString(locale, {month:"long"});
+    let day = date.toLocaleString(locale, {weekday:"long"});
+    let day_num = date.getDay();
+    shift.monthText = month;
+    shift.dayText = day;
+    shift.dayNumber = day_num;
 
-    console.log(shift.monthText);
+    if(shift.status === undefined && shift.requestType === undefined && shift.shiftType === this.OPEN_SHIFT) {
+      shift.tab = 1;
+      shift.showPickup = true;
+      shift.badgeClass = 'badge-green';
+      shift.badgeText = 'Open Shift';
+    }
+
+    if(shift.status !== undefined && shift.requestType !== undefined) {
+      if(shift.status === this.PENDING) {
+        shift.showDrop = true;
+        shift.badgeClass = 'badge-orange';
+        if (shift.requestType === this.CAN_WORK) {
+          shift.tab = 1;
+          shift.badgeText = 'Pickup Pending';
+        } else {
+          shift.tab = 2;
+          shift.badgeText = 'Drop Pending';
+        }
+      }
+      if(shift.status === this.APPROVED) {
+        shift.badgeClass = 'badge-green';
+        if(shift.requestType === this.CAN_WORK) {
+          shift.tab = 1;
+          shift.badgeText = 'Pickup Approved';
+        } else {
+          shift.tab = 2;
+          shift.badgeText = 'Drop Approved';
+        }
+      }
+
+      if(shift.status === this.CANCELLED || shift.status === this.REJECTED) {
+        shift.badgeClass = 'badge-red';
+        if(shift.requestType === this.CAN_WORK) {
+          shift.tab = 1;
+          shift.badgeText = 'Pickup Cancelled';
+        } else {
+          shift.tab = 2;
+          shift.badgeText = 'Drop Cancelled';
+        }
+      }
+    }
   }
 
-
+  private fillRequestWithData(request) {
+    return this.shiftsProvider.getShiftDetails(request.shiftType, request.shiftId).then(result => {
+      const newRequest = Object.assign(request, result);
+      newRequest.requestId = request.id;
+      return newRequest;
+    }, error => {
+      console.log(error);
+    })
+  }
 }
