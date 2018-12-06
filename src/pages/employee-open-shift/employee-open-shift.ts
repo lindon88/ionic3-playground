@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {DatePipe} from "@angular/common";
 import {ShiftsProvider} from "../../providers/shifts/shifts";
+import {Observable} from "rxjs";
 
 
 /**
@@ -85,7 +86,25 @@ export class EmployeeOpenShiftPage {
     this.shiftsProvider.getMyRequests(datePipe.transform(startDate, 'yyyy-MM-dd'), datePipe.transform(endDate, 'yyyy-MM-dd')).then(result => {
       this.myRequests = result;
       console.log(this.myRequests);
-    })
+    });
+
+    Observable.forkJoin(this.getMyAvailableShifts(datePipe.transform(startDate, 'yyyy-MM-dd'), datePipe.transform(endDate, 'yyyy-MM-dd')), this.getMyRequests(datePipe.transform(startDate, 'yyyy-MM-dd'), datePipe.transform(endDate, 'yyyy-MM-dd')))
+      .subscribe(results => {
+        console.log(results);
+      });
+  }
+
+  private getMyAvailableShifts(start, end) {
+    return this.shiftsProvider.getMyAvailableShifts(start, end).then(result => {
+      return this.availableShifts = result;
+    });
+  }
+
+  private getMyRequests(start, end) {
+    return this.shiftsProvider.getMyRequests(start, end).then(result => {
+      return this.myRequests = result;
+
+    });
   }
 
 

@@ -46,4 +46,21 @@ export class ShiftsProvider {
       }
     });
   }
+
+  public getShiftDetails(shiftType, shiftId) {
+    return new Promise((resolve, reject) => {
+      let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
+      if(!shiftType) {
+        resolve("Shift type must be defined");
+      }
+      if(!shiftId) {
+        resolve("Shift id must be defined");
+      }
+      return this.http.get(this.serverProvider.getServerURL() + 'hrm/shiftRequest/shiftDetails' + '/' + shiftType + '/' + shiftId, {headers: headers}).subscribe(result => {
+        resolve(result);
+      }, error => {
+        reject(error);
+      })
+    })
+  }
 }
