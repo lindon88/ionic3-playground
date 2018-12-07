@@ -1,6 +1,6 @@
 <ion-header class="eos-cansel-header">
   <div class="modal-header">
-    <h3>Cancel Request</h3>
+    <h3>Send Request</h3>
   </div>
 </ion-header>
 <ion-content class="cancel-eos" *ngIf="data">
@@ -13,7 +13,7 @@
   <div>Your request will be cancelled</div><div>and you cannot undo this</div><div>action.</div>
   <br>
   <div class="textarea-wrapper">
-    <ion-textarea [(ngModel)]="note" placeholder="Request message, reason, etc." maxlength="200" rows="5">
+    <ion-textarea placeholder="Request message, reason, etc." maxlength="200" rows="5">
     </ion-textarea>
     <p class="textarea-info">Maximum 200 characters</p>
   </div>
@@ -26,7 +26,7 @@
           <button ion-button color="light" class="full-width" (click)="dismiss()">Dismiss</button>
         </ion-col>
         <ion-col col-6>
-          <button ion-button class="full-width save-button-eos" (click)="save()">Save</button>
+          <button ion-button class="full-width save-button-eos">Save</button>
         </ion-col>
       </ion-row>
     </ion-grid>

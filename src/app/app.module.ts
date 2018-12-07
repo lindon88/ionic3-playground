@@ -22,6 +22,7 @@ import {ModalTaskNotePageModule} from "../pages/modal-task-note/modal-task-note.
 import { LoadingProvider } from '../providers/loading/loading';
 import { ShiftsProvider } from '../providers/shifts/shifts';
 import {ModalEosCancelPageModule} from "../pages/modal-eos-cancel/modal-eos-cancel.module";
+import {ModalEosSendPageModule} from "../pages/modal-eos-send/modal-eos-send.module";
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import {ModalEosCancelPageModule} from "../pages/modal-eos-cancel/modal-eos-canc
     ChecklistSubtasksPopoverPageModule,
     ChecklistFilterPopoverPageModule,
     ModalTaskNotePageModule,
-    ModalEosCancelPageModule
+    ModalEosCancelPageModule,
+    ModalEosSendPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

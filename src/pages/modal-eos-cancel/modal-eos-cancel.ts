@@ -7,6 +7,8 @@ import { NavController, NavParams, ViewController} from 'ionic-angular';
 })
 export class ModalEosCancelPage {
   data: any;
+  request: any;
+  note: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
   }
@@ -15,6 +17,15 @@ export class ModalEosCancelPage {
     console.log('ionViewDidLoad ModalEosCancelPage');
     this.data = this.navParams.get('data');
     console.log(this.data);
+  }
+
+  save() {
+    this.request = {
+      'shiftReqeustId': this.data.requestId,
+      'note': this.note
+    };
+
+    this.viewCtrl.dismiss(this.request);
   }
 
   dismiss() {

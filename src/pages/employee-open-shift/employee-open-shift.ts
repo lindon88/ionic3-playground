@@ -4,6 +4,7 @@ import {DatePipe} from "@angular/common";
 import {ShiftsProvider} from "../../providers/shifts/shifts";
 import {Observable} from "rxjs";
 import {ModalEosCancelPage} from "../modal-eos-cancel/modal-eos-cancel";
+import {ModalEosSendPage} from "../modal-eos-send/modal-eos-send";
 
 
 /**
@@ -197,7 +198,17 @@ export class EmployeeOpenShiftPage {
   }
 
   public onShiftClick(shift) {
-    let modal = this.modalCtrl.create(ModalEosCancelPage, {data: shift}, {cssClass: 'cancelation-modal'});
-    modal.present();
+    if(shift.showDrop !== undefined && shift.showDrop) {
+      // dropOpenShiftRequestPopup(shift)
+      let modal = this.modalCtrl.create(ModalEosCancelPage, {data: shift}, {cssClass: 'cancelation-modal'});
+      modal.onDidDismiss(data => {
+        console.log(data);
+      });
+      modal.present();
+    } else if (shift.showPickup !== undefined && shift.showPickup) {
+      // sendOpenShiftRequest
+      let modal = this.modalCtrl.create(ModalEosSendPage, {data: shift}, {cssClass: 'cancelation-modal'});
+      modal.present();
+    }
   }
 }
