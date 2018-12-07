@@ -21,7 +21,7 @@ export class ModalEosCancelPage {
 
   save() {
     this.request = {
-      'shiftReqeustId': this.data.requestId,
+      'shiftRequestId': this.data.requestId,
       'note': this.note
     };
 
@@ -29,7 +29,11 @@ export class ModalEosCancelPage {
   }
 
   dismiss() {
-    this.viewCtrl.dismiss();
+    this.request = {
+      'shiftRequestId': null,
+      'note': this.note
+    };
+    this.viewCtrl.dismiss(this.request);
   }
 
 }

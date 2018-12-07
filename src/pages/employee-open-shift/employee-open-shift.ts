@@ -122,6 +122,31 @@ export class EmployeeOpenShiftPage {
       });
   }
 
+  /**
+   * Modals for sending/canceling requests
+   * @param shift
+   */
+  public onShiftClick(shift) {
+    if(shift.showDrop !== undefined && shift.showDrop) {
+      // dropOpenShiftRequestPopup(shift)
+      let modal = this.modalCtrl.create(ModalEosCancelPage, {data: shift}, {cssClass: 'cancelation-modal'});
+      modal.onDidDismiss(data => {
+        console.log(data);
+        if(data === undefined || data === null) return;
+        this.shiftsProvider.cancelRequest(data.shiftRequestId, data).then(result => {
+          this.loadOpenShifts();
+        }, error => {
+          console.log(error);
+        })
+      });
+      modal.present();
+    } else if (shift.showPickup !== undefined && shift.showPickup) {
+      // sendOpenShiftRequest
+      let modal = this.modalCtrl.create(ModalEosSendPage, {data: shift}, {cssClass: 'cancelation-modal'});
+      modal.present();
+    }
+  }
+
   private getMyAvailableShifts(start, end) {
     return this.shiftsProvider.getMyAvailableShifts(start, end).then(result => {
       return result;
@@ -197,18 +222,4 @@ export class EmployeeOpenShiftPage {
     })
   }
 
-  public onShiftClick(shift) {
-    if(shift.showDrop !== undefined && shift.showDrop) {
-      // dropOpenShiftRequestPopup(shift)
-      let modal = this.modalCtrl.create(ModalEosCancelPage, {data: shift}, {cssClass: 'cancelation-modal'});
-      modal.onDidDismiss(data => {
-        console.log(data);
-      });
-      modal.present();
-    } else if (shift.showPickup !== undefined && shift.showPickup) {
-      // sendOpenShiftRequest
-      let modal = this.modalCtrl.create(ModalEosSendPage, {data: shift}, {cssClass: 'cancelation-modal'});
-      modal.present();
-    }
-  }
 }

@@ -63,4 +63,21 @@ export class ShiftsProvider {
       })
     })
   }
+
+  public cancelRequest(shiftId, request) {
+    return new Promise((resolve, reject) => {
+      let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
+      if(!shiftId) {
+        reject("Shift id must be defined!");
+      }
+      if(!request) {
+        reject("Request must be defined!");
+      }
+      return this.http.put(this.serverProvider.getServerURL() + 'hrm/shiftRequest' + '/' + shiftId + '/cancel', request, {headers: headers}).subscribe(result => {
+        resolve(result);
+      }, error => {
+        reject(error);
+      })
+    })
+  }
 }
