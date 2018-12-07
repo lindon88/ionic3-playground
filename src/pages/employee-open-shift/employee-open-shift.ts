@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, MenuController, ModalController, NavController, NavParams} from 'ionic-angular';
 import {DatePipe} from "@angular/common";
 import {ShiftsProvider} from "../../providers/shifts/shifts";
 import {Observable} from "rxjs";
@@ -60,7 +60,7 @@ export class EmployeeOpenShiftPage {
   monthTextFormat: string = 'MMMM';
   dayTextFormat: string = 'EEEE';
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public shiftsProvider: ShiftsProvider, public modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public shiftsProvider: ShiftsProvider, public modalCtrl: ModalController, private menuCtrl: MenuController) {
   }
 
   ionViewDidLoad() {
@@ -69,6 +69,14 @@ export class EmployeeOpenShiftPage {
     this.currentCorporateId = localStorage.getItem('currentCorporateId');
 
     this.loadOpenShifts();
+  }
+
+  public ionViewWillEnter(): void {
+    this.menuCtrl.swipeEnable(true, 'menu1');
+  }
+
+  public ionViewWillLeave(): void {
+    this.menuCtrl.swipeEnable(false, 'menu1');
   }
 
   public loadOpenShifts() {
