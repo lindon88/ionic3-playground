@@ -7,6 +7,7 @@ import {ModalEosCancelPage} from "./modal-eos-cancel/modal-eos-cancel";
 import {ModalEosSendPage} from "./modal-eos-send/modal-eos-send";
 import {ModalEosSuccessPage} from "./modal-eos-success/modal-eos-success";
 import {ModalEosErrorPage} from "./modal-eos-error/modal-eos-error";
+import {LoadingProvider} from "../../providers/loading/loading";
 
 @IonicPage()
 @Component({
@@ -37,7 +38,7 @@ export class EmployeeOpenShiftPage {
   // list of shifts
   availableShifts: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public shiftsProvider: ShiftsProvider, public modalCtrl: ModalController, private menuCtrl: MenuController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public shiftsProvider: ShiftsProvider, public modalCtrl: ModalController, private menuCtrl: MenuController, public loadingProvider: LoadingProvider) {
   }
 
   ionViewDidLoad() {
@@ -66,6 +67,7 @@ export class EmployeeOpenShiftPage {
     const d = datePipe.transform(endDate, 'yyyy-MM-dd');
     console.log(d);
 
+    this.loadingProvider.showLoader();
     Observable.forkJoin(this.getMyAvailableShifts(datePipe.transform(startDate, 'yyyy-MM-dd'), datePipe.transform(endDate, 'yyyy-MM-dd')), this.getMyRequests(datePipe.transform(startDate, 'yyyy-MM-dd'), datePipe.transform(endDate, 'yyyy-MM-dd')))
       .subscribe(results => {
         const [availableShifts, requests] = results;
@@ -105,6 +107,7 @@ export class EmployeeOpenShiftPage {
           }
         }
       });
+    this.loadingProvider.hideLoader();
   }
 
   /**
@@ -118,11 +121,13 @@ export class EmployeeOpenShiftPage {
       modal.onDidDismiss(data => {
         console.log(data);
         if(data === undefined || data === null) return;
+        this.loadingProvider.showLoader();
         this.shiftsProvider.cancelRequest(data.shiftRequestId, data).then(result => {
           this.loadOpenShifts();
         }, error => {
           console.log(error);
-        })
+        });
+        this.loadingProvider.hideLoader();
       });
       modal.present();
     } else if (shift.showPickup !== undefined && shift.showPickup) {
@@ -131,6 +136,7 @@ export class EmployeeOpenShiftPage {
       modal.onDidDismiss(data => {
         console.log(data);
         if(data === null || data === undefined) return;
+        this.loadingProvider.showLoader();
         this.shiftsProvider.sendRequest(data.requesterId, data).then((result:any) => {
           if(result.success) {
             let success = this.modalCtrl.create(ModalEosSuccessPage, {}, {cssClass: 'cancelation-modal'});
@@ -144,7 +150,8 @@ export class EmployeeOpenShiftPage {
           }
         }, error => {
           console.log(error);
-        })
+        });
+        this.loadingProvider.hideLoader();
       });
       modal.present();
     }
