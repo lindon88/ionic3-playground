@@ -23,6 +23,7 @@ import { LoadingProvider } from '../providers/loading/loading';
 import { ShiftsProvider } from '../providers/shifts/shifts';
 import {ModalEosCancelPageModule} from "../pages/employee-open-shift/modal-eos-cancel/modal-eos-cancel.module";
 import {ModalEosSendPageModule} from "../pages/employee-open-shift/modal-eos-send/modal-eos-send.module";
+import {ModalEosSuccessPageModule} from "../pages/employee-open-shift/modal-eos-success/modal-eos-success.module";
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import {ModalEosSendPageModule} from "../pages/employee-open-shift/modal-eos-sen
     ChecklistFilterPopoverPageModule,
     ModalTaskNotePageModule,
     ModalEosCancelPageModule,
-    ModalEosSendPageModule
+    ModalEosSendPageModule,
+    ModalEosSuccessPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

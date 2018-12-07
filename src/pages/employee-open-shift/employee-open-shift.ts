@@ -5,6 +5,8 @@ import {ShiftsProvider} from "../../providers/shifts/shifts";
 import {Observable} from "rxjs";
 import {ModalEosCancelPage} from "./modal-eos-cancel/modal-eos-cancel";
 import {ModalEosSendPage} from "./modal-eos-send/modal-eos-send";
+import {ModalEosSuccessPage} from "./modal-eos-success/modal-eos-success";
+import {ModalEosErrorPage} from "./modal-eos-error/modal-eos-error";
 
 @IonicPage()
 @Component({
@@ -34,23 +36,6 @@ export class EmployeeOpenShiftPage {
 
   // list of shifts
   availableShifts: any;
-  myRequests: any;
-
-  // sections
-  sections: any;
-
-  // jobs
-  jobs: any;
-
-  // message note
-  messageInput: any;
-
-  // selected shift
-  selectedShift: any;
-
-  // month and date format
-  monthTextFormat: string = 'MMMM';
-  dayTextFormat: string = 'EEEE';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public shiftsProvider: ShiftsProvider, public modalCtrl: ModalController, private menuCtrl: MenuController) {
   }
@@ -146,8 +131,17 @@ export class EmployeeOpenShiftPage {
       modal.onDidDismiss(data => {
         console.log(data);
         if(data === null || data === undefined) return;
-        this.shiftsProvider.sendRequest(data.requesterId, data).then(result => {
-          this.loadOpenShifts();
+        this.shiftsProvider.sendRequest(data.requesterId, data).then((result:any) => {
+          if(result.success) {
+            let success = this.modalCtrl.create(ModalEosSuccessPage, {}, {cssClass: 'cancelation-modal'});
+            success.present();
+            success.onDidDismiss(data1 => {
+              this.loadOpenShifts();
+            })
+          } else {
+            let error = this.modalCtrl.create(ModalEosErrorPage, {}, {cssClass: 'cancelation-modal'});
+            error.present();
+          }
         }, error => {
           console.log(error);
         })
