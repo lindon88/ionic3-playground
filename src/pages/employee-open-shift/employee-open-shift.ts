@@ -151,7 +151,7 @@ export class EmployeeOpenShiftPage {
         }, error => {
           console.log(error);
         })
-      })
+      });
       modal.present();
     }
   }
