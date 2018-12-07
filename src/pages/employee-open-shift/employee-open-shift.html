@@ -1,7 +1,7 @@
 <ion-header class="main-header">
   <ion-navbar hideBackButton="true" color="primary" swipeBackEnabled="true" class="main-navbar">
     <button ion-button icon-only menuToggle>
-     <ion-icon name="menu"></ion-icon>
+      <ion-icon name="menu"></ion-icon>
     </button>
 
     <ion-title class="main-title">
@@ -17,63 +17,70 @@
   <tabs>
     <tab [tabTitle]="'Pickup Request'">
       <div *ngFor="let shift of availableShifts">
-        <div class="card" *ngIf="shift.tab === 1">
-          <div class="item row employee-shift-item">
-            <div class="date-column col col-3">
-              <div class="dates">
-                <div class="month">{{shift.monthText}}</div>
-                <div class="dayDate">
-                  <div class="date">{{shift.dayNumber}}</div>
-                  <div class="day">{{shift.dayText}}</div>
+        <ion-grid (click)="onShiftClick(shift)" *ngIf="shift.tab === 1">
+          <div class="card">
+            <ion-row class="item row employee-shift-item">
+              <ion-col col-2 class="date-column col col-2">
+                <div class="dates">
+                  <div class="month" *ngIf="screenWidth > 460">{{shift.monthText}}</div>
+                  <div class="month" *ngIf="screenWidth <= 460">{{shift.monthText | slice: 0:3}}</div>
+                  <div class="dayDate">
+                    <div class="date">{{shift.dayNumber}}</div>
+                    <div class="day" *ngIf="screenWidth > 460">{{shift.dayText}}</div>
+                    <div class="day" *ngIf="screenWidth <= 460">{{shift.dayText | slice: 0:3}}</div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div class="col col-6 description-column">
-              <div class="title">
-                {{shift.outlet.name}}
-              </div>
-              <div class="roster-info">
-                <span *ngIf="shift.section && shift.section.description">{{shift.section.description}}</span>
-                <span *ngIf="shift.job">|</span>
-                <span *ngIf="shift.job && shift.job.description">{{shift.job.description}}</span>
-              </div>
-              <div class="time">{{shift.shiftText.time12Hr}}</div>
-            </div>
-            <div *ngIf="shift.badgeClass !=''" class="col col-3 badge-column">
-              <div class="badge" ngClass="shift.badgeClass">{{shift.badgeText}}</div>
-            </div>
+              </ion-col>
+              <ion-col col-7 class="col col-7 description-column">
+                <div class="title">
+                  {{shift.outlet.name}}
+                </div>
+                <div class="roster-info">
+                  <span *ngIf="shift.section && shift.section.description">{{shift.section.description}}</span>
+                  <span *ngIf="shift.job">|</span>
+                  <span *ngIf="shift.job && shift.job.description">{{shift.job.description}}</span>
+                </div>
+                <div class="time">{{shift.shiftText.time12Hr}}</div>
+              </ion-col>
+              <ion-col col-3 *ngIf="shift.badgeClass !=''" class="col badge-column">
+                <div class="badge right-badge" [ngClass]="shift.badgeClass">{{shift.badgeText}}</div>
+              </ion-col>
+            </ion-row>
           </div>
-        </div>
+        </ion-grid>
 
       </div>
     </tab>
     <tab [tabTitle]="'Drop Request'">
       <div *ngFor="let shift of availableShifts">
         <ion-grid (click)="onShiftClick(shift)" *ngIf="shift.tab === 2">
-          <div class="card"><ion-row class="item row employee-shift-item">
-            <ion-col col-2 class="date-column col col-2">
-              <div class="dates">
-                <div class="month">{{shift.monthText}}</div>
-                <div class="dayDate">
-                  <div class="date">{{shift.dayNumber}}</div>
-                  <div class="day">{{shift.dayText}}</div>
+          <div class="card">
+            <ion-row class="item row employee-shift-item">
+              <ion-col col-2 class="date-column col col-2">
+                <div class="dates">
+                  <div class="month" *ngIf="screenWidth > 460">{{shift.monthText}}</div>
+                  <div class="month" *ngIf="screenWidth <= 460">{{shift.monthText | slice: 0:3}}</div>
+                  <div class="dayDate">
+                    <div class="date">{{shift.dayNumber}}</div>
+                    <div class="day" *ngIf="screenWidth > 460">{{shift.dayText}}</div>
+                    <div class="day" *ngIf="screenWidth <= 460">{{shift.dayText | slice: 0:3}}</div>
+                  </div>
                 </div>
-              </div>
-            </ion-col>
-            <ion-col col-7 class="col col-7 description-column">
-              <div class="title">
-                {{shift.outlet.name}}
-              </div>
-              <div class="roster-info">
-                <span *ngIf="shift.section && shift.section.description">{{shift.section.description}}</span>
-                <span *ngIf="shift.job">|</span>
-                <span *ngIf="shift.job && shift.job.description">{{shift.job.description}}</span>
-              </div>
-            </ion-col>
-            <ion-col col-3 *ngIf="shift.badgeClass !=''" class="col badge-column">
-              <div class="badge" [ngClass]="shift.badgeClass">{{shift.badgeText}}</div>
-            </ion-col>
-          </ion-row>
+              </ion-col>
+              <ion-col col-7 class="col col-7 description-column">
+                <div class="title">
+                  {{shift.outlet.name}}
+                </div>
+                <div class="roster-info">
+                  <span *ngIf="shift.section && shift.section.description">{{shift.section.description}}</span>
+                  <span *ngIf="shift.job">|</span>
+                  <span *ngIf="shift.job && shift.job.description">{{shift.job.description}}</span>
+                </div>
+              </ion-col>
+              <ion-col col-3 *ngIf="shift.badgeClass !=''" class="col badge-column">
+                <div class="badge right-badge" [ngClass]="shift.badgeClass">{{shift.badgeText}}</div>
+              </ion-col>
+            </ion-row>
           </div>
         </ion-grid>
 

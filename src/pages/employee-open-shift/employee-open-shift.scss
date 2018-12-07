@@ -10,6 +10,7 @@
       font-size: 12px;
       border: 1px solid #58595b;
       max-width: 80px;
+      min-width: 62px;
       margin: 0 auto;
       text-align: center;
 
@@ -111,6 +112,9 @@
     &.badge-red {
       background-color: #f44335;
     }
+  }
+  .right-badge {
+    float: right;
   }
 }
 

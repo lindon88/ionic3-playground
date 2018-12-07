@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, HostListener} from '@angular/core';
 import {IonicPage, MenuController, ModalController, NavController, NavParams} from 'ionic-angular';
 import {DatePipe} from "@angular/common";
 import {ShiftsProvider} from "../../providers/shifts/shifts";
@@ -38,6 +38,9 @@ export class EmployeeOpenShiftPage {
   // list of shifts
   availableShifts: any;
 
+  // screen width
+  screenWidth: number = window.screen.width;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public shiftsProvider: ShiftsProvider, public modalCtrl: ModalController, private menuCtrl: MenuController, public loadingProvider: LoadingProvider) {
   }
 
@@ -57,6 +60,14 @@ export class EmployeeOpenShiftPage {
     this.menuCtrl.swipeEnable(false, 'menu1');
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.screenWidth = event.target.innerWidth;
+  }
+
+  /**
+   * Load open shifts
+   */
   public loadOpenShifts() {
     this.availableShifts = [];
     const datePipe = new DatePipe('en-US');
@@ -157,27 +168,48 @@ export class EmployeeOpenShiftPage {
     }
   }
 
+  /**
+   * Get available shifts
+   * @param start
+   * @param end
+   */
   private getMyAvailableShifts(start, end) {
     return this.shiftsProvider.getMyAvailableShifts(start, end).then(result => {
       return result;
     });
   }
 
+  /**
+   * Get requests
+   * @param start
+   * @param end
+   */
   private getMyRequests(start, end) {
     return this.shiftsProvider.getMyRequests(start, end).then(result => {
       return result;
     });
   }
 
+  /**
+   * Formats data for displaying
+   * @param shift
+   */
   private formatShift(shift) {
     const date = new Date(shift.shiftDate);
     let locale = "en-us";
-    let month = date.toLocaleString(locale, {month:"long"});
-    let day = date.toLocaleString(locale, {weekday:"long"});
     let day_num = date.getDay();
-    shift.monthText = month;
-    shift.dayText = day;
     shift.dayNumber = day_num;
+
+    if(window.screen.width <= 460) {
+      shift.monthText = date.toLocaleString(locale, {month:"short"});
+      shift.dayText = date.toLocaleString(locale, {weekday:"short"});
+    } else {
+      let month = date.toLocaleString(locale, {month:"long"});
+      let day = date.toLocaleString(locale, {weekday:"long"});
+
+      shift.monthText = month;
+      shift.dayText = day;
+    }
 
     if(shift.status === undefined && shift.requestType === undefined && shift.shiftType === this.OPEN_SHIFT) {
       shift.tab = 1;
@@ -222,6 +254,10 @@ export class EmployeeOpenShiftPage {
     }
   }
 
+  /**
+   * Assigns changed data
+   * @param request
+   */
   private fillRequestWithData(request) {
     return this.shiftsProvider.getShiftDetails(request.shiftType, request.shiftId).then(result => {
       const newRequest = Object.assign(request, result);
