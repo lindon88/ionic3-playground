@@ -143,6 +143,15 @@ export class EmployeeOpenShiftPage {
     } else if (shift.showPickup !== undefined && shift.showPickup) {
       // sendOpenShiftRequest
       let modal = this.modalCtrl.create(ModalEosSendPage, {data: shift}, {cssClass: 'cancelation-modal'});
+      modal.onDidDismiss(data => {
+        console.log(data);
+        if(data === null || data === undefined) return;
+        this.shiftsProvider.sendRequest(data.requesterId, data).then(result => {
+          this.loadOpenShifts();
+        }, error => {
+          console.log(error);
+        })
+      })
       modal.present();
     }
   }

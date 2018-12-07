@@ -80,4 +80,22 @@ export class ShiftsProvider {
       })
     })
   }
+
+  public sendRequest(personId, request) {
+    return new Promise((resolve, reject) => {
+      let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
+      if(!personId) {
+        reject("Person id must be defined!");
+      }
+      if(!request) {
+        reject("Request must be defined!");
+      }
+
+      return this.http.post(this.serverProvider.getServerURL() + 'hrm/shiftRequest/person' + '/' + personId, request, {headers: headers}).subscribe(result => {
+        resolve(result);
+      }, error => {
+        reject(error);
+      })
+    })
+  }
 }
