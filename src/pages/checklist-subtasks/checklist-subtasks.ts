@@ -4,7 +4,7 @@ import {WorkflowProvider} from "../../providers/workflow/workflow";
 import {CompanyProvider} from "../../providers/company/company";
 import {DatePipe} from "@angular/common";
 import {ChecklistSubtasksPopoverPage} from "../checklist-subtasks-popover/checklist-subtasks-popover";
-import {ModalTaskNotePage} from "../modal-task-note/modal-task-note";
+import {ModalTaskNotePage} from "./modal-task-note/modal-task-note";
 import {Navbar} from "ionic-angular";
 import {LoadingProvider} from "../../providers/loading/loading";
 

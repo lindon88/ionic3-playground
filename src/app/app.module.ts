@@ -18,11 +18,11 @@ import { WorkflowProvider } from '../providers/workflow/workflow';
 import {PipesModule} from "../pipes/pipes.module";
 import {ChecklistSubtasksPopoverPageModule} from "../pages/checklist-subtasks-popover/checklist-subtasks-popover.module";
 import {ChecklistFilterPopoverPageModule} from "../pages/checklist-filter-popover/checklist-filter-popover.module";
-import {ModalTaskNotePageModule} from "../pages/modal-task-note/modal-task-note.module";
+import {ModalTaskNotePageModule} from "../pages/checklist-subtasks/modal-task-note/modal-task-note.module";
 import { LoadingProvider } from '../providers/loading/loading';
 import { ShiftsProvider } from '../providers/shifts/shifts';
-import {ModalEosCancelPageModule} from "../pages/modal-eos-cancel/modal-eos-cancel.module";
-import {ModalEosSendPageModule} from "../pages/modal-eos-send/modal-eos-send.module";
+import {ModalEosCancelPageModule} from "../pages/employee-open-shift/modal-eos-cancel/modal-eos-cancel.module";
+import {ModalEosSendPageModule} from "../pages/employee-open-shift/modal-eos-send/modal-eos-send.module";
 
 
 @NgModule({

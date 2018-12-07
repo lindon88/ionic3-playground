@@ -3,16 +3,8 @@ import {IonicPage, MenuController, ModalController, NavController, NavParams} fr
 import {DatePipe} from "@angular/common";
 import {ShiftsProvider} from "../../providers/shifts/shifts";
 import {Observable} from "rxjs";
-import {ModalEosCancelPage} from "../modal-eos-cancel/modal-eos-cancel";
-import {ModalEosSendPage} from "../modal-eos-send/modal-eos-send";
-
-
-/**
- * Generated class for the EmployeeOpenShiftPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import {ModalEosCancelPage} from "./modal-eos-cancel/modal-eos-cancel";
+import {ModalEosSendPage} from "./modal-eos-send/modal-eos-send";
 
 @IonicPage()
 @Component({
