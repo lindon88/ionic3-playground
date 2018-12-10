@@ -25,6 +25,7 @@ import {ModalEosCancelPageModule} from "../pages/employee-open-shift/modal-eos-c
 import {ModalEosSendPageModule} from "../pages/employee-open-shift/modal-eos-send/modal-eos-send.module";
 import {ModalEosSuccessPageModule} from "../pages/employee-open-shift/modal-eos-success/modal-eos-success.module";
 import { AbsenceProvider } from '../providers/absence/absence';
+import {ModalDropAbsencePageModule} from "../pages/absence/modal-drop-absence/modal-drop-absence.module";
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { AbsenceProvider } from '../providers/absence/absence';
     ModalTaskNotePageModule,
     ModalEosCancelPageModule,
     ModalEosSendPageModule,
-    ModalEosSuccessPageModule
+    ModalEosSuccessPageModule,
+    ModalDropAbsencePageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {EmployeeProvider} from "../../providers/employee/employee";
 import {AbsenceProvider} from "../../providers/absence/absence";
 import {Observable} from "rxjs";
 import {DatePipe} from "@angular/common";
+import {ModalDropAbsencePage} from "./modal-drop-absence/modal-drop-absence";
 
 @IonicPage()
 @Component({
@@ -25,7 +26,7 @@ export class AbsencePage {
   public togglePast: boolean = false;
 
   public currentDate: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public employeeProvider: EmployeeProvider, public absenceProvider: AbsenceProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public employeeProvider: EmployeeProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController) {
     this.currentDate = new Date();
   }
 
@@ -111,4 +112,8 @@ export class AbsencePage {
     return datePipe.transform(date, 'yyyy/MM/dd');
   }
 
+  public dropAbsenceRequestPopup() {
+    let modal = this.modalCtrl.create(ModalDropAbsencePage, { }, {cssClass: 'select-modal' });
+    modal.present();
+  }
 }
