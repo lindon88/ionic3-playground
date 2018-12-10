@@ -91,4 +91,11 @@ button.add-button-nav {
   border-radius: 3px;
 }
 
-
+.delete-button-absence {
+  min-width: 52px;
+  width: 77px;
+  ion-icon {
+    font-size: 36px;
+    padding: 0!important;
+  }
+}

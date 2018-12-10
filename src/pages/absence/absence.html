@@ -4,11 +4,13 @@
       <ion-icon name="menu"></ion-icon>
     </button>
 
-    <ion-title class="main-title" >
+    <ion-title class="main-title">
       <img (click)="navCtrl.setRoot('HomePage')" src="./assets/imgs/Cover-logo-blue.png" alt="Cover">
     </ion-title>
     <ion-buttons right>
-      <button ion-button class="add-button-nav"><ion-icon name="add"></ion-icon></button>
+      <button ion-button class="add-button-nav">
+        <ion-icon name="add"></ion-icon>
+      </button>
     </ion-buttons>
 
   </ion-navbar>
@@ -40,25 +42,33 @@
           </div>
         </div>
       </ion-item>
-      <div *ngFor="let pastAbsenceRequest of pastAbsenceRequests" class="absence-list">
-        <ion-item *ngIf="togglePast === true && pastAbsenceRequests">
-          <ion-row>
-            <ion-col col-8>
-              <div class="absenceType">
-                {{absenceTypesHash[pastAbsenceRequest.absenceTypeId].description}}
-              </div>
-              <div class="absence-dates">
-                {{convertDateToLocale(pastAbsenceRequest.startDate)}} to {{convertDateToLocale(pastAbsenceRequest.endDate)}}
-                <span class="view-shiftNotes" *ngIf="pastAbsenceRequest.reason || pastAbsenceRequest.approvalMessage">view notes</span>
-              </div>
-            </ion-col>
-            <ion-col col-4>
-              <span class="request-approved absence-status" *ngIf="pastAbsenceRequest.status == 'APPROVED'">Approved</span>
-              <span class="drop-pending absence-status" *ngIf="pastAbsenceRequest.status == 'PENDING'">Pending</span>
-              <span class="request-declined absence-status" *ngIf="pastAbsenceRequest.status == 'REJECTED'">Declined</span>
-            </ion-col>
-          </ion-row>
-        </ion-item>
+      <div>
+        <ion-item-sliding *ngFor="let pastAbsenceRequest of pastAbsenceRequests" class="absence-list">
+          <ion-item *ngIf="togglePast === true && pastAbsenceRequests">
+            <ion-row>
+              <ion-col col-8>
+                <div class="absenceType">
+                  {{absenceTypesHash[pastAbsenceRequest.absenceTypeId].description}}
+                </div>
+                <div class="absence-dates">
+                  {{convertDateToLocale(pastAbsenceRequest.startDate)}} to
+                  {{convertDateToLocale(pastAbsenceRequest.endDate)}}
+                  <span class="view-shiftNotes" *ngIf="pastAbsenceRequest.reason || pastAbsenceRequest.approvalMessage">view notes</span>
+                </div>
+              </ion-col>
+              <ion-col col-4>
+                <span class="request-approved absence-status"
+                      *ngIf="pastAbsenceRequest.status == 'APPROVED'">Approved</span>
+                <span class="drop-pending absence-status" *ngIf="pastAbsenceRequest.status == 'PENDING'">Pending</span>
+                <span class="request-declined absence-status"
+                      *ngIf="pastAbsenceRequest.status == 'REJECTED'">Declined</span>
+              </ion-col>
+            </ion-row>
+          </ion-item>
+          <ion-item-options>
+            <button ion-button color="delete" class="delete-button-absence"><ion-icon name="trash"></ion-icon></button>
+          </ion-item-options>
+        </ion-item-sliding>
       </div>
 
 
