@@ -20,6 +20,9 @@ export class AbsencePage {
   public absenceStartDate: any = new Date();
   public absenceEndDate: any = new Date();
   public pastAbsenceRequests: any = [];
+  public myAbsenceRequests: any = [];
+  public toggleCurrent: boolean = false;
+  public togglePast: boolean = false;
 
   public currentDate: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, public employeeProvider: EmployeeProvider, public absenceProvider: AbsenceProvider) {
@@ -30,6 +33,7 @@ export class AbsencePage {
     const datePipe = new DatePipe('en-US');
     this.currentDate = datePipe.transform(this.currentDate, 'yyyy-MM-dd');
     console.log(this.currentDate);
+    this.getMyRequests();
 
     console.log('ionViewDidLoad AbsencePage');
   }
@@ -67,6 +71,34 @@ export class AbsencePage {
   }
 
   public getCurrentPersonAbsences() {
-    
+    this.absenceProvider.getCurrentPersonAbsences(this.currentPersonId).then((data: any) => {
+      console.log("===AbsenceRequests", data);
+      for(let i = 0; i < data.length; i++) {
+        let absenceRequest = data[i];
+        if(!absenceRequest.cancelledByEmployee) {
+          this.myAbsenceRequests.push(absenceRequest);
+        }
+      }
+    }).catch(error => {
+      console.log(error);
+    })
   }
+
+  public getMyRequests() {
+    // start loading
+    this.getCurrentPersonAbsences();
+    this.getPastPersonAbsences();
+    // stop loading
+  }
+
+  public toggleC(type) {
+    this.toggleCurrent = !type;
+    console.log(this.toggleCurrent);
+  }
+
+  public toggleP(type) {
+    this.togglePast = !type;
+    console.log(this.togglePast);
+  }
+
 }

@@ -15,7 +15,14 @@
 </ion-header>
 
 <ion-content class="emp-rosterShifts extra-requests-header">
-  <ion-toolbar padding class="clearfix toolbar-checklist">
-
+  <ion-toolbar class="clearfix toolbar-absence">
+    <ion-list>
+      <ion-item (click)="toggleC(toggleCurrent)" class="rosterSection">
+        Current Requests <i class="fa" [ngClass]="toggleCurrent ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+      </ion-item>
+      <ion-item (click)="toggleP(togglePast)" class="rosterSection">
+        Past Requests <i class="fa" [ngClass]="togglePast ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+      </ion-item>
+    </ion-list>
   </ion-toolbar>
 </ion-content>
