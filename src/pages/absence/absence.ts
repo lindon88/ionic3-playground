@@ -113,7 +113,7 @@ export class AbsencePage {
   }
 
   public dropAbsenceRequestPopup() {
-    let modal = this.modalCtrl.create(ModalDropAbsencePage, { }, {cssClass: 'select-modal' });
+    let modal = this.modalCtrl.create(ModalDropAbsencePage, { }, {cssClass: 'drop-modal-absence' });
     modal.present();
   }
 }
