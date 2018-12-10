@@ -38,6 +38,7 @@ export class MyApp {
     this.pages = [
       { icon: 'fa fa-calendar', title: 'Open Shifts', component: "EmployeeOpenShiftPage", click: null },
       { icon: 'fa fa-check-square-o', title: 'Checklists', component: "ChecklistsPage", click: null },
+      { icon: 'fa fa-sun-o', title: 'Absence Requests', component: "AbsencePage", click: null },
       { icon: 'fa fa-sign-out', title: 'Log out', component: null, click: 'logout' }
     ];
   }

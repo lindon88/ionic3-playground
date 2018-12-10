@@ -24,6 +24,7 @@ import { ShiftsProvider } from '../providers/shifts/shifts';
 import {ModalEosCancelPageModule} from "../pages/employee-open-shift/modal-eos-cancel/modal-eos-cancel.module";
 import {ModalEosSendPageModule} from "../pages/employee-open-shift/modal-eos-send/modal-eos-send.module";
 import {ModalEosSuccessPageModule} from "../pages/employee-open-shift/modal-eos-success/modal-eos-success.module";
+import { AbsenceProvider } from '../providers/absence/absence';
 
 
 @NgModule({
@@ -62,6 +63,7 @@ import {ModalEosSuccessPageModule} from "../pages/employee-open-shift/modal-eos-
     WorkflowProvider,
     LoadingProvider,
     ShiftsProvider,
+    AbsenceProvider,
   ]
 })
 export class AppModule {}
