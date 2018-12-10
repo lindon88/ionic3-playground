@@ -110,4 +110,15 @@ export class AbsenceProvider {
       })
     })
   }
+
+  public cancelAbsenceRequest(personId, requestId) {
+    return new Promise((resolve, reject) => {
+      let header = {'synergy-login-token': localStorage.getItem('accessToken')};
+      this.http.put(this.serverProvider.getServerURL() + 'hrm/absences/employeeAbsenceRequest/' + personId + '/request/' + requestId + '/cancel', {}, {headers: header}).subscribe((response) => {
+        resolve(response);
+      }, error => {
+        reject(error);
+      })
+    })
+  }
 }

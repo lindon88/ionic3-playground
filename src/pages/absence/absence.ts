@@ -59,6 +59,7 @@ export class AbsencePage {
   }
 
   public getPastPersonAbsences() {
+    this.pastAbsenceRequests = [];
     this.absenceProvider.getPastPersonAbsences(this.currentPersonId).then((data: any) => {
       console.log("===pastAbsenceRequest", data);
       for(let i = 0; i < data.length; i++) {
@@ -74,6 +75,7 @@ export class AbsencePage {
   }
 
   public getCurrentPersonAbsences() {
+    this.myAbsenceRequests = [];
     this.absenceProvider.getCurrentPersonAbsences(this.currentPersonId).then((data: any) => {
       console.log("===AbsenceRequests", data);
       for(let i = 0; i < data.length; i++) {
@@ -114,6 +116,17 @@ export class AbsencePage {
 
   public dropAbsenceRequestPopup(request, description) {
     let modal = this.modalCtrl.create(ModalDropAbsencePage, {request: request, description: description }, {cssClass: 'drop-modal-absence' });
+    modal.onDidDismiss(data => {
+      console.log(data);
+      if(data === undefined || data === null || data === '') return;
+      this.absenceProvider.cancelAbsenceRequest(this.currentPersonId, data).then((response: any) => {
+        console.log(response);
+        this.getMyRequests();
+      }).catch((error) => {
+        console.log(error);
+        alert("Delete failed!");
+      })
+    });
     modal.present();
   }
 }

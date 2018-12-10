@@ -26,8 +26,9 @@ export class ModalDropAbsencePage {
     return datePipe.transform(date, format);
   }
 
+  // return request id for deleting
   cancelAbsenceRequest() {
-    console.log(this.request.id);
+    this.viewCtrl.dismiss(this.request.id);
   }
 
   dismiss() {
