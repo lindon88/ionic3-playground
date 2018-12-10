@@ -1,9 +1,17 @@
 button.add-button-nav {
-  font-size: 34px!important;
+  font-size: 34px !important;
   span {
     ion-icon {
       font-size: 1.2em;
       font-weight: bolder;
+    }
+  }
+}
+
+.absence-list {
+  ion-item {
+    div.item-inner {
+      padding: 16px 49px 16px 16px;
     }
   }
 }
@@ -13,12 +21,74 @@ button.add-button-nav {
 }
 
 .rosterSection {
-  background-color: rgba(221,221,221,0.48);
-  color: #231f20!important;
+  background-color: rgba(221, 221, 221, 0.48);
+  color: #231f20 !important;
 
-    div.item-inner {
-      padding-left: 30px;
-    }
+  div.item-inner {
+    padding-left: 30px;
+  }
 
 }
+
+.countNum {
+  height: 24px;
+  width: 30px;
+  border-radius: 50%;
+  display: inline-block;
+  text-align: center;
+  line-height: 22px;
+}
+
+.absenceType {
+  font-size: 16px!important;
+  color: #58595b!important;
+  font-weight: 400!important;
+}
+
+.absence-dates {
+  margin-top: 5px!important;
+  font-size: 13px!important;
+  color: #58595b!important;
+}
+
+.absence-status {
+  font-size: 12px!important;
+}
+
+.view-shiftNotes {
+  border: 1px solid #b2b2b2!important;
+  border-radius: 2px;
+  padding: 3px;
+  font-size: 10px;
+  font-weight: 500;
+  color: #b2b2b2!important;
+}
+
+.request-approved {
+  font-size: 8px;
+  color: #fff;
+  padding: 3px;
+  font-weight: 900;
+  background: #5cb85c;
+  border-radius: 3px;
+}
+
+.drop-pending {
+  font-size: 8px;
+  color: #fff;
+  padding: 3px;
+  font-weight: 900;
+  background: #fdb913;
+  border-radius: 3px;
+}
+
+.request-declined {
+  font-size: 8px;
+  color: #fff;
+  padding: 3px;
+  font-weight: 900;
+  background: #d82a33;
+  border-radius: 3px;
+}
+
 

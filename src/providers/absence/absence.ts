@@ -82,11 +82,7 @@ export class AbsenceProvider {
     return new Promise((resolve, reject) => {
       let header = {'synergy-login-token': localStorage.getItem('accessToken')};
       this.http.get(this.serverProvider.getServerURL() + 'hrm/absences/type/company/' + companyId, {headers: header}).subscribe((response: any) => {
-        if(response.data !== undefined) {
-          resolve(response.data);
-        } else {
-          resolve([]);
-        }
+        resolve(response);
       }, error => {
         reject(error);
       })
@@ -114,7 +110,4 @@ export class AbsenceProvider {
       })
     })
   }
-
-
-
 }

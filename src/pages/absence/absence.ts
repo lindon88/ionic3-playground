@@ -33,6 +33,7 @@ export class AbsencePage {
     const datePipe = new DatePipe('en-US');
     this.currentDate = datePipe.transform(this.currentDate, 'yyyy-MM-dd');
     console.log(this.currentDate);
+    this.getAbsenceTypes();
     this.getMyRequests();
 
     console.log('ionViewDidLoad AbsencePage');
@@ -65,6 +66,7 @@ export class AbsencePage {
           this.pastAbsenceRequests.push(pastAbsenceRequest);
         }
       }
+      console.log(this.pastAbsenceRequests);
     }).catch(error => {
       console.log(error);
     })
@@ -99,6 +101,14 @@ export class AbsencePage {
   public toggleP(type) {
     this.togglePast = !type;
     console.log(this.togglePast);
+    console.log(this.absenceTypesHash);
+  }
+
+  public convertDateToLocale(date) {
+    const locale = window.navigator.language;
+    date = new Date(date);
+    const datePipe = new DatePipe(locale);
+    return datePipe.transform(date, 'yyyy/MM/dd');
   }
 
 }
