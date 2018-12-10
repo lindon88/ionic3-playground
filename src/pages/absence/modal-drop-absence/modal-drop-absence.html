@@ -1,12 +1,12 @@
-<ion-content>
+<ion-content *ngIf="request && description">
   <div class="modal-header">
     <h3 >Drop Absence Request</h3>
   </div>
 
   <div class="popup-content">
-    <div class="absenceType">Holiday - Hourly</div>
+    <div class="absenceType">{{description}}</div>
     <br>
-    <div class="absence-dates">12/07/2018 to 12/09/2018</div>
+    <div class="absence-dates">{{formatDate(request.startDate, 'MM/dd/yyyy')}} to 12/09/2018</div>
     <br>
     <div>Your absence request will be cancelled and you cannot undo this action.</div>
     <div>Are you sure you wish to cancel?</div>
@@ -16,10 +16,10 @@
     <ion-grid>
       <ion-row>
         <ion-col col-4>
-          <button ion-button color="light" class="full-width" (click)="dismiss()"><i class="fa fa-chevron-left"></i>Back</button>
+          <button ion-button color="light" style="color: #3fb6df" class="full-width" (click)="dismiss()"><i class="fa fa-chevron-left"></i>Back</button>
         </ion-col>
         <ion-col col-8>
-          <button ion-button class="full-width" color="secondary">Cancel Request</button>
+          <button ion-button class="full-width" color="secondary" (click)="cancelAbsenceRequest()">Cancel Request</button>
         </ion-col>
       </ion-row>
     </ion-grid>

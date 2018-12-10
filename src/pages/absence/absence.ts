@@ -112,8 +112,8 @@ export class AbsencePage {
     return datePipe.transform(date, 'yyyy/MM/dd');
   }
 
-  public dropAbsenceRequestPopup() {
-    let modal = this.modalCtrl.create(ModalDropAbsencePage, { }, {cssClass: 'drop-modal-absence' });
+  public dropAbsenceRequestPopup(request, description) {
+    let modal = this.modalCtrl.create(ModalDropAbsencePage, {request: request, description: description }, {cssClass: 'drop-modal-absence' });
     modal.present();
   }
 }
