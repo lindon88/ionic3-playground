@@ -4,6 +4,8 @@ import {RosterProvider} from "../../providers/roster/roster";
 import {ShiftsProvider} from "../../providers/shifts/shifts";
 import {AbsenceProvider} from "../../providers/absence/absence";
 import {Observable} from "rxjs";
+import {isObject} from "rxjs/util/isObject";
+import {isDate} from "rxjs/util/isDate";
 
 @IonicPage()
 @Component({
@@ -55,17 +57,14 @@ export class EmployeeShiftsPage {
 
   public weekDays: any = {};
 
-  // requests
-  public shiftsRequest: any;
-  public openShiftsRequest: any;
-  public daysRequest: any;
-  public absenceTypesRequest: any;
+  public showAlert: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public rosterProvider: RosterProvider, public shiftsProvider: ShiftsProvider, public absenceProvider: AbsenceProvider) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad EmployeeShiftsPage');
+    this.loadWeekRosters(this.currentCompanyId);
   }
 
   public setMonthDayFormat() {
@@ -80,12 +79,50 @@ export class EmployeeShiftsPage {
   }
 
   public loadWeekRosters(companyId) {
+    console.log("Load week rosters");
     if(!companyId) {
       return false;
     }
     if(this.weekRosters && this.weekRosters.length > 0) {
       this.selectedRoster = this.lastSelectedRoster;
     }
+
+    this.rosterProvider.getRosters(companyId).then((response: any) => {
+      if(!response) {
+        this.weekRosters = null;
+        this.showAlert = true;
+        return;
+      }
+
+      if(response.length === 0) {
+        this.showAlert = true;
+        return;
+      }
+
+      this.weekRosters = [];
+      for(let i = 0; i < response.length; i++) {
+        let item = response[i];
+        item.formatedEndDate = item.endDate;
+        if(item.formatedEndDate && isDate(item.formatedEndDate)) {
+          item.description = 'Week Ending ' + item.formatedEndDate;
+        }
+
+        if(item.published !== undefined && item.published) {
+          this.weekRosters.push(item);
+        }
+      }
+
+      if(this.weekRosters.length === 0) {
+        this.showAlert = true;
+        return;
+      }
+
+      this.selectedRoster = this.weekRosters[0];
+
+      console.log(this.weekRosters);
+    }, error => {
+      console.log(error);
+    })
   }
 
   public onWeekRosterChange() {
@@ -105,26 +142,6 @@ export class EmployeeShiftsPage {
       };
       iteration.setDate(iteration.getDate() + 1);
     }
-  }
-
-
-  public loadEmployeeShifts(date, startDate, endDate) {
-    this.shiftsRequest = this.getShifts(date, startDate, endDate, {publishedOnly: true});
-    if(startDate !== undefined && endDate !== undefined) {
-      this.openShiftsRequest = this.getOpenShifts(startDate, endDate);
-      this.daysRequest = this.getDays(this.currentCompanyId, {date: startDate});
-    } else if(date !== undefined) {
-      this.openShiftsRequest = this.getOpenShifts(date, date);
-      this.daysRequest = this.getDays(this.currentCompanyId, {date: date});
-    }
-
-    if(!this.absenceTypes) {
-      this.absenceTypesRequest = this.getAbsenceTypes(this.currentCorporateId);
-    }
-
-    Observable.forkJoin(this.shiftsRequest, this.openShiftsRequest, this.daysRequest, this.absenceTypesRequest).subscribe((result: any) => {
-      console.log(result);
-    })
   }
 
   private getShifts(date, startDate, endDate, options) {
