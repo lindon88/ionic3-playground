@@ -70,6 +70,25 @@ export class AddAbsencePage {
     console.log("***** Start date: " + this.startDate);
     console.log("***** Selected Type: " + this.selected.absence);
     console.log("***** Reason Text: " + this.absenceReason.text);
+
+    let request = {
+      startDate: this.startDate,
+      endDate: this.endDate,
+      reason: this.absenceReason.text,
+      absenceTypeId: this.selected.absence
+    };
+    console.log("**** Request: ");
+    console.log(request);
+    console.log("**** Person ID: ");
+    console.log(this.currentPersonId);
+
+    this.absenceProvider.addAbsence(request, this.currentPersonId).then((response:any) => {
+      this.absenceReason = {text: ''};
+      this.selected = {};
+      this.goToAbsences();
+    }).catch(error => {
+      console.log(error);
+    })
   }
 
 }

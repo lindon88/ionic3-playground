@@ -28,7 +28,7 @@ export class AbsenceProvider {
   public addAbsence(request: any, userId) {
     return new Promise((resolve, reject) => {
       let header = {'synergy-login-token': localStorage.getItem('accessToken')};
-      this.http.post(this.serverProvider.getServerURL() + 'hrm/absences/personRequests/' + userId, {request: request}, {headers: header}).subscribe((result: any) => {
+      this.http.post(this.serverProvider.getServerURL() + 'hrm/absences/personRequests/' + userId, request, {headers: header}).subscribe((result: any) => {
         resolve(result);
       }, error => {
         reject(error);
