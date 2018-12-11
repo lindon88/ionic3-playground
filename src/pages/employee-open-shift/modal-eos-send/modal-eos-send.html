@@ -3,7 +3,7 @@
     <h3>Send Request</h3>
   </div>
 </ion-header>
-<ion-content class="cancel-eos" *ngIf="data">
+<ion-content class="cancel-eos" *ngIf="data" no-bounce>
   <div>Drop Shift Request</div>
   <div class="drop-shift" >{{data.shiftText.time12Hr}}</div>
   <div class="drop-shift" *ngIf="data.job != null">{{data.job.description}} | {{data.section.description}}</div>
