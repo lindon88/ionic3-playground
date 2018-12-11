@@ -220,3 +220,11 @@ ion-menu.show-menu + ion-nav {
   color: #58595b;
   padding: 15px 10px;
 }
+
+// Validation
+.validateFormError {
+  color: red;
+  font-size: 13px;
+  font-weight: 400;
+  margin-left: 8%;
+}

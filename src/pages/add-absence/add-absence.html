@@ -18,24 +18,22 @@
           <ion-option *ngFor="let absenceType of absenceTypes" [value]="absenceType.id">{{absenceType.description}}</ion-option>
         </ion-select>
       </ion-item>
-      <ion-item *ngIf="!absenceTypeForm.controls.selectedAbsenceField.valid && absenceTypeForm.controls.selectedAbsenceField.touched">
-        <p>Absence type is required!</p>
-      </ion-item>
+        <p *ngIf="!absenceTypeForm.controls.selectedAbsenceField.valid && absenceTypeForm.controls.selectedAbsenceField.touched" class="validateFormError">Absence type is required!</p>
       <ion-row>
         <ion-col col-6>
           <ion-item>
             <ion-label floating>Start Date</ion-label>
-            <ion-datetime displayFormat="MMM/DD/YYYY" [(ngModel)]="startDate" formControlName="startDateField"></ion-datetime>
+            <ion-datetime displayFormat="MMM/DD/YYYY" max="2999" [(ngModel)]="startDate" formControlName="startDateField"></ion-datetime>
           </ion-item>
-            <p *ngIf="!absenceTypeForm.controls.startDateField.valid && absenceTypeForm.controls.startDateField.touched">Start Date is required!</p>
+            <p class="validateFormError" *ngIf="!absenceTypeForm.controls.startDateField.valid && absenceTypeForm.controls.startDateField.touched">Start Date is required!</p>
 
         </ion-col>
         <ion-col col-6>
           <ion-item>
             <ion-label floating>End Date</ion-label>
-            <ion-datetime displayFormat="MMM/DD/YYYY" [(ngModel)]="endDate" formControlName="endDateField"></ion-datetime>
+            <ion-datetime displayFormat="MMM/DD/YYYY" max="2999" [(ngModel)]="endDate" formControlName="endDateField"></ion-datetime>
           </ion-item>
-          <p *ngIf="!absenceTypeForm.controls.endDateField.valid && absenceTypeForm.controls.endDateField.touched">End Date is required!</p>
+          <p class="validateFormError" *ngIf="!absenceTypeForm.controls.endDateField.valid && absenceTypeForm.controls.endDateField.touched">End Date is required!</p>
         </ion-col>
       </ion-row>
       <ion-row>
