@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {RosterProvider} from "../../providers/roster/roster";
+import {ShiftsProvider} from "../../providers/shifts/shifts";
+import {AbsenceProvider} from "../../providers/absence/absence";
+import {Observable} from "rxjs";
 
 @IonicPage()
 @Component({
@@ -35,6 +39,10 @@ export class EmployeeShiftsPage {
 
   public employee: any = null;
   public shifts: any = null;
+  public openShifts: any = null;
+  public days: any = null;
+
+
   public sections: any = null;
   public jobs: any = null;
   public absenceTypes: any = null;
@@ -47,7 +55,13 @@ export class EmployeeShiftsPage {
 
   public weekDays: any = {};
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  // requests
+  public shiftsRequest: any;
+  public openShiftsRequest: any;
+  public daysRequest: any;
+  public absenceTypesRequest: any;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public rosterProvider: RosterProvider, public shiftsProvider: ShiftsProvider, public absenceProvider: AbsenceProvider) {
   }
 
   ionViewDidLoad() {
@@ -93,8 +107,48 @@ export class EmployeeShiftsPage {
     }
   }
 
-  public loadEmployeeShifts(date, startDate, endDate) {
 
+  public loadEmployeeShifts(date, startDate, endDate) {
+    this.shiftsRequest = this.getShifts(date, startDate, endDate, {publishedOnly: true});
+    if(startDate !== undefined && endDate !== undefined) {
+      this.openShiftsRequest = this.getOpenShifts(startDate, endDate);
+      this.daysRequest = this.getDays(this.currentCompanyId, {date: startDate});
+    } else if(date !== undefined) {
+      this.openShiftsRequest = this.getOpenShifts(date, date);
+      this.daysRequest = this.getDays(this.currentCompanyId, {date: date});
+    }
+
+    if(!this.absenceTypes) {
+      this.absenceTypesRequest = this.getAbsenceTypes(this.currentCorporateId);
+    }
+
+    Observable.forkJoin(this.shiftsRequest, this.openShiftsRequest, this.daysRequest, this.absenceTypesRequest).subscribe((result: any) => {
+      console.log(result);
+    })
+  }
+
+  private getShifts(date, startDate, endDate, options) {
+    return this.rosterProvider.getLoggedEmployeeShifts(date, startDate, endDate, options).then(result => {
+      return result;
+    })
+  }
+
+  private getOpenShifts(start, end) {
+    return this.shiftsProvider.getMyRequests(start, end).then(result => {
+      return result;
+    })
+  }
+
+  private getDays(companyId, params) {
+    return this.rosterProvider.getRosterDaysStatus(companyId, params).then(result => {
+      return result;
+    })
+  }
+
+  private getAbsenceTypes(corporateId) {
+    return this.absenceProvider.getAbsenceTypes(corporateId).then(result => {
+      return result;
+    })
   }
 
 }

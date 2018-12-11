@@ -121,4 +121,22 @@ export class AbsenceProvider {
       })
     })
   }
+
+  public getAbsenceTypes(corporateId) {
+    return new Promise((resolve, reject) => {
+      let header = {'synergy-login-token': localStorage.getItem('accessToken')};
+
+      if(corporateId === undefined || corporateId === null || corporateId === '') {
+        reject("Corporate Id is not defined");
+      }
+
+      this.http.get(this.serverProvider.getServerURL() + 'hrm/absences/type/' + corporateId, {headers: header}).subscribe((result: any) => {
+        if(result !== undefined) {
+          resolve(result);
+        } else {
+          resolve([]);
+        }
+      })
+    })
+  }
 }
