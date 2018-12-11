@@ -22,6 +22,7 @@ export class AddAbsencePage {
   public endDate: any;
   public absenceTypes: any = [];
   public absenceTypesHash: any = {};
+  public absenceReason: any = {};
   public selected: any = {};
   public currentPersonId: any = localStorage.getItem('currentPersonId');
   public selectedCompanyId: any = localStorage.getItem('currentCompanyId');
@@ -31,7 +32,8 @@ export class AddAbsencePage {
     this.absenceTypeForm = this.formBuilder.group({
       selectedAbsenceField: ['', Validators.required],
       startDateField: ['', Validators.required],
-      endDateField: ['', Validators.required]
+      endDateField: ['', Validators.required],
+      absenceReasonText: ['']
     })
   }
 
@@ -67,6 +69,7 @@ export class AddAbsencePage {
     console.log("***** End date: " + this.endDate);
     console.log("***** Start date: " + this.startDate);
     console.log("***** Selected Type: " + this.selected.absence);
+    console.log("***** Reason Text: " + this.absenceReason.text);
   }
 
 }
