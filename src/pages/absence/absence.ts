@@ -5,6 +5,7 @@ import {AbsenceProvider} from "../../providers/absence/absence";
 import {DatePipe} from "@angular/common";
 import {ModalDropAbsencePage} from "./modal-drop-absence/modal-drop-absence";
 import {ModalAbsenceNotePage} from "./modal-absence-note/modal-absence-note";
+import {LoadingProvider} from "../../providers/loading/loading";
 
 @IonicPage()
 @Component({
@@ -26,16 +27,18 @@ export class AbsencePage {
   public togglePast: boolean = false;
 
   public currentDate: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public employeeProvider: EmployeeProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController, public menuCtrl: MenuController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public employeeProvider: EmployeeProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController, public menuCtrl: MenuController, public loadingProvider: LoadingProvider) {
     this.currentDate = new Date();
   }
 
   ionViewDidLoad() {
+    this.loadingProvider.showLoader();
     const datePipe = new DatePipe('en-US');
     this.currentDate = datePipe.transform(this.currentDate, 'yyyy-MM-dd');
     console.log(this.currentDate);
     this.getAbsenceTypes();
     this.getMyRequests();
+    this.loadingProvider.hideLoader();
 
     console.log('ionViewDidLoad AbsencePage');
   }
@@ -127,6 +130,7 @@ export class AbsencePage {
     let modal = this.modalCtrl.create(ModalDropAbsencePage, {request: request, description: description }, {cssClass: 'drop-modal-absence' });
     modal.onDidDismiss(data => {
       console.log(data);
+      this.loadingProvider.showLoader();
       if(data === undefined || data === null || data === '') return;
       this.absenceProvider.cancelAbsenceRequest(this.currentPersonId, data).then((response: any) => {
         console.log(response);
@@ -134,7 +138,8 @@ export class AbsencePage {
       }).catch((error) => {
         console.log(error);
         alert("Delete failed!");
-      })
+      });
+      this.loadingProvider.hideLoader();
     });
     modal.present();
   }
