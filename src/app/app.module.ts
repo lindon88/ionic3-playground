@@ -27,6 +27,7 @@ import {ModalEosSuccessPageModule} from "../pages/employee-open-shift/modal-eos-
 import { AbsenceProvider } from '../providers/absence/absence';
 import {ModalDropAbsencePageModule} from "../pages/absence/modal-drop-absence/modal-drop-absence.module";
 import {ModalAbsenceNotePageModule} from "../pages/absence/modal-absence-note/modal-absence-note.module";
+import { RosterProvider } from '../providers/roster/roster';
 
 
 @NgModule({
@@ -68,6 +69,7 @@ import {ModalAbsenceNotePageModule} from "../pages/absence/modal-absence-note/mo
     LoadingProvider,
     ShiftsProvider,
     AbsenceProvider,
+    RosterProvider,
   ]
 })
 export class AppModule {}
