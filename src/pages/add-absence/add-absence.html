@@ -1,0 +1,48 @@
+<ion-header class="main-header">
+  <ion-navbar color="primary" [hideBackButton]="true" class="main-navbar clearfix">
+    <button ion-button icon-only (click)="goToAbsences()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </button>
+    <ion-title class="main-title">
+      <img (click)="navCtrl.setRoot('HomePage')" src="./assets/imgs/Cover-logo-blue.png" alt="Cover">
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="absenceTypeForm" (ngSubmit)="addAbsence()">
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Absence Type</ion-label>
+        <ion-select [(ngModel)]="selected.absence" formControlName="selectedAbsenceField">
+          <ion-option *ngFor="let absenceType of absenceTypes" [value]="absenceType.id">{{absenceType.description}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item *ngIf="!absenceTypeForm.controls.selectedAbsenceField.valid && absenceTypeForm.controls.selectedAbsenceField.touched">
+        <p>Absence type is required!</p>
+      </ion-item>
+      <ion-row>
+        <ion-col col-6>
+          <ion-item>
+            <ion-label floating>Start Date</ion-label>
+            <ion-datetime displayFormat="MMM/DD/YYYY" [(ngModel)]="startDate" formControlName="startDateField"></ion-datetime>
+          </ion-item>
+            <p *ngIf="!absenceTypeForm.controls.startDateField.valid && absenceTypeForm.controls.startDateField.touched">Start Date is required!</p>
+
+        </ion-col>
+        <ion-col col-6>
+          <ion-item>
+            <ion-label floating>End Date</ion-label>
+            <ion-datetime displayFormat="MMM/DD/YYYY" [(ngModel)]="endDate" formControlName="endDateField"></ion-datetime>
+          </ion-item>
+          <p *ngIf="!absenceTypeForm.controls.endDateField.valid && absenceTypeForm.controls.endDateField.touched">End Date is required!</p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-12>
+          <button ion-button color="secondary" type="submit" [disabled]="!absenceTypeForm.valid" block>Add absence</button>
+        </ion-col>
+      </ion-row>
+    </ion-list>
+  </form>
+</ion-content>

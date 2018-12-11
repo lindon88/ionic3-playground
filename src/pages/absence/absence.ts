@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {EmployeeProvider} from "../../providers/employee/employee";
 import {AbsenceProvider} from "../../providers/absence/absence";
-import {Observable} from "rxjs";
 import {DatePipe} from "@angular/common";
 import {ModalDropAbsencePage} from "./modal-drop-absence/modal-drop-absence";
 
@@ -128,5 +127,9 @@ export class AbsencePage {
       })
     });
     modal.present();
+  }
+
+  public goToAddAbsence() {
+    this.navCtrl.setRoot("AddAbsencePage");
   }
 }
