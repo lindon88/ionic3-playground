@@ -4,6 +4,7 @@ import {EmployeeProvider} from "../../providers/employee/employee";
 import {AbsenceProvider} from "../../providers/absence/absence";
 import {DatePipe} from "@angular/common";
 import {ModalDropAbsencePage} from "./modal-drop-absence/modal-drop-absence";
+import {ModalAbsenceNotePage} from "./modal-absence-note/modal-absence-note";
 
 @IonicPage()
 @Component({
@@ -131,5 +132,10 @@ export class AbsencePage {
 
   public goToAddAbsence() {
     this.navCtrl.setRoot("AddAbsencePage");
+  }
+
+  public showNote(request) {
+    let modal = this.modalCtrl.create(ModalAbsenceNotePage, {absenceRequest: request}, {cssClass: 'drop-modal-absence'});
+    modal.present();
   }
 }

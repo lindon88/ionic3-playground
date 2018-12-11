@@ -1,17 +1,24 @@
-<ion-content *ngIf="request && description">
+<ion-content *ngIf="request">
   <div class="modal-header">
     <h3>Absence Notes</h3>
   </div>
 
   <div class="popup-content">
-
+    <div>{{request.employee.knownAs}}</div>
+    <div>From {{formatDate(request.startDate, 'MM/dd/yyyy')}} to {{formatDate(request.endDate, 'MM/dd/yyyy')}}</div>
+    <br>
+    <div><b>Notes:</b></div>
+    <div>
+      <span style="font-style: italic" *ngIf="request.status == 'PENDING'">{{request.reason}}</span>
+      <span style="font-style: italic" *ngIf="request.status != 'PENDING'">{{request.approvalMessage}}</span>
+    </div>
   </div>
 
-  <div class="modal-footer">
+  <div class="modal-footer note">
     <ion-grid>
       <ion-row>
         <ion-col col-12>
-          <button ion-button class="full-width" color="secondary">Close</button>
+          <button ion-button class="full-width" color="secondary" (click)="dismiss()">Close</button>
         </ion-col>
       </ion-row>
     </ion-grid>

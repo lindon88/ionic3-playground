@@ -40,7 +40,7 @@
                   <div class="absence-dates">
                     {{convertDateToLocale(currentAbsenceRequest.startDate)}} to
                     {{convertDateToLocale(currentAbsenceRequest.endDate)}}
-                    <span class="view-shiftNotes" *ngIf="currentAbsenceRequest.reason || currentAbsenceRequest.approvalMessage">view notes</span>
+                    <span class="view-shiftNotes" *ngIf="currentAbsenceRequest.reason || currentAbsenceRequest.approvalMessage" (click)="showNote(currentAbsenceRequest)">view notes</span>
                   </div>
                 </ion-col>
                 <ion-col col-4>
@@ -79,7 +79,7 @@
                 <div class="absence-dates">
                   {{convertDateToLocale(pastAbsenceRequest.startDate)}} to
                   {{convertDateToLocale(pastAbsenceRequest.endDate)}}
-                  <span class="view-shiftNotes" *ngIf="pastAbsenceRequest.reason || pastAbsenceRequest.approvalMessage">view notes</span>
+                  <span class="view-shiftNotes" *ngIf="pastAbsenceRequest.reason || pastAbsenceRequest.approvalMessage" (click)="showNote(pastAbsenceRequest)">view notes</span>
                 </div>
               </ion-col>
               <ion-col col-4>

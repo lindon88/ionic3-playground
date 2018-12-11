@@ -1,3 +1,5 @@
-page-modal-absence-note {
-
+div.scroll-content > div.modal-footer.note {
+  bottom: 0!important;
+  position: absolute!important;
+  width: 100%;
 }
