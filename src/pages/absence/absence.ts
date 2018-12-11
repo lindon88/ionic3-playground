@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, MenuController, ModalController, NavController, NavParams} from 'ionic-angular';
 import {EmployeeProvider} from "../../providers/employee/employee";
 import {AbsenceProvider} from "../../providers/absence/absence";
 import {DatePipe} from "@angular/common";
@@ -26,7 +26,7 @@ export class AbsencePage {
   public togglePast: boolean = false;
 
   public currentDate: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public employeeProvider: EmployeeProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public employeeProvider: EmployeeProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController, public menuCtrl: MenuController) {
     this.currentDate = new Date();
   }
 
@@ -38,6 +38,14 @@ export class AbsencePage {
     this.getMyRequests();
 
     console.log('ionViewDidLoad AbsencePage');
+  }
+
+  public ionViewWillEnter(): void {
+    this.menuCtrl.swipeEnable(true, 'menu1');
+  }
+
+  public ionViewWillLeave(): void {
+    this.menuCtrl.swipeEnable(false, 'menu1');
   }
 
   public getAbsenceTypes() {
@@ -108,7 +116,8 @@ export class AbsencePage {
   }
 
   public convertDateToLocale(date) {
-    const locale = window.navigator.language;
+    // const locale = window.navigator.language;
+    const locale = 'en-GB';
     date = new Date(date);
     const datePipe = new DatePipe(locale);
     return datePipe.transform(date, 'yyyy/MM/dd');
