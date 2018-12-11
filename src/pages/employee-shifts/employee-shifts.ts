@@ -3,9 +3,6 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {RosterProvider} from "../../providers/roster/roster";
 import {ShiftsProvider} from "../../providers/shifts/shifts";
 import {AbsenceProvider} from "../../providers/absence/absence";
-import {Observable} from "rxjs";
-import {isObject} from "rxjs/util/isObject";
-import {isDate} from "rxjs/util/isDate";
 
 @IonicPage()
 @Component({
@@ -103,7 +100,7 @@ export class EmployeeShiftsPage {
       for(let i = 0; i < response.length; i++) {
         let item = response[i];
         item.formatedEndDate = item.endDate;
-        if(item.formatedEndDate && isDate(item.formatedEndDate)) {
+        if(item.formatedEndDate) {
           item.description = 'Week Ending ' + item.formatedEndDate;
         }
 

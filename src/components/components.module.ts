@@ -6,10 +6,11 @@ import {IonicModule} from "ionic-angular";
 
 @NgModule({
 	declarations: [TabsComponent,
-    TabComponent  ],
+    TabComponent],
 	imports: [CommonModule, IonicModule],
 	exports: [TabsComponent,
-    TabComponent
+    TabComponent,
+
     ],
   entryComponents: [TabComponent]
 })

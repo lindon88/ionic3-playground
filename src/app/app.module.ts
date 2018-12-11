@@ -28,6 +28,7 @@ import { AbsenceProvider } from '../providers/absence/absence';
 import {ModalDropAbsencePageModule} from "../pages/absence/modal-drop-absence/modal-drop-absence.module";
 import {ModalAbsenceNotePageModule} from "../pages/absence/modal-absence-note/modal-absence-note.module";
 import { RosterProvider } from '../providers/roster/roster';
+import { CalendarModule} from 'ionic3-calendar-en';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import { RosterProvider } from '../providers/roster/roster';
     ModalEosSendPageModule,
     ModalEosSuccessPageModule,
     ModalDropAbsencePageModule,
-    ModalAbsenceNotePageModule
+    ModalAbsenceNotePageModule,
+    CalendarModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

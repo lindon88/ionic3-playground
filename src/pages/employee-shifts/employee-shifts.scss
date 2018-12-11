@@ -1,3 +1,10 @@
-page-employee-shifts {
-
+.center-selected-text {
+  ion-select {
+    width: 100%!important;
+    max-width: 100% !important;
+  }
+  text-align: center!important;
+  ion-label {
+    flex: none!important;
+  }
 }

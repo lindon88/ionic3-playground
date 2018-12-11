@@ -12,4 +12,24 @@
 
 </ion-header>
 <ion-content no-bounce>
+  <ion-toolbar class="clearfix toolbar-absence">
+    <ion-list>
+      <ion-item class="center-selected-text">
+        <ion-label><i class="fa fa-calendar"></i></ion-label>
+        <ion-select [(ngModel)]="viewType">
+          <ion-option *ngFor="let view of viewTypes" [value]="view.code">{{view.description}}
+          </ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item class="center-selected-text" *ngIf="viewType === VIEW_WEEK">
+        <ion-label><i class="fa fa-calendar"></i></ion-label>
+        <ion-select>
+          <ion-option *ngFor="let roster of weekRosters" [value]="roster.id">{{roster.description}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item *ngIf="viewType === VIEW_MONTH">
+        <ion-calendar #calendar></ion-calendar>
+      </ion-item>
+    </ion-list>
+  </ion-toolbar>
 </ion-content>
