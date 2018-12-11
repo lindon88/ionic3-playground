@@ -28,9 +28,35 @@
           </div>
         </div>
       </ion-item>
-      <ion-item *ngIf="toggleCurrent === true">
-        Current
-      </ion-item>
+
+        <div>
+          <ion-item-sliding *ngFor="let currentAbsenceRequest of myAbsenceRequests" class="absence-list">
+            <ion-item *ngIf="toggleCurrent === true && myAbsenceRequests">
+              <ion-row>
+                <ion-col col-8>
+                  <div class="absenceType">
+                    {{absenceTypesHash[currentAbsenceRequest.absenceTypeId].description}}
+                  </div>
+                  <div class="absence-dates">
+                    {{convertDateToLocale(currentAbsenceRequest.startDate)}} to
+                    {{convertDateToLocale(currentAbsenceRequest.endDate)}}
+                    <span class="view-shiftNotes" *ngIf="currentAbsenceRequest.reason || currentAbsenceRequest.approvalMessage">view notes</span>
+                  </div>
+                </ion-col>
+                <ion-col col-4>
+                <span class="request-approved absence-status"
+                      *ngIf="currentAbsenceRequest.status == 'APPROVED'">Approved</span>
+                  <span class="drop-pending absence-status" *ngIf="currentAbsenceRequest.status == 'PENDING'">Pending</span>
+                  <span class="request-declined absence-status"
+                        *ngIf="currentAbsenceRequest.status == 'REJECTED'">Declined</span>
+                </ion-col>
+              </ion-row>
+            </ion-item>
+            <ion-item-options>
+              <button ion-button color="delete" class="delete-button-absence" (click)="dropAbsenceRequestPopup(currentAbsenceRequest, absenceTypesHash[currentAbsenceRequest.absenceTypeId].description)" *ngIf="currentAbsenceRequest.status == 'PENDING'"><ion-icon name="trash"></ion-icon></button>
+            </ion-item-options>
+          </ion-item-sliding>
+        </div>
 
 
       <ion-item (click)="toggleP(togglePast)" class="rosterSection">
