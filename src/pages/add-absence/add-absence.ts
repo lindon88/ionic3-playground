@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {AbsenceProvider} from "../../providers/absence/absence";
 import {Validators, FormBuilder, FormGroup} from "@angular/forms";
+import {LoadingProvider} from "../../providers/loading/loading";
 
 /**
  * Generated class for the AddAbsencePage page.
@@ -28,7 +29,7 @@ export class AddAbsencePage {
   public selectedCompanyId: any = localStorage.getItem('currentCompanyId');
   public currentCorporateId: any = localStorage.getItem('currentCorporateId');
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private absenceProvider: AbsenceProvider, private formBuilder: FormBuilder) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private absenceProvider: AbsenceProvider, private formBuilder: FormBuilder, public loadingProvider: LoadingProvider) {
     this.absenceTypeForm = this.formBuilder.group({
       selectedAbsenceField: ['', Validators.required],
       startDateField: ['', Validators.required],
@@ -48,6 +49,7 @@ export class AddAbsencePage {
   }
 
   public getAbsenceTypes() {
+    this.loadingProvider.showLoader();
     this.absenceProvider.getCompanyAbsenceTypes(this.selectedCompanyId).then((data: any) => {
       for(let i = 0; i < data.length; i++) {
         let absence = data[i];
@@ -63,6 +65,7 @@ export class AddAbsencePage {
         this.absenceTypesHash[absenceType.id] = absenceType;
       }
     });
+    this.loadingProvider.hideLoader();
   }
 
   public addAbsence() {
@@ -82,13 +85,15 @@ export class AddAbsencePage {
     console.log("**** Person ID: ");
     console.log(this.currentPersonId);
 
+    this.loadingProvider.showLoader();
     this.absenceProvider.addAbsence(request, this.currentPersonId).then((response:any) => {
       this.absenceReason = {text: ''};
       this.selected = {};
       this.goToAbsences();
     }).catch(error => {
       console.log(error);
-    })
+    });
+    this.loadingProvider.hideLoader();
   }
 
 }
