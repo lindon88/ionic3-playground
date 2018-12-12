@@ -60,6 +60,11 @@ export class EmployeeShiftsPage {
 
   public viewType: any;
 
+  public shiftsObservableResponse: any;
+  public openShiftsObservableResponse: any;
+  public daysObservableResponse: any;
+  public absenceTypesObservableResponse: any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public rosterProvider: RosterProvider, public shiftsProvider: ShiftsProvider, public absenceProvider: AbsenceProvider) {
   }
 
@@ -146,22 +151,89 @@ export class EmployeeShiftsPage {
       observableBatch.push(this.getAbsenceTypes(this.currentCorporateId));
     }
 
-    Observable.forkJoin(observableBatch).subscribe(result => {
-      console.log(result);
+    Observable.forkJoin(observableBatch).subscribe(response => {
+      console.log(response);
+
+      if(!response) return;
+
+      this.shiftsObservableResponse = response[0];
+      this.openShiftsObservableResponse = response[1];
+      this.daysObservableResponse = response[2];
+      this.absenceTypesObservableResponse = response[3];
+
+      if(this.absenceTypesObservableResponse !== undefined) {
+        this.absenceTypes = this.absenceTypesObservableResponse;
+      }
+
+      if(this.shiftsObservableResponse === undefined || this.shiftsObservableResponse.employees === undefined) {
+        return;
+      }
+
+      this.employee = this.shiftsObservableResponse.employees[0];
+      console.log(this.employee);
+
+      this.shifts = [];
+      // define shifts
+      if(this.employee.shifts !==  undefined) {
+        console.log('not undefined');
+        console.log(this.employee.shifts);
+        for(let i in this.employee.shifts) {
+          if(this.employee.shifts.hasOwnProperty(i)){
+            let item = this.employee.shifts[i];
+
+            for(let key in item) {
+              if(item.hasOwnProperty(key)) {
+                let shift = item[key];
+
+                // check if shift is locked
+                if(this.daysObservableResponse !== undefined && this.daysObservableResponse.length > 0) {
+                  for(let j in this.daysObservableResponse) {
+                    if(this.daysObservableResponse.hasOwnProperty(j)){
+                      let dayObj = this.daysObservableResponse[j];
+                      if(dayObj.date === shift.shiftDate) {
+                        shift.locked = dayObj.locked;
+                      }
+                    }
+                  }
+                }
+
+                if(shift.warnings !== undefined && shift.warnings !== null && shift.warnings.length > 0) {
+                  shift.hasWarning = true;
+                }
+
+                // define shift title
+                if(shift.offsiteDisplay !== undefined && shift.offsiteDisplay !== null && shift.offsiteDisplay !== '') {
+                  shift.title = shift.offsiteDisplay;
+                }
+
+                // append shift that does not have delete status
+                if(shift.delete === undefined && !shift.delete && !shift.hiddenShift) {
+                  // todo Nemanja: format date
+
+                  this.shifts.push(shift);
+                }
+              }
+            }
+          }
+        }
+        console.log(this.shifts);
+      }
+
+      
     })
   }
 
   public loadEmployeeShiftsForSelectedDate(date) {
-    let formattedDate = this.convertDateToLocale(date);
+    let formattedDate = this.convertDateToLocale(date, 'yyyy-MM-dd');
     this.loadEmployeeShifts(formattedDate, undefined, undefined);
   }
 
-  public convertDateToLocale(date) {
+  public convertDateToLocale(date, format) {
     // const locale = window.navigator.language;
     const locale = 'en-GB';
     date = new Date(date);
     const datePipe = new DatePipe(locale);
-    return datePipe.transform(date, 'yyyy-MM-dd');
+    return datePipe.transform(date, format);
   }
 
   public onWeekRosterChange() {
