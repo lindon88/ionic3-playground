@@ -54,7 +54,7 @@ export class EmployeeShiftsPage {
   public weekRosterStart: any;
   public weekRosterEnd: any;
 
-  public weekDays: any = {};
+  public weekDays: any = [];
 
   public showAlert: boolean;
 
@@ -208,6 +208,7 @@ export class EmployeeShiftsPage {
 
                 // append shift that does not have delete status
                 if(shift.delete === undefined && !shift.delete && !shift.hiddenShift) {
+                  this.weekDays[shift.shiftDate] = {has: true};
                   // todo Nemanja: format date
 
                   this.shifts.push(shift);
@@ -217,14 +218,76 @@ export class EmployeeShiftsPage {
           }
         }
         console.log(this.shifts);
+        console.log(this.weekDays);
       }
 
-      
+      // set absences
+      if(this.employee.absences !== undefined) {
+        let weekDays = Object.keys(this.weekDays);
+        for(let i = 0; i < weekDays.length; i++) {
+          let weekDay = weekDays[i];
+          console.log(weekDay);
+          if(this.employee.absences[weekDay] !== undefined) {
+            let absence = this.employee.absences[weekDay];
+            for(let j = 0; j < this.absenceTypes.length; j++) {
+              let absenceType = this.absenceTypes[j];
+              console.log(absenceType);
+              if(absenceType.id == absence.absenceTypeId) {
+                this.weekDays[weekDay] = {has: true};
+                this.shifts.push({
+                  title: absenceType.description,
+                  shiftDate: weekDay,
+                });
+
+              }
+            }
+          }
+        }
+        console.log(this.shifts);
+      }
+
+      // define open shifts (Show them just as request pending)
+      if(this.openShiftsObservableResponse !== undefined) {
+        let weekDays = Object.keys(this.weekDays);
+        for(let i = 0; i < weekDays.length; i++) {
+          let weekDay = weekDays[i];
+          for(let k = 0; k < this.openShiftsObservableResponse.length; k++) {
+            let openShift = this.openShiftsObservableResponse[k];
+            if(openShift.date == weekDay && openShift.requestType === 'CAN_WORK' && openShift.shiftType === 'OPEN_SHIFT' && openShift.status === 'PENDING') {
+              this.shifts.push({
+                title: 'Request pending',
+                openShift: true,
+                shiftDate: weekDay
+              })
+            }
+          }
+        }
+        console.log(this.shifts);
+      }
+
+      // fill full week with data
+      // for the days which do not have defined shifts or absences add empty item (Day off)
+      console.log(this.weekDays);
+      for(let index in this.weekDays) {
+        if(this.weekDays.hasOwnProperty(index)){
+          let item = this.weekDays[index];
+          console.log(item);
+          if(!item.has) {
+            this.shifts.push({
+              title: 'Day Off',
+              shiftDate: index
+            })
+          }
+        }
+      }
+      console.log(this.shifts);
     })
   }
 
   public loadEmployeeShiftsForSelectedDate(date) {
     let formattedDate = this.convertDateToLocale(date, 'yyyy-MM-dd');
+    this.weekDays = [];
+    this.weekDays[formattedDate] = {has: false};
     this.loadEmployeeShifts(formattedDate, undefined, undefined);
   }
 
