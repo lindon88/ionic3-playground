@@ -210,6 +210,10 @@ export class EmployeeShiftsPage {
                 if(shift.delete === undefined && !shift.delete && !shift.hiddenShift) {
                   this.weekDays[shift.shiftDate] = {has: true};
                   // todo Nemanja: format date
+                  let shiftDate = new Date(shift.shiftDate);
+                  shift.monthText = shiftDate.toLocaleString('en-US', {month: 'long'});
+                  shift.dayText = shiftDate.toLocaleString('en-US', {weekday: 'long'});
+                  shift.dayNumber = shiftDate.getDay();
 
                   this.shifts.push(shift);
                 }
@@ -234,9 +238,13 @@ export class EmployeeShiftsPage {
               console.log(absenceType);
               if(absenceType.id == absence.absenceTypeId) {
                 this.weekDays[weekDay] = {has: true};
+                let date = new Date(weekDay);
                 this.shifts.push({
                   title: absenceType.description,
                   shiftDate: weekDay,
+                  monthText: date.toLocaleString('en-US', {month: 'long'}),
+                  dayText: date.toLocaleString('en-US', {weekday: 'long'}),
+                  dayNumber: date.getDay()
                 });
 
               }
@@ -254,10 +262,14 @@ export class EmployeeShiftsPage {
           for(let k = 0; k < this.openShiftsObservableResponse.length; k++) {
             let openShift = this.openShiftsObservableResponse[k];
             if(openShift.date == weekDay && openShift.requestType === 'CAN_WORK' && openShift.shiftType === 'OPEN_SHIFT' && openShift.status === 'PENDING') {
+              let weekDayDate = new Date();
               this.shifts.push({
                 title: 'Request pending',
                 openShift: true,
-                shiftDate: weekDay
+                shiftDate: weekDay,
+                monthText: weekDayDate.toLocaleString('en-US', {month: 'long'}),
+                dayText: weekDayDate.toLocaleString('en-US', {weekday: 'long'}),
+                dayNumber: weekDayDate.getDay()
               })
             }
           }
@@ -272,10 +284,14 @@ export class EmployeeShiftsPage {
         if(this.weekDays.hasOwnProperty(index)){
           let item = this.weekDays[index];
           console.log(item);
+          let indexDate = new Date(index);
           if(!item.has) {
             this.shifts.push({
               title: 'Day Off',
-              shiftDate: index
+              shiftDate: index,
+              monthText: indexDate.toLocaleString('en-US', {month: 'long'}),
+              dayText: indexDate.toLocaleString('en-US', {weekday: 'long'}),
+              dayNumber: indexDate.getDay()
             })
           }
         }
