@@ -17,14 +17,14 @@
       <ion-item class="center-selected-text">
         <ion-label><i class="fa fa-calendar"></i></ion-label>
         <ion-select [(ngModel)]="viewType">
-          <ion-option *ngFor="let view of viewTypes" [value]="view.code">{{view.description}}
+          <ion-option *ngFor="let view of viewTypes" [value]="view.code" [selected]="view.code === selectedView.code">{{view.description}}
           </ion-option>
         </ion-select>
       </ion-item>
       <ion-item class="center-selected-text" *ngIf="viewType === VIEW_WEEK">
         <ion-label><i class="fa fa-calendar"></i></ion-label>
-        <ion-select>
-          <ion-option *ngFor="let roster of weekRosters" [value]="roster.id">{{roster.description}}</ion-option>
+        <ion-select (ionChange)="onWeekRosterChange()" [(ngModel)]="selectedRoster">
+          <ion-option *ngFor="let roster of weekRosters" [value]="roster">{{roster.description}}</ion-option>
         </ion-select>
       </ion-item>
       <ion-item *ngIf="viewType === VIEW_MONTH">
