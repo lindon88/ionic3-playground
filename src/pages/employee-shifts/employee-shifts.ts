@@ -239,6 +239,11 @@ export class EmployeeShiftsPage {
     })
   }
 
+  /**
+   * Defining month shifts to be seen on calendar
+   * @param shiftsResponse
+   * @param openShiftsResponse
+   */
   public defineMonthShifts(shiftsResponse, openShiftsResponse) {
     let shifts = [];
     let employee = shiftsResponse.employees[0];
