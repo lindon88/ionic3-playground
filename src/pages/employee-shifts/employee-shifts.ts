@@ -138,9 +138,11 @@ export class EmployeeShiftsPage {
     if(startDate !== undefined && endDate !== undefined) {
       observableBatch.push(this.getOpenShifts(startDate, endDate));
       observableBatch.push(this.getDays(this.currentCompanyId, {date: startDate}));
+      console.log('-+-+-+-+-+-+-+-Start date: ' + startDate);
     } else if (date !== undefined) {
       observableBatch.push(this.getOpenShifts(date, date));
       observableBatch.push(this.getDays(this.currentCompanyId, {date: date}));
+      console.log('+-+-+-+-+-+-+-+Date: ' + date);
     }
 
     if(!this.absenceTypes) {
@@ -319,8 +321,6 @@ export class EmployeeShiftsPage {
             if(item.hasOwnProperty(j)) {
               let shift = item[j];
               shift = this.defineShiftDropCancelStatus(shift, openShifts);
-
-              // check if shift is locked
               shift = this.checkIfShiftLocked(days, shift);
 
               console.log(shift);
@@ -385,6 +385,11 @@ export class EmployeeShiftsPage {
     })
   }
 
+  /**
+   * Defining drop or delete status
+   * @param shift
+   * @param openShifts
+   */
   private defineShiftDropCancelStatus(shift, openShifts) {
     if(shift === undefined || openShifts === undefined) {
       return;
@@ -408,9 +413,9 @@ export class EmployeeShiftsPage {
   }
 
   private checkIfShiftLocked(days, shift) {
+    console.log(days);
     if(days !== undefined) {
       days.forEach(dayObj => {
-        console.log(dayObj);
         if(dayObj.date === shift.shiftDate) {
           shift.locked = dayObj.locked;
         }

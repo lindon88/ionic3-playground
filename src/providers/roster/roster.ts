@@ -66,9 +66,6 @@ export class RosterProvider {
         reject("Company Id is not defined");
       }
 
-      if(params !== undefined || params === null) {
-        params = {};
-      }
       let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
 
       this.http.get(this.serverProvider.getServerURL() + 'hrm/rosterEditor/days/' + companyId, {headers: headers, params: params}).subscribe((result) => {
