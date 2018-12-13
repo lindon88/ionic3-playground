@@ -72,7 +72,8 @@ export class EmployeeShiftsPage {
     this.loadWeekRosters(this.currentCompanyId);
     this.viewType = this.selectedView.code;
     let date = new Date();
-    this.loadEmployeeShiftsForSelectedDate(date);
+    console.log(this.convertDateToLocale(date, 'yyyy-MM-dd'));
+    this.setMonthDayFormat();
   }
 
 
@@ -126,6 +127,14 @@ export class EmployeeShiftsPage {
       this.weekRosters = this.sortByDate(this.weekRosters);
       console.log(this.weekRosters);
       this.selectedRoster = this.weekRosters[0];
+      console.log('SELECTED');
+      console.log(this.selectedRoster);
+      this.weekRosterStart = this.selectedRoster.startDate;
+      this.weekRosterEnd = this.selectedRoster.endDate;
+
+      console.log(this.selectedRoster.startDate + ' - ' + this.selectedRoster.endDate);
+
+      this.loadEmployeeShifts(undefined, this.selectedRoster.startDate, this.selectedRoster.endDate);
     }, error => {
       console.log(error);
     })
@@ -145,9 +154,9 @@ export class EmployeeShiftsPage {
       console.log('+-+-+-+-+-+-+-+Date: ' + date);
     }
 
-    if (!this.absenceTypes) {
+
       observableBatch.push(this.getAbsenceTypes(this.currentCorporateId));
-    }
+
 
     Observable.forkJoin(observableBatch).subscribe(response => {
       console.log(response);
@@ -161,9 +170,11 @@ export class EmployeeShiftsPage {
 
       // define all week days
       this.weekDays = this.daysObservableResponse;
+      this.absenceTypes = this.absenceTypesObservableResponse;
+      console.log(this.absenceTypes);
 
       this.defineShifts(this.shiftsObservableResponse, this.openShiftsObservableResponse, this.daysObservableResponse, this.absenceTypesObservableResponse);
-      this.defineAbsences(this.shiftsObservableResponse, this.openShiftsObservableResponse, this.daysObservableResponse, this.absenceTypesObservableResponse);
+      this.defineAbsences(this.shiftsObservableResponse, this.openShiftsObservableResponse, this.daysObservableResponse, this.absenceTypes);
       this.defineOpenShifts(this.shiftsObservableResponse, this.openShiftsObservableResponse, this.daysObservableResponse, this.absenceTypesObservableResponse);
       this.fillFullWeekWithData(this.shiftsObservableResponse, this.openShiftsObservableResponse, this.daysObservableResponse, this.absenceTypesObservableResponse);
 
@@ -213,13 +224,14 @@ export class EmployeeShiftsPage {
                 for(let k in this.weekDays) {
                   let weekDay = this.weekDays[k];
                   if(weekDay.date === shift.shiftDate) {
-                    this.weekDays[k] = {has: true};
+                    console.log(this.weekDays[k]);
+                    this.weekDays[k].has = true;
                   }
                 }
                 // this.weekDays[shift.shiftDate] = {has: true};
-                shift.monthText = date.toLocaleString('en-US', {month: 'long'});
-                shift.dayText = date.toLocaleString('en-US', {weekday: 'long'});
-                shift.dayNumber = date.getDay();
+                shift.monthText = date.toLocaleString('en-US', {month: this.monthTextFormat});
+                shift.dayText = date.toLocaleString('en-US', {weekday: this.dayTextFormat});
+                shift.dayNumber = date.getDate();
 
                 this.shifts.push(shift);
               }
@@ -231,31 +243,31 @@ export class EmployeeShiftsPage {
   }
 
   public defineAbsences(shifts, openShifts, days, absences) {
-    this.absenceTypes = absences;
-    let weekDays = Object.keys(this.weekDays);
-    weekDays.forEach(weekDay => {
-      if (this.employee.absences[weekDay] !== undefined) {
-        let absence = this.employee.absences[weekDay];
-        console.log('±±±±±±±± ABSENCE ±±±±±±±±');
-        console.log(absence);
+    for(let i in this.weekDays) {
+      let weekDay = this.weekDays[i];
+      if (this.employee.absences[weekDay.date] !== undefined) {
+        let absence = this.employee.absences[weekDay.date];
         for (let key in this.absenceTypes) {
           if (this.absenceTypes.hasOwnProperty(key)) {
             let absenceType = this.absenceTypes[key];
             if (absenceType.id === absence.absenceTypeId) {
-              this.weekDays[weekDay] = {has: true};
-              let date = new Date(weekDay);
+              this.weekDays[i].has = true;
+              let date = new Date(weekDay.date);
               this.shifts.push({
                 title: absenceType.description,
-                shiftDate: weekDay,
-                monthText: date.toLocaleString('en-US', {month: 'long'}),
-                dayText: date.toLocaleString('en-US', {weekday: 'long'}),
-                dayNumber: date.getDay()
+                shiftDate: weekDay.date,
+                monthText: date.toLocaleString('en-US', {month: this.monthTextFormat}),
+                dayText: date.toLocaleString('en-US', {weekday: this.dayTextFormat}),
+                dayNumber: date.getDate()
               });
             }
           }
         }
       }
-    })
+    }
+    console.log('After defined absence');
+    console.log(this.weekDays);
+    console.log(this.shifts);
   }
 
   public defineOpenShifts(shifts, openShifts, days, absences) {
@@ -270,9 +282,9 @@ export class EmployeeShiftsPage {
               title: 'Request pending',
               openShift: true,
               shiftDate: weekDay,
-              monthText: date.toLocaleString('en-US', {month: 'long'}),
-              dayText: date.toLocaleString('en-US', {weekday: 'long'}),
-              dayNumber: date.getDay()
+              monthText: date.toLocaleString('en-US', {month: this.monthTextFormat}),
+              dayText: date.toLocaleString('en-US', {weekday: this.dayTextFormat}),
+              dayNumber: date.getDate()
             })
           }
         }
@@ -294,9 +306,9 @@ export class EmployeeShiftsPage {
           this.shifts.push({
             title: 'Day Off',
             shiftDate: item.date,
-            monthText: date.toLocaleString('en-US', {month: 'long'}),
-            dayText: date.toLocaleString('en-US', {weekday: 'long'}),
-            dayNumber: date.getDay()
+            monthText: date.toLocaleString('en-US', {month: this.monthTextFormat}),
+            dayText: date.toLocaleString('en-US', {weekday: this.dayTextFormat}),
+            dayNumber: date.getDate()
           })
         }
       }
@@ -331,26 +343,26 @@ export class EmployeeShiftsPage {
   }
 
 
-  private getShifts(date, startDate, endDate, options) {
+  public getShifts(date, startDate, endDate, options) {
     return this.rosterProvider.getLoggedEmployeeShifts(date, startDate, endDate, options).then(result => {
       return result;
     })
   }
 
-  private getOpenShifts(start, end) {
+  public getOpenShifts(start, end) {
     return this.shiftsProvider.getMyRequests(start, end).then(result => {
       return result;
     })
   }
 
-  private getDays(companyId, params) {
+  public getDays(companyId, params) {
     console.log(params);
     return this.rosterProvider.getRosterDaysStatus(companyId, params).then(result => {
       return result;
     })
   }
 
-  private getAbsenceTypes(corporateId) {
+  public getAbsenceTypes(corporateId) {
     return this.absenceProvider.getAbsenceTypes(corporateId).then(result => {
       return result;
     })

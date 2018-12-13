@@ -46,6 +46,9 @@ export class RosterProvider {
       params.end = endDate;
     }
 
+    console.log('PARAMS');
+    console.log(params);
+
     return new Promise((resolve, reject) => {
       let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
       this.http.get(this.serverProvider.getServerURL() + 'hrm/rosterEditor/shifts/myShifts', {headers: headers, params: params}).subscribe((result: any) => {
