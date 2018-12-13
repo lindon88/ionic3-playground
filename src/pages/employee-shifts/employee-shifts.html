@@ -27,8 +27,8 @@
           <ion-option *ngFor="let roster of weekRosters" [value]="roster">{{roster.description}}</ion-option>
         </ion-select>
       </ion-item>
-      <ion-item *ngIf="viewType === VIEW_MONTH">
-        <ion-calendar #calendar></ion-calendar>
+      <ion-item *ngIf="viewType === VIEW_MONTH" class="calendar-wrapper">
+        <ion-calendar #calendar [events]="currentEvents"  (onDaySelect)="onDaySelect($event)"></ion-calendar>
       </ion-item>
     </ion-list>
 

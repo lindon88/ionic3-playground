@@ -65,15 +65,41 @@ export class EmployeeShiftsPage {
   public daysObservableResponse: any;
   public absenceTypesObservableResponse: any;
 
+  // monthly
+  public currentEvents: any = [];
+  public monthViewData: any = [];
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public rosterProvider: RosterProvider, public shiftsProvider: ShiftsProvider, public absenceProvider: AbsenceProvider) {
   }
 
   ionViewDidLoad() {
+    // this.currentEvents = [
+    //   {
+    //     year: 2018,
+    //     month: 11,
+    //     date: 13
+    //   },
+    //   {
+    //     year: 2018,
+    //     month: 11,
+    //     date: 14
+    //   },
+    //   {
+    //     year: 2018,
+    //     month: 11,
+    //     date: 21
+    //   }
+    // ];
     this.loadWeekRosters(this.currentCompanyId);
     this.viewType = this.selectedView.code;
     let date = new Date();
     console.log(this.convertDateToLocale(date, 'yyyy-MM-dd'));
     this.setMonthDayFormat();
+
+    // load month
+    let monthStartDate = new Date(date.getFullYear(), date.getMonth(), 1);
+    let monthEndDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    this.loadEmployeeMonthShifts(this.convertDateToLocale(monthStartDate, 'yyyy-MM-dd'), this.convertDateToLocale(monthEndDate, 'yyyy-MM-dd'));
   }
 
 
@@ -182,6 +208,82 @@ export class EmployeeShiftsPage {
 
       console.log(this.shifts);
     })
+  }
+
+  public loadEmployeeMonthShifts(startDate, endDate) {
+    console.clear();
+    console.log('MONTH');
+    this.monthViewData = [];
+    this.shifts = [];
+
+    let observableBatch = [];
+    observableBatch.push(this.getShifts(undefined, startDate, endDate, {publishedOnly: true}));
+    observableBatch.push(this.getOpenShifts(startDate, endDate));
+
+    Observable.forkJoin(observableBatch).subscribe(result => {
+      console.log(result);
+      this.shiftsObservableResponse = result[0];
+      this.openShiftsObservableResponse = result[1];
+
+      if(this.shiftsObservableResponse && this.shiftsObservableResponse !== null && this.shiftsObservableResponse.employees !== undefined) {
+        let employee = this.shiftsObservableResponse.employees[0];
+
+        if(employee.absences !== undefined) {
+          this.defineMonthDayData(employee.absences, 'red');
+        }
+
+        this.defineMonthShifts(this.shiftsObservableResponse, this.openShiftsObservableResponse);
+        //
+      }
+      this.defineMonthOpenShifts(this.openShiftsObservableResponse);
+    })
+  }
+
+  public defineMonthShifts(shiftsResponse, openShiftsResponse) {
+    let shifts = [];
+    let employee = shiftsResponse.employees[0];
+    let shiftsKeys = Object.keys(employee.shifts);
+    shiftsKeys.forEach(key => {
+      let currentShifts = employee.shifts[key];
+      for(let i in currentShifts) {
+        if(currentShifts.hasOwnProperty(i)) {
+          let shift = currentShifts[i];
+          this.defineShiftDropCancelStatus(shift, openShiftsResponse);
+
+          if(!shift.delete && !shift.hiddenShift) {
+            if(shifts[key] === undefined) {
+              shifts[key] = [];
+            }
+            shifts[key].push(shift);
+
+            let newDate = new Date(shift.shiftDate);
+            let dateObj = {
+              year: newDate.getFullYear(),
+              month: newDate.getMonth(),
+              date: newDate.getDate()
+            };
+            this.currentEvents.push(dateObj);
+          }
+        }
+      }
+    });
+    console.log('DEFINED MONTH SHIFTS');
+    console.log(shifts);
+    this.defineMonthDayData(shifts, 'purple');
+  }
+
+  public defineMonthOpenShifts(openShiftResponse) {
+    if(openShiftResponse && openShiftResponse.length > 0) {
+      let openShiftsObj = {};
+      openShiftResponse.forEach(shift => {
+        if(shift.requestType === 'CAN_WORK' && shift.shiftType === 'OPEN_SHIFT' && shift.status === 'PENDING') {
+          openShiftsObj[shift.date].has = true;
+        }
+      });
+      console.log('OPEN');
+      console.log(openShiftsObj);
+      this.defineMonthDayData(openShiftsObj, 'green');
+    }
   }
 
   /**
@@ -342,27 +444,31 @@ export class EmployeeShiftsPage {
     this.loadEmployeeShifts(undefined, this.selectedRoster.startDate, this.selectedRoster.endDate);
   }
 
+  public onDaySelect(event) {
+    console.log(event);
+  }
 
-  public getShifts(date, startDate, endDate, options) {
+
+  private getShifts(date, startDate, endDate, options) {
     return this.rosterProvider.getLoggedEmployeeShifts(date, startDate, endDate, options).then(result => {
       return result;
     })
   }
 
-  public getOpenShifts(start, end) {
+  private getOpenShifts(start, end) {
     return this.shiftsProvider.getMyRequests(start, end).then(result => {
       return result;
     })
   }
 
-  public getDays(companyId, params) {
+  private getDays(companyId, params) {
     console.log(params);
     return this.rosterProvider.getRosterDaysStatus(companyId, params).then(result => {
       return result;
     })
   }
 
-  public getAbsenceTypes(corporateId) {
+  private getAbsenceTypes(corporateId) {
     return this.absenceProvider.getAbsenceTypes(corporateId).then(result => {
       return result;
     })
@@ -415,6 +521,28 @@ export class EmployeeShiftsPage {
   private sortShiftByDate(array) {
     return array.sort(function(a, b) {
       return new Date(a.shiftDate).getTime() - new Date(b.shiftDate).getTime();
+    })
+  }
+
+  private defineMonthDayData(data, color) {
+    let keys = Object.keys(data);
+    keys.forEach(key => {
+      let count = 0;
+      if(data[key] !== undefined) {
+        count = data[key].length;
+      } else if (data[key] !== undefined) {
+        count = 1;
+      }
+
+      if(this.monthViewData[key] !== undefined) {
+        this.monthViewData[key].color = 'purple';
+        this.monthViewData[key].count += count;
+      } else {
+        this.monthViewData[key] = {
+          color: color,
+          count: count
+        };
+      }
     })
   }
 

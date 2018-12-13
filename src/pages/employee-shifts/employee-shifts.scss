@@ -8,3 +8,62 @@
     flex: none!important;
   }
 }
+
+// calendar
+ion-calendar .calendar-row .eventBlip {
+  background: #673ab7!important;
+  width: 6.5px;
+  height: 6.5px;
+  display: inline-block;
+  border-radius: 6.5px;
+  position: absolute;
+  top: 3.5px;
+  right: 3.5px;
+  z-index: 100;
+}
+
+ion-calendar .calendar-row .select {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  color: #fff;
+  background: #3fb6df!important;
+}
+
+ion-calendar .calendar-row .today .select{
+  color: #fff;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  background: #3fb6df!important;
+}
+
+ion-calendar .calendar-row .today{
+  color: #737373;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  background: #E3F2FF!important;
+  &.select {
+    background: #3fb6df!important;
+    color: #fff;
+  }
+}
+
+ion-calendar .calendar-row .calendar-col {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding: 0.8rem;
+  font-size: 1.2rem;
+  border-left: 0!important;
+  border-top: 0!important;
+}
+
+.calendar-wrapper {
+  .item-inner {
+    padding: 0!important;
+  }
+}
