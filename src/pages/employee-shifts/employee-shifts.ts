@@ -68,6 +68,7 @@ export class EmployeeShiftsPage {
   // monthly
   public currentEvents: any = [];
   public monthViewData: any = [];
+  public monthShift: any = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public rosterProvider: RosterProvider, public shiftsProvider: ShiftsProvider, public absenceProvider: AbsenceProvider) {
   }
@@ -198,6 +199,7 @@ export class EmployeeShiftsPage {
     console.clear();
     console.log('MONTH');
     this.monthViewData = [];
+    this.monthShift = [];
     this.shifts = [];
 
     let observableBatch = [];
@@ -210,11 +212,6 @@ export class EmployeeShiftsPage {
       this.openShiftsObservableResponse = result[1];
 
       if(this.shiftsObservableResponse && this.shiftsObservableResponse !== null && this.shiftsObservableResponse.employees !== undefined) {
-        let employee = this.shiftsObservableResponse.employees[0];
-
-        if(employee.absences !== undefined) {
-          this.defineMonthDayData(employee.absences, 'red');
-        }
 
         this.defineMonthShifts(this.shiftsObservableResponse, this.openShiftsObservableResponse);
         //
@@ -229,8 +226,9 @@ export class EmployeeShiftsPage {
    * @param openShiftsResponse
    */
   public defineMonthShifts(shiftsResponse, openShiftsResponse) {
-    let shifts = [];
     this.currentEvents = [];
+    let shifts = [];
+
     let employee = shiftsResponse.employees[0];
     let shiftsKeys = Object.keys(employee.shifts);
     shiftsKeys.forEach(key => {
@@ -264,23 +262,73 @@ export class EmployeeShiftsPage {
       }
 
     });
+
+    if(employee.absences !== undefined) {
+      let absences = employee.absences;
+      console.log("0**0*0*0*0**0*0*0*00**0*   * 0*0**0*00*0*   ABSENCES");
+      for(let i in absences) {
+        let count = 0;
+        if(absences.hasOwnProperty(i)){
+          console.log(absences[i]);
+          console.log(i);
+          if(typeof absences[i] === 'object') {
+            count = 1;
+          } else {
+            count = absences[i].length;
+          }
+          let newDate = new Date(i);
+          let dateObj = {
+            year: newDate.getFullYear(),
+            month: newDate.getMonth(),
+            date: newDate.getDate(),
+            color: 'red',
+            count: count
+          };
+          this.currentEvents.push(dateObj);
+          console.log(dateObj);
+        }
+      }
+    }
+
     console.log('DEFINED MONTH SHIFTS');
     console.log(shifts);
-    this.defineMonthDayData(shifts, 'purple');
     console.log(this.currentEvents);
   }
 
+  public defineMonthAbsences(absences) {
+
+  }
+
   public defineMonthOpenShifts(openShiftResponse) {
+    // this.currentEvents = [];
+    let count = 0;
     if(openShiftResponse && openShiftResponse.length > 0) {
       let openShiftsObj = {};
       openShiftResponse.forEach(shift => {
         if(shift.requestType === 'CAN_WORK' && shift.shiftType === 'OPEN_SHIFT' && shift.status === 'PENDING') {
-          openShiftsObj[shift.date] = {has: true};
+          openShiftsObj[shift.date] = shift;
+          console.log(openShiftsObj);
+          openShiftsObj[shift.date].has = true;
+          if(Array.isArray(openShiftsObj[shift.date])){
+            count = openShiftsObj[shift.date].length;
+          } else if(typeof openShiftsObj[shift.date] === 'object'){
+            count = 1;
+          }
+          console.log('*****************COUNT: ' + count);
+          console.log(openShiftsObj[shift.date]);
+          let newDate = new Date(shift.date);
+          let dateObj = {
+            year: newDate.getFullYear(),
+            month: newDate.getMonth(),
+            date: newDate.getDate(),
+            color: 'green',
+            count: count
+          };
+          this.currentEvents.push(dateObj);
         }
       });
       console.log('OPEN');
       console.log(openShiftsObj);
-      this.defineMonthDayData(openShiftsObj, 'green');
     }
   }
 
@@ -417,9 +465,18 @@ export class EmployeeShiftsPage {
 
   public loadEmployeeShiftsForSelectedDate(date) {
     let formattedDate = this.convertDateToLocale(date, 'yyyy-MM-dd');
-    this.weekDays = [];
-    this.weekDays[formattedDate] = {has: false};
     this.loadEmployeeShifts(formattedDate, undefined, undefined);
+    for(let i in this.shifts) {
+      if(this.shifts.hasOwnProperty(i)){
+        let shift = this.shifts[i];
+        console.log(shift);
+        if(shift.id) {
+          this.monthShift.push(shift);
+        }
+      }
+    }
+    console.log(this.monthShift);
+    // console.log(this.shifts);
   }
 
   public convertDateToLocale(date, format) {
@@ -443,7 +500,12 @@ export class EmployeeShiftsPage {
   }
 
   public onDaySelect(event) {
+    this.monthShift = [];
+    let date = new Date(event.year, event.month, event.date);
     console.log(event);
+    console.log(date);
+    this.loadEmployeeShiftsForSelectedDate(date);
+
   }
 
   public onMonthSelect(event) {
@@ -529,30 +591,5 @@ export class EmployeeShiftsPage {
       return new Date(a.shiftDate).getTime() - new Date(b.shiftDate).getTime();
     })
   }
-
-  private defineMonthDayData(data, color) {
-    console.log("DEFINED MONTH DATA");
-    console.log(data);
-    let keys = Object.keys(data);
-    keys.forEach(key => {
-      let count = 0;
-      if(data[key] !== undefined) {
-        count = data[key].length;
-      } else if (data[key] !== undefined) {
-        count = 1;
-      }
-
-      if(this.monthViewData[key] !== undefined) {
-        this.monthViewData[key].color = 'purple';
-        this.monthViewData[key].count += count;
-      } else {
-        this.monthViewData[key] = {
-          color: color,
-          count: count
-        };
-      }
-    })
-  }
-
 
 }

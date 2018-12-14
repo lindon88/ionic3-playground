@@ -10,8 +10,20 @@
 }
 
 // calendar
-ion-calendar .calendar-row .eventBlip {
+ion-calendar .calendar-row .eventBlip .purple {
   background: #673ab7!important;
+}
+
+.purple {
+  background: #673ab7!important;
+}
+
+.green {
+  background: #8ac349!important;
+}
+
+.red {
+  background: #f44335!important;
 }
 
 ion-calendar .calendar-row .select {

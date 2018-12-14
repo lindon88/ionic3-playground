@@ -31,7 +31,7 @@ export class RosterProvider {
   public getLoggedEmployeeShifts(date, startDate, endDate, options) {
     let params:any = {};
     if(options !== undefined && options !== null && isObject(options)) {
-      params = options;
+      params.options = options;
     }
 
     if(date) {
