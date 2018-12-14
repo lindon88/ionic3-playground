@@ -73,23 +73,7 @@ export class EmployeeShiftsPage {
   }
 
   ionViewDidLoad() {
-    // this.currentEvents = [
-    //   {
-    //     year: 2018,
-    //     month: 11,
-    //     date: 13
-    //   },
-    //   {
-    //     year: 2018,
-    //     month: 11,
-    //     date: 14
-    //   },
-    //   {
-    //     year: 2018,
-    //     month: 11,
-    //     date: 21
-    //   }
-    // ];
+
     this.loadWeekRosters(this.currentCompanyId);
     this.viewType = this.selectedView.code;
     let date = new Date();
@@ -251,6 +235,8 @@ export class EmployeeShiftsPage {
     shiftsKeys.forEach(key => {
       let currentShifts = employee.shifts[key];
       for(let i in currentShifts) {
+        let count = 0;
+        count = currentShifts.length;
         if(currentShifts.hasOwnProperty(i)) {
           let shift = currentShifts[i];
           this.defineShiftDropCancelStatus(shift, openShiftsResponse);
@@ -260,21 +246,27 @@ export class EmployeeShiftsPage {
               shifts[key] = [];
             }
             shifts[key].push(shift);
+            console.log('SHIFT TO DEFINE COLOR');
+            console.log(shift);
 
             let newDate = new Date(shift.shiftDate);
             let dateObj = {
               year: newDate.getFullYear(),
               month: newDate.getMonth(),
-              date: newDate.getDate()
+              date: newDate.getDate(),
+              color: 'purple',
+              count: count
             };
             this.currentEvents.push(dateObj);
           }
         }
       }
+
     });
     console.log('DEFINED MONTH SHIFTS');
     console.log(shifts);
     this.defineMonthDayData(shifts, 'purple');
+    console.log(this.currentEvents);
   }
 
   public defineMonthOpenShifts(openShiftResponse) {
@@ -530,6 +522,8 @@ export class EmployeeShiftsPage {
   }
 
   private defineMonthDayData(data, color) {
+    console.log("DEFINED MONTH DATA");
+    console.log(data);
     let keys = Object.keys(data);
     keys.forEach(key => {
       let count = 0;
@@ -550,5 +544,6 @@ export class EmployeeShiftsPage {
       }
     })
   }
+
 
 }

@@ -28,7 +28,7 @@
         </ion-select>
       </ion-item>
       <ion-item *ngIf="viewType === VIEW_MONTH" class="calendar-wrapper">
-        <ion-calendar #calendar [events]="currentEvents"  (onDaySelect)="onDaySelect($event)"></ion-calendar>
+        <ion-calendar #calendar [events]="currentEvents"  (onDaySelect)="onDaySelect($event)" lang="en"></ion-calendar>
       </ion-item>
     </ion-list>
 
