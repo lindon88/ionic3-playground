@@ -230,6 +230,7 @@ export class EmployeeShiftsPage {
    */
   public defineMonthShifts(shiftsResponse, openShiftsResponse) {
     let shifts = [];
+    this.currentEvents = [];
     let employee = shiftsResponse.employees[0];
     let shiftsKeys = Object.keys(employee.shifts);
     shiftsKeys.forEach(key => {
@@ -274,7 +275,7 @@ export class EmployeeShiftsPage {
       let openShiftsObj = {};
       openShiftResponse.forEach(shift => {
         if(shift.requestType === 'CAN_WORK' && shift.shiftType === 'OPEN_SHIFT' && shift.status === 'PENDING') {
-          openShiftsObj[shift.date].has = true;
+          openShiftsObj[shift.date] = {has: true};
         }
       });
       console.log('OPEN');
@@ -443,6 +444,14 @@ export class EmployeeShiftsPage {
 
   public onDaySelect(event) {
     console.log(event);
+  }
+
+  public onMonthSelect(event) {
+    console.log(event);
+    // load month
+    let monthStartDate = new Date(event.year, event.month, 1);
+    let monthEndDate = new Date(event.year, event.month + 1, 0);
+    this.loadEmployeeMonthShifts(this.convertDateToLocale(monthStartDate, 'yyyy-MM-dd'), this.convertDateToLocale(monthEndDate, 'yyyy-MM-dd'));
   }
 
 
