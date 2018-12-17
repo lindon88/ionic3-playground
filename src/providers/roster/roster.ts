@@ -31,10 +31,11 @@ export class RosterProvider {
   public getLoggedEmployeeShifts(date, startDate, endDate, options) {
     let params:any = {};
     if(options !== undefined && options !== null && isObject(options)) {
-      params.options = options;
+      params = options;
     }
 
     if(date) {
+      console.log(date);
       params.date = date;
     }
 
@@ -53,6 +54,7 @@ export class RosterProvider {
       let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
       this.http.get(this.serverProvider.getServerURL() + 'hrm/rosterEditor/shifts/myShifts', {headers: headers, params: params}).subscribe((result: any) => {
         if(result !== undefined) {
+          console.log(result);
           resolve(result);
         } else {
           resolve(null);

@@ -78,7 +78,6 @@ export class EmployeeShiftsPage {
     this.loadWeekRosters(this.currentCompanyId);
     this.viewType = this.selectedView.code;
     let date = new Date();
-    console.log(this.convertDateToLocale(date, 'yyyy-MM-dd'));
     this.setMonthDayFormat();
 
     // load month
@@ -86,7 +85,6 @@ export class EmployeeShiftsPage {
     let monthEndDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
     this.loadEmployeeMonthShifts(this.convertDateToLocale(monthStartDate, 'yyyy-MM-dd'), this.convertDateToLocale(monthEndDate, 'yyyy-MM-dd'));
   }
-
 
   public setMonthDayFormat() {
     if (window.screen.width < 380) {
@@ -136,14 +134,10 @@ export class EmployeeShiftsPage {
         return;
       }
       this.weekRosters = this.sortByDate(this.weekRosters);
-      console.log(this.weekRosters);
       this.selectedRoster = this.weekRosters[0];
-      console.log('SELECTED');
-      console.log(this.selectedRoster);
       this.weekRosterStart = this.selectedRoster.startDate;
       this.weekRosterEnd = this.selectedRoster.endDate;
 
-      console.log(this.selectedRoster.startDate + ' - ' + this.selectedRoster.endDate);
 
       this.loadEmployeeShifts(undefined, this.selectedRoster.startDate, this.selectedRoster.endDate);
     }, error => {
@@ -153,16 +147,15 @@ export class EmployeeShiftsPage {
 
   public loadEmployeeShifts(date, startDate, endDate) {
     let observableBatch = [];
-    observableBatch.push(this.getShifts(date, startDate, endDate, {publishedOnly: true}));
 
     if (startDate !== undefined && endDate !== undefined) {
+      observableBatch.push(this.getShifts(undefined, startDate, endDate, {publishedOnly: true}));
       observableBatch.push(this.getOpenShifts(startDate, endDate));
       observableBatch.push(this.getDays(this.currentCompanyId, {date: startDate}));
-      console.log('-+-+-+-+-+-+-+-Start date: ' + startDate);
     } else if (date !== undefined) {
+      observableBatch.push(this.getShifts(date, undefined, undefined, {publishedOnly: true}));
       observableBatch.push(this.getOpenShifts(date, date));
       observableBatch.push(this.getDays(this.currentCompanyId, {date: date}));
-      console.log('+-+-+-+-+-+-+-+Date: ' + date);
     }
 
 
@@ -170,7 +163,6 @@ export class EmployeeShiftsPage {
 
 
     Observable.forkJoin(observableBatch).subscribe(response => {
-      console.log(response);
 
       if (!response) return;
 
@@ -182,7 +174,6 @@ export class EmployeeShiftsPage {
       // define all week days
       this.weekDays = this.daysObservableResponse;
       this.absenceTypes = this.absenceTypesObservableResponse;
-      console.log(this.absenceTypes);
 
       this.defineShifts(this.shiftsObservableResponse, this.openShiftsObservableResponse, this.daysObservableResponse, this.absenceTypesObservableResponse);
       this.defineAbsences(this.shiftsObservableResponse, this.openShiftsObservableResponse, this.daysObservableResponse, this.absenceTypes);
@@ -190,16 +181,13 @@ export class EmployeeShiftsPage {
       this.fillFullWeekWithData(this.shiftsObservableResponse, this.openShiftsObservableResponse, this.daysObservableResponse, this.absenceTypesObservableResponse);
 
       this.shifts = this.sortShiftByDate(this.shifts);
-
       console.log(this.shifts);
     })
   }
 
   public loadEmployeeMonthShifts(startDate, endDate) {
     console.clear();
-    console.log('MONTH');
     this.monthViewData = [];
-    this.monthShift = [];
     this.shifts = [];
 
     let observableBatch = [];
@@ -207,7 +195,6 @@ export class EmployeeShiftsPage {
     observableBatch.push(this.getOpenShifts(startDate, endDate));
 
     Observable.forkJoin(observableBatch).subscribe(result => {
-      console.log(result);
       this.shiftsObservableResponse = result[0];
       this.openShiftsObservableResponse = result[1];
 
@@ -245,8 +232,6 @@ export class EmployeeShiftsPage {
               shifts[key] = [];
             }
             shifts[key].push(shift);
-            console.log('SHIFT TO DEFINE COLOR');
-            console.log(shift);
 
             let newDate = new Date(shift.shiftDate);
             let dateObj = {
@@ -265,12 +250,9 @@ export class EmployeeShiftsPage {
 
     if(employee.absences !== undefined) {
       let absences = employee.absences;
-      console.log("0**0*0*0*0**0*0*0*00**0*   * 0*0**0*00*0*   ABSENCES");
       for(let i in absences) {
         let count = 0;
         if(absences.hasOwnProperty(i)){
-          console.log(absences[i]);
-          console.log(i);
           if(typeof absences[i] === 'object') {
             count = 1;
           } else {
@@ -285,14 +267,9 @@ export class EmployeeShiftsPage {
             count: count
           };
           this.currentEvents.push(dateObj);
-          console.log(dateObj);
         }
       }
     }
-
-    console.log('DEFINED MONTH SHIFTS');
-    console.log(shifts);
-    console.log(this.currentEvents);
   }
 
   public defineMonthAbsences(absences) {
@@ -307,15 +284,12 @@ export class EmployeeShiftsPage {
       openShiftResponse.forEach(shift => {
         if(shift.requestType === 'CAN_WORK' && shift.shiftType === 'OPEN_SHIFT' && shift.status === 'PENDING') {
           openShiftsObj[shift.date] = shift;
-          console.log(openShiftsObj);
           openShiftsObj[shift.date].has = true;
           if(Array.isArray(openShiftsObj[shift.date])){
             count = openShiftsObj[shift.date].length;
           } else if(typeof openShiftsObj[shift.date] === 'object'){
             count = 1;
           }
-          console.log('*****************COUNT: ' + count);
-          console.log(openShiftsObj[shift.date]);
           let newDate = new Date(shift.date);
           let dateObj = {
             year: newDate.getFullYear(),
@@ -327,8 +301,6 @@ export class EmployeeShiftsPage {
           this.currentEvents.push(dateObj);
         }
       });
-      console.log('OPEN');
-      console.log(openShiftsObj);
     }
   }
 
@@ -342,7 +314,6 @@ export class EmployeeShiftsPage {
   public defineShifts(shifts, openShifts, days, absences) {
     this.employee = shifts.employees[0];
     this.shifts = [];
-    console.log(this.employee);
     if (this.employee.shifts !== undefined) {
       for (let i in this.employee.shifts) {
         if (this.employee.shifts.hasOwnProperty(i)) {
@@ -353,8 +324,6 @@ export class EmployeeShiftsPage {
               let shift = item[j];
               shift = this.defineShiftDropCancelStatus(shift, openShifts);
               shift = this.checkIfShiftLocked(days, shift);
-              console.log('ITEM');
-              console.log(shift);
 
               // check if shifty has warnings
               if (shift.warnings !== undefined && shift.warnings !== null && shift.warnings.length > 0) {
@@ -372,7 +341,6 @@ export class EmployeeShiftsPage {
                 for(let k in this.weekDays) {
                   let weekDay = this.weekDays[k];
                   if(weekDay.date === shift.shiftDate) {
-                    console.log(this.weekDays[k]);
                     this.weekDays[k].has = true;
                   }
                 }
@@ -413,9 +381,6 @@ export class EmployeeShiftsPage {
         }
       }
     }
-    console.log('After defined absence');
-    console.log(this.weekDays);
-    console.log(this.shifts);
   }
 
   public defineOpenShifts(shifts, openShifts, days, absences) {
@@ -441,14 +406,10 @@ export class EmployeeShiftsPage {
   }
 
   public fillFullWeekWithData(shifts, openShifts, days, absences) {
-    console.log('WEEKDAYS DB');
-    console.log(this.weekDays);
-    console.log(this.shifts);
     for (let i in this.weekDays) {
       if (this.weekDays.hasOwnProperty(i)) {
         let item = this.weekDays[i];
 
-        console.log(item);
         if(!item.has) {
           let date = new Date(item.date);
           this.shifts.push({
@@ -466,17 +427,17 @@ export class EmployeeShiftsPage {
   public loadEmployeeShiftsForSelectedDate(date) {
     let formattedDate = this.convertDateToLocale(date, 'yyyy-MM-dd');
     this.loadEmployeeShifts(formattedDate, undefined, undefined);
-    for(let i in this.shifts) {
-      if(this.shifts.hasOwnProperty(i)){
-        let shift = this.shifts[i];
-        console.log(shift);
-        if(shift.id) {
-          this.monthShift.push(shift);
+    if(this.shifts.length > 0) {
+      for (let i in this.shifts) {
+        if (this.shifts.hasOwnProperty(i)) {
+          let shift = this.shifts[i];
+          if (shift.id) {
+            this.monthShift.push(shift);
+          }
         }
       }
     }
     console.log(this.monthShift);
-    // console.log(this.shifts);
   }
 
   public convertDateToLocale(date, format) {
@@ -494,22 +455,20 @@ export class EmployeeShiftsPage {
     this.weekRosterStart = this.selectedRoster.startDate;
     this.weekRosterEnd = this.selectedRoster.endDate;
 
-    console.log(this.selectedRoster.startDate + ' - ' + this.selectedRoster.endDate);
-
     this.loadEmployeeShifts(undefined, this.selectedRoster.startDate, this.selectedRoster.endDate);
   }
 
   public onDaySelect(event) {
     this.monthShift = [];
-    let date = new Date(event.year, event.month, event.date);
-    console.log(event);
-    console.log(date);
-    this.loadEmployeeShiftsForSelectedDate(date);
+    this.weekDays = [];
 
+    let date = new Date(event.year, event.month, event.date);
+    this.shifts = [];
+    this.loadEmployeeShiftsForSelectedDate(date);
   }
 
   public onMonthSelect(event) {
-    console.log(event);
+    this.shifts = [];
     // load month
     let monthStartDate = new Date(event.year, event.month, 1);
     let monthEndDate = new Date(event.year, event.month + 1, 0);
@@ -530,7 +489,6 @@ export class EmployeeShiftsPage {
   }
 
   private getDays(companyId, params) {
-    console.log(params);
     return this.rosterProvider.getRosterDaysStatus(companyId, params).then(result => {
       return result;
     })
