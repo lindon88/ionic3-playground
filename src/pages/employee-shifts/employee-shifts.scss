@@ -71,3 +71,26 @@ ion-calendar .calendar-row .calendar-col {
     padding: 0!important;
   }
 }
+
+.calendar-header {
+  ion-col.col {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+}
+
+.week-names {
+  color: #737373;
+  font-weight: 600;
+}
+
+.not-this-month {
+  background-color: #fff!important;
+}
+
+ion-calendar {
+  ion-grid.grid {
+    padding: 0!important;
+  }
+}
