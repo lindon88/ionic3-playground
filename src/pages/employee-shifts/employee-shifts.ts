@@ -243,7 +243,7 @@ export class EmployeeShiftsPage {
 
             for(let ev in this.currentEvents) {
               let currentEvent = this.currentEvents[ev];
-              if(currentEvent.year === newDate.getFullYear() && currentEvent.month === currentEvent.month && currentEvent.date === newDate.getDate()) {
+              if(currentEvent.year === newDate.getFullYear() && currentEvent.month === newDate.getMonth() && currentEvent.date === newDate.getDate()) {
                 console.log('EXISTS');
                 this.currentEvents[ev]--;
               }
@@ -274,7 +274,20 @@ export class EmployeeShiftsPage {
           if (typeof absences[i] === 'object') {
             count = 1;
           } else {
-            count = absences[i].length;
+            for(let ev in this.currentEvents) {
+              let currentEvent = this.currentEvents[ev];
+              if(currentEvent.year === newDate.getFullYear() && currentEvent.month === newDate.getMonth() && currentEvent.date === newDate.getDate()) {
+                console.log('EXISTS');
+                if(currentEvent.color === 'purple') {
+                  count = currentEvent.count + absences[i].length;
+                  currentEvent--;
+                } else {
+                  currentEvent--;
+                  count = absences[i].length;
+                }
+              }
+            }
+            // count = absences[i].length;
             console.log(this.currentEvents);
           }
 
@@ -305,15 +318,22 @@ export class EmployeeShiftsPage {
         if (shift.requestType === 'CAN_WORK' && shift.shiftType === 'OPEN_SHIFT' && shift.status === 'PENDING') {
           openShiftsObj[shift.date] = shift;
           openShiftsObj[shift.date].has = true;
-          if (Array.isArray(openShiftsObj[shift.date])) {
-            console.log(this.currentEvents);
-            count = openShiftsObj[shift.date].length;
-          } else if (typeof openShiftsObj[shift.date] === 'object') {
-            console.log('EVENTS');
-            console.log(this.currentEvents);
-            count = 1;
-          }
           let newDate = new Date(shift.date);
+          if(typeof openShiftsObj[shift.date] === 'object') {
+            for(let i in this.currentEvents) {
+              let currentEvent = this.currentEvents[i];
+              if(currentEvent.year === newDate.getFullYear() && currentEvent.month === newDate.getMonth() && currentEvent.date === newDate.getDate()) {
+                // exists, add to existing one
+                count = currentEvent.count + 1;
+                currentEvent.count = count;
+              } else {
+                count = 1;
+              }
+            }
+          } else {
+            count = openShiftsObj[shift.date].length;
+          }
+
           let dateObj = {
             year: newDate.getFullYear(),
             month: newDate.getMonth(),
@@ -322,6 +342,7 @@ export class EmployeeShiftsPage {
             count: count
           };
           this.currentEvents.push(dateObj);
+          console.log(this.currentEvents);
           console.log(openShiftsObj[shift.date]);
           this.shifts.push(openShiftsObj[shift.date]);
         }
