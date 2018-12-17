@@ -344,7 +344,7 @@ export class EmployeeShiftsPage {
           this.currentEvents.push(dateObj);
           console.log(this.currentEvents);
           console.log(openShiftsObj[shift.date]);
-          this.shifts.push(openShiftsObj[shift.date]);
+          // this.shifts.push(openShiftsObj[shift.date]);
         }
       });
     }
