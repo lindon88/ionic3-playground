@@ -70,6 +70,8 @@ export class EmployeeShiftsPage {
   public monthViewData: any = [];
   public monthShift: any = [];
 
+  public dayShiftCount: number  = 0;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public rosterProvider: RosterProvider, public shiftsProvider: ShiftsProvider, public absenceProvider: AbsenceProvider) {
   }
 
@@ -159,7 +161,7 @@ export class EmployeeShiftsPage {
     }
 
 
-      observableBatch.push(this.getAbsenceTypes(this.currentCorporateId));
+    observableBatch.push(this.getAbsenceTypes(this.currentCorporateId));
 
 
     Observable.forkJoin(observableBatch).subscribe(response => {
@@ -198,12 +200,13 @@ export class EmployeeShiftsPage {
       this.shiftsObservableResponse = result[0];
       this.openShiftsObservableResponse = result[1];
 
-      if(this.shiftsObservableResponse && this.shiftsObservableResponse !== null && this.shiftsObservableResponse.employees !== undefined) {
+      if (this.shiftsObservableResponse && this.shiftsObservableResponse !== null && this.shiftsObservableResponse.employees !== undefined) {
 
         this.defineMonthShifts(this.shiftsObservableResponse, this.openShiftsObservableResponse);
+        this.defineMonthOpenShifts(this.openShiftsObservableResponse);
         //
       }
-      this.defineMonthOpenShifts(this.openShiftsObservableResponse);
+
     })
   }
 
@@ -220,20 +223,32 @@ export class EmployeeShiftsPage {
     let shiftsKeys = Object.keys(employee.shifts);
     shiftsKeys.forEach(key => {
       let currentShifts = employee.shifts[key];
-      for(let i in currentShifts) {
+      for (let i in currentShifts) {
         let count = 0;
-        count = currentShifts.length;
-        if(currentShifts.hasOwnProperty(i)) {
+        if (currentShifts.hasOwnProperty(i)) {
           let shift = currentShifts[i];
-          this.defineShiftDropCancelStatus(shift, openShiftsResponse);
 
-          if(!shift.delete && !shift.hiddenShift) {
-            if(shifts[key] === undefined) {
+          shift = this.defineShiftDropCancelStatus(shift, openShiftsResponse);
+
+          if (!shift.delete && !shift.hiddenShift) {
+            if (shifts[key] === undefined) {
               shifts[key] = [];
             }
             shifts[key].push(shift);
+            count = shifts[key].length;
+            console.log("************  COUNT  ***************");
+            console.log(count);
 
             let newDate = new Date(shift.shiftDate);
+
+            for(let ev in this.currentEvents) {
+              let currentEvent = this.currentEvents[ev];
+              if(currentEvent.year === newDate.getFullYear() && currentEvent.month === currentEvent.month && currentEvent.date === newDate.getDate()) {
+                console.log('EXISTS');
+                this.currentEvents[ev]--;
+              }
+            }
+
             let dateObj = {
               year: newDate.getFullYear(),
               month: newDate.getMonth(),
@@ -245,20 +260,24 @@ export class EmployeeShiftsPage {
           }
         }
       }
+      console.log(this.currentEvents);
 
     });
 
-    if(employee.absences !== undefined) {
+    if (employee.absences !== undefined) {
       let absences = employee.absences;
-      for(let i in absences) {
+      console.log(absences);
+      for (let i in absences) {
         let count = 0;
-        if(absences.hasOwnProperty(i)){
-          if(typeof absences[i] === 'object') {
+        if (absences.hasOwnProperty(i)) {
+          let newDate = new Date(i);
+          if (typeof absences[i] === 'object') {
             count = 1;
           } else {
             count = absences[i].length;
+            console.log(this.currentEvents);
           }
-          let newDate = new Date(i);
+
           let dateObj = {
             year: newDate.getFullYear(),
             month: newDate.getMonth(),
@@ -272,6 +291,7 @@ export class EmployeeShiftsPage {
     }
   }
 
+
   public defineMonthAbsences(absences) {
 
   }
@@ -279,15 +299,18 @@ export class EmployeeShiftsPage {
   public defineMonthOpenShifts(openShiftResponse) {
     // this.currentEvents = [];
     let count = 0;
-    if(openShiftResponse && openShiftResponse.length > 0) {
+    if (openShiftResponse && openShiftResponse.length > 0) {
       let openShiftsObj = {};
       openShiftResponse.forEach(shift => {
-        if(shift.requestType === 'CAN_WORK' && shift.shiftType === 'OPEN_SHIFT' && shift.status === 'PENDING') {
+        if (shift.requestType === 'CAN_WORK' && shift.shiftType === 'OPEN_SHIFT' && shift.status === 'PENDING') {
           openShiftsObj[shift.date] = shift;
           openShiftsObj[shift.date].has = true;
-          if(Array.isArray(openShiftsObj[shift.date])){
+          if (Array.isArray(openShiftsObj[shift.date])) {
+            console.log(this.currentEvents);
             count = openShiftsObj[shift.date].length;
-          } else if(typeof openShiftsObj[shift.date] === 'object'){
+          } else if (typeof openShiftsObj[shift.date] === 'object') {
+            console.log('EVENTS');
+            console.log(this.currentEvents);
             count = 1;
           }
           let newDate = new Date(shift.date);
@@ -299,6 +322,8 @@ export class EmployeeShiftsPage {
             count: count
           };
           this.currentEvents.push(dateObj);
+          console.log(openShiftsObj[shift.date]);
+          this.shifts.push(openShiftsObj[shift.date]);
         }
       });
     }
@@ -338,9 +363,9 @@ export class EmployeeShiftsPage {
               // append shift that does not have delete status
               let date = new Date(shift.shiftDate);
               if (shift.delete === undefined && !shift.delete && !shift.hiddenShift) {
-                for(let k in this.weekDays) {
+                for (let k in this.weekDays) {
                   let weekDay = this.weekDays[k];
-                  if(weekDay.date === shift.shiftDate) {
+                  if (weekDay.date === shift.shiftDate) {
                     this.weekDays[k].has = true;
                   }
                 }
@@ -359,7 +384,7 @@ export class EmployeeShiftsPage {
   }
 
   public defineAbsences(shifts, openShifts, days, absences) {
-    for(let i in this.weekDays) {
+    for (let i in this.weekDays) {
       let weekDay = this.weekDays[i];
       if (this.employee.absences[weekDay.date] !== undefined) {
         let absence = this.employee.absences[weekDay.date];
@@ -380,29 +405,38 @@ export class EmployeeShiftsPage {
           }
         }
       }
+      console.log('ABSENCES!!!!!');
     }
   }
 
   public defineOpenShifts(shifts, openShifts, days, absences) {
-    let weekDays = Object.keys(this.weekDays);
-    weekDays.forEach(weekDay => {
-      for (let key in openShifts) {
-        if (openShifts.hasOwnProperty(key)) {
-          let openShift = openShifts[key];
-          if (openShift.date === weekDay && openShift.requestType === 'CAN_WORK' && openShift.shiftType === 'OPEN_SHIFT' && openShift.status === 'PENDING') {
-            let date = new Date(weekDay);
-            this.shifts.push({
-              title: 'Request pending',
-              openShift: true,
-              shiftDate: weekDay,
-              monthText: date.toLocaleString('en-US', {month: this.monthTextFormat}),
-              dayText: date.toLocaleString('en-US', {weekday: this.dayTextFormat}),
-              dayNumber: date.getDate()
-            })
+    console.log(openShifts);
+    console.log(this.weekDays);
+    for (let i in this.weekDays) {
+      if (this.weekDays.hasOwnProperty(i)) {
+        let weekDay = this.weekDays[i];
+
+        for (let key in openShifts) {
+          if (openShifts.hasOwnProperty(key)) {
+            let openShift = openShifts[key];
+            console.log(weekDay);
+            console.log(openShift);
+            if (openShift.date === weekDay.date && openShift.requestType === 'CAN_WORK' && openShift.shiftType === 'OPEN_SHIFT' && openShift.status === 'PENDING') {
+              let date = new Date(weekDay.date);
+              this.shifts.push({
+                title: 'Request pending',
+                openShift: true,
+                shiftDate: weekDay.date,
+                monthText: date.toLocaleString('en-US', {month: this.monthTextFormat}),
+                dayText: date.toLocaleString('en-US', {weekday: this.dayTextFormat}),
+                dayNumber: date.getDate()
+              })
+            }
           }
+          console.log(this.shifts);
         }
       }
-    })
+    }
   }
 
   public fillFullWeekWithData(shifts, openShifts, days, absences) {
@@ -410,7 +444,7 @@ export class EmployeeShiftsPage {
       if (this.weekDays.hasOwnProperty(i)) {
         let item = this.weekDays[i];
 
-        if(!item.has) {
+        if (!item.has) {
           let date = new Date(item.date);
           this.shifts.push({
             title: 'Day Off',
@@ -427,7 +461,7 @@ export class EmployeeShiftsPage {
   public loadEmployeeShiftsForSelectedDate(date) {
     let formattedDate = this.convertDateToLocale(date, 'yyyy-MM-dd');
     this.loadEmployeeShifts(formattedDate, undefined, undefined);
-    if(this.shifts.length > 0) {
+    if (this.shifts.length > 0) {
       for (let i in this.shifts) {
         if (this.shifts.hasOwnProperty(i)) {
           let shift = this.shifts[i];
@@ -545,9 +579,10 @@ export class EmployeeShiftsPage {
   }
 
   private sortShiftByDate(array) {
-    return array.sort(function(a, b) {
+    return array.sort(function (a, b) {
       return new Date(a.shiftDate).getTime() - new Date(b.shiftDate).getTime();
     })
   }
+
 
 }
