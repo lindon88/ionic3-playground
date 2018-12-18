@@ -73,6 +73,13 @@ $black: #000;
   overflow-y: auto!important;
 }
 
+
+.alert-ios .alert-radio-group, .alert-ios .alert-checkbox-group {
+  overflow: hidden;
+  max-height: 240px;
+  border-top: 0.55px solid #dbdbdf;
+  -webkit-overflow-scrolling: touch;
+}
 //.item-ios.item-block .item-inner {
 //  border-bottom: none;
 //}

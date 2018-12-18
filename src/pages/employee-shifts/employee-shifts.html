@@ -15,15 +15,15 @@
 
     <ion-list>
       <ion-item class="center-selected-text">
-        <ion-label><i class="fa fa-calendar"></i></ion-label>
-        <ion-select [(ngModel)]="viewType" (ionChange)="onViewChange()">
+        <ion-label class="calendar-color"><i class="fa fa-calendar"></i></ion-label>
+        <ion-select [(ngModel)]="viewType" [selectOptions]="{title: 'Choose Schedule'}" (ionChange)="onViewChange()">
           <ion-option *ngFor="let view of viewTypes" [value]="view.code" [selected]="view.code === selectedView.code">{{view.description}}
           </ion-option>
         </ion-select>
       </ion-item>
       <ion-item class="center-selected-text" *ngIf="viewType === VIEW_WEEK">
-        <ion-label><i class="fa fa-calendar"></i></ion-label>
-        <ion-select (ionChange)="onWeekRosterChange()" [(ngModel)]="selectedRoster">
+        <ion-label class="calendar-color"><i class="fa fa-calendar"></i></ion-label>
+        <ion-select (ionChange)="onWeekRosterChange()" [selectOptions]="{title: 'Choose Roster'}" [(ngModel)]="selectedRoster">
           <ion-option *ngFor="let roster of weekRosters" [value]="roster">{{roster.description}}</ion-option>
         </ion-select>
       </ion-item>

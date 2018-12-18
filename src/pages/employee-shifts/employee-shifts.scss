@@ -4,8 +4,9 @@
     max-width: 100% !important;
   }
   text-align: left!important;
-  ion-label {
+  ion-label.calendar-color {
     flex: none!important;
+    color: $secondaryColor;
   }
 }
 
