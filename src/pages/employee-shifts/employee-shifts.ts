@@ -12,17 +12,22 @@ import {DatePipe} from "@angular/common";
   templateUrl: 'employee-shifts.html',
 })
 export class EmployeeShiftsPage {
+
+  // week vars
   public VIEW_WEEK: string = 'week';
   public VIEW_MONTH: string = 'month';
 
+  // user data
   public currentPersonId: any = localStorage.getItem('currentPersonId');
   public currentCompanyId: any = localStorage.getItem('currentCompanyId');
   public currentCorporateId: any = localStorage.getItem('currentCorporateId');
 
+  // set selected view
   public selectedView: any = {
     code: this.VIEW_WEEK
   };
 
+  // view types
   public viewTypes: any = [
     {
       code: this.VIEW_WEEK,
@@ -34,62 +39,51 @@ export class EmployeeShiftsPage {
     }
   ];
 
+  // vars for use in view
   public weekRosters: any = [];
   public selectedRoster: any = null;
   public lastSelectedRoster: any = null;
-
   public employee: any = null;
   public shifts: any = null;
-  public openShifts: any = null;
-  public days: any = null;
-
-
-  public sections: any = null;
-  public jobs: any = null;
   public absenceTypes: any = null;
-
+  // setting default month and day format
   public monthTextFormat: string = 'long';
   public dayTextFormat: string = 'long';
-
   public weekRosterStart: any;
   public weekRosterEnd: any;
-
   public weekDays: any = [];
-
   public showAlert: boolean;
-
   public viewType: any;
-
   public shiftsObservableResponse: any;
   public openShiftsObservableResponse: any;
   public daysObservableResponse: any;
   public absenceTypesObservableResponse: any;
-
-  // monthly
+  // for month view
   public currentEvents: any = [];
   public monthViewData: any = [];
   public monthShift: any = [];
-
   public selectedDate: any;
-
-  public dayShiftCount: number  = 0;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public rosterProvider: RosterProvider, public shiftsProvider: ShiftsProvider, public absenceProvider: AbsenceProvider) {
   }
 
   ionViewDidLoad() {
-
+    // load week
     this.loadWeekRosters(this.currentCompanyId);
     this.viewType = this.selectedView.code;
     let date = new Date();
+    // set month format
     this.setMonthDayFormat();
-
     // load month
     let monthStartDate = new Date(date.getFullYear(), date.getMonth(), 1);
     let monthEndDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
     this.loadEmployeeMonthShifts(this.convertDateToLocale(monthStartDate, 'yyyy-MM-dd'), this.convertDateToLocale(monthEndDate, 'yyyy-MM-dd'));
   }
 
+  /**
+   * Setting selected date for view change
+   * to load shifts on view select, not only on day select
+   */
   public onViewChange() {
     this.monthShift = [];
     this.weekDays = [];
@@ -100,6 +94,9 @@ export class EmployeeShiftsPage {
     this.loadEmployeeShiftsForSelectedDate(currentDate);
   }
 
+  /**
+   * Setting month and day format for different screen sizes
+   */
   public setMonthDayFormat() {
     if (window.screen.width < 380) {
       this.monthTextFormat = 'short';
@@ -110,6 +107,10 @@ export class EmployeeShiftsPage {
     }
   }
 
+  /**
+   * Load week rosters for provided company
+   * @param companyId
+   */
   public loadWeekRosters(companyId) {
     if (!companyId) {
       return false;
@@ -117,24 +118,22 @@ export class EmployeeShiftsPage {
     if (this.weekRosters && this.weekRosters.length > 0) {
       this.selectedRoster = this.lastSelectedRoster;
     }
-
     this.rosterProvider.getRosters(companyId).then((response: any) => {
       if (!response) {
         this.weekRosters = null;
         this.showAlert = true;
         return;
       }
-
       if (response.length === 0) {
         this.showAlert = true;
         return;
       }
-
       this.weekRosters = [];
       for (let i = 0; i < response.length; i++) {
         let item = response[i];
         item.formatedEndDate = item.endDate;
         if (item.formatedEndDate) {
+          // format week rosters title
           item.description = 'Week Ending ' + item.formatedEndDate;
         }
 
@@ -143,6 +142,7 @@ export class EmployeeShiftsPage {
         }
       }
 
+      // show alert if no week rosters
       if (this.weekRosters.length === 0) {
         this.showAlert = true;
         return;
@@ -152,14 +152,21 @@ export class EmployeeShiftsPage {
       this.weekRosterStart = this.selectedRoster.startDate;
       this.weekRosterEnd = this.selectedRoster.endDate;
 
-
+      // load shifts for employee
       this.loadEmployeeShifts(undefined, this.selectedRoster.startDate, this.selectedRoster.endDate);
     }, error => {
       console.log(error);
     })
   }
 
+  /**
+   * Load employee shifts
+   * @param date
+   * @param startDate
+   * @param endDate
+   */
   public loadEmployeeShifts(date, startDate, endDate) {
+    // array for promises to be called parallel
     let observableBatch = [];
 
     if (startDate !== undefined && endDate !== undefined) {
@@ -172,14 +179,11 @@ export class EmployeeShiftsPage {
       observableBatch.push(this.getDays(this.currentCompanyId, {date: date}));
     }
 
-
     observableBatch.push(this.getAbsenceTypes(this.currentCorporateId));
 
-
+    // parallel call
     Observable.forkJoin(observableBatch).subscribe(response => {
-
       if (!response) return;
-
       this.shiftsObservableResponse = response[0];
       this.openShiftsObservableResponse = response[1];
       this.daysObservableResponse = response[2];
@@ -199,6 +203,11 @@ export class EmployeeShiftsPage {
     })
   }
 
+  /**
+   * Load shifts for entire month
+   * @param startDate
+   * @param endDate
+   */
   public loadEmployeeMonthShifts(startDate, endDate) {
     console.clear();
     this.monthViewData = [];
@@ -276,6 +285,7 @@ export class EmployeeShiftsPage {
 
     });
 
+    // defining absences
     if (employee.absences !== undefined) {
       let absences = employee.absences;
       console.log(absences);
@@ -316,11 +326,10 @@ export class EmployeeShiftsPage {
     }
   }
 
-
-  public defineMonthAbsences(absences) {
-
-  }
-
+  /**
+   * Define open shifts for month
+   * @param openShiftResponse
+   */
   public defineMonthOpenShifts(openShiftResponse) {
     // this.currentEvents = [];
     let count = 0;
@@ -416,6 +425,13 @@ export class EmployeeShiftsPage {
     }
   }
 
+  /**
+   * Define absences
+   * @param shifts
+   * @param openShifts
+   * @param days
+   * @param absences
+   */
   public defineAbsences(shifts, openShifts, days, absences) {
     for (let i in this.weekDays) {
       let weekDay = this.weekDays[i];
@@ -442,6 +458,13 @@ export class EmployeeShiftsPage {
     }
   }
 
+  /**
+   * Define open shifts
+   * @param shifts
+   * @param openShifts
+   * @param days
+   * @param absences
+   */
   public defineOpenShifts(shifts, openShifts, days, absences) {
     console.log(openShifts);
     console.log(this.weekDays);
@@ -472,6 +495,13 @@ export class EmployeeShiftsPage {
     }
   }
 
+  /**
+   * Fill week with data even though some days doesn't have any
+   * @param shifts
+   * @param openShifts
+   * @param days
+   * @param absences
+   */
   public fillFullWeekWithData(shifts, openShifts, days, absences) {
     for (let i in this.weekDays) {
       if (this.weekDays.hasOwnProperty(i)) {
@@ -491,6 +521,10 @@ export class EmployeeShiftsPage {
     }
   }
 
+  /**
+   * Load shifts for selected date
+   * @param date
+   */
   public loadEmployeeShiftsForSelectedDate(date) {
     let formattedDate = this.convertDateToLocale(date, 'yyyy-MM-dd');
     this.loadEmployeeShifts(formattedDate, undefined, undefined);
@@ -507,6 +541,12 @@ export class EmployeeShiftsPage {
     console.log(this.monthShift);
   }
 
+  /**
+   * Convert date to specified format
+   * ex. this.convertDateToLocale(new Date(), 'yyyy-MM-dd')
+   * @param date
+   * @param format
+   */
   public convertDateToLocale(date, format) {
     // const locale = window.navigator.language;
     const locale = 'en-GB';
@@ -515,6 +555,10 @@ export class EmployeeShiftsPage {
     return datePipe.transform(date, format);
   }
 
+  /**
+   * On week roster change function
+   * Load data for selected week
+   */
   public onWeekRosterChange() {
     if (!this.selectedRoster) {
       return;
@@ -536,6 +580,11 @@ export class EmployeeShiftsPage {
     this.loadEmployeeShiftsForSelectedDate(date);
   }
 
+  /**
+   * On month select
+   * load data for selected month
+   * @param event
+   */
   public onMonthSelect(event) {
     this.shifts = [];
     // load month
@@ -544,25 +593,49 @@ export class EmployeeShiftsPage {
     this.loadEmployeeMonthShifts(this.convertDateToLocale(monthStartDate, 'yyyy-MM-dd'), this.convertDateToLocale(monthEndDate, 'yyyy-MM-dd'));
   }
 
-
+  /**
+   * Get shifts to provide data from service
+   * @class RosterProvider
+   * @param date
+   * @param startDate
+   * @param endDate
+   * @param options
+   */
   private getShifts(date, startDate, endDate, options) {
     return this.rosterProvider.getLoggedEmployeeShifts(date, startDate, endDate, options).then(result => {
       return result;
     })
   }
 
+  /**
+   * Get open shifts to provide data from service
+   * @class ShiftsProvider
+   * @param start
+   * @param end
+   */
   private getOpenShifts(start, end) {
     return this.shiftsProvider.getMyRequests(start, end).then(result => {
       return result;
     })
   }
 
+  /**
+   * Get roster days to provide data from service
+   * @class RosterProvider
+   * @param companyId
+   * @param params
+   */
   private getDays(companyId, params) {
     return this.rosterProvider.getRosterDaysStatus(companyId, params).then(result => {
       return result;
     })
   }
 
+  /**
+   * Get absence types to provide data from service
+   * @class AbsenceProvider
+   * @param corporateId
+   */
   private getAbsenceTypes(corporateId) {
     return this.absenceProvider.getAbsenceTypes(corporateId).then(result => {
       return result;
@@ -571,6 +644,7 @@ export class EmployeeShiftsPage {
 
   /**
    * Defining drop or delete status
+   * Is shift canceled or deleted
    * @param shift
    * @param openShifts
    */
@@ -596,6 +670,11 @@ export class EmployeeShiftsPage {
     return shift;
   }
 
+  /**
+   * Set shift locked
+   * @param days
+   * @param shift
+   */
   private checkIfShiftLocked(days, shift) {
     if (days !== undefined) {
       days.forEach(dayObj => {
@@ -607,17 +686,23 @@ export class EmployeeShiftsPage {
     return shift;
   }
 
+  /**
+   * Sort by date
+   * @param array
+   */
   private sortByDate(array) {
     return array.sort(function (a, b) {
       return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
     });
   }
 
+  /**
+   * Sort shifts by date
+   * @param array
+   */
   private sortShiftByDate(array) {
     return array.sort(function (a, b) {
       return new Date(a.shiftDate).getTime() - new Date(b.shiftDate).getTime();
     })
   }
-
-
 }
