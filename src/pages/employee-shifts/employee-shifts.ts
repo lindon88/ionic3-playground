@@ -6,6 +6,7 @@ import {AbsenceProvider} from "../../providers/absence/absence";
 import {Observable} from "rxjs";
 import {DatePipe} from "@angular/common";
 import {ModalShiftPopupPage} from "./modal-shift-popup/modal-shift-popup";
+import {LoadingProvider} from "../../providers/loading/loading";
 
 @IonicPage()
 @Component({
@@ -67,11 +68,12 @@ export class EmployeeShiftsPage {
   public monthShift: any = [];
   public selectedDate: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public rosterProvider: RosterProvider, public shiftsProvider: ShiftsProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public rosterProvider: RosterProvider, public shiftsProvider: ShiftsProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController, public loadingProvider: LoadingProvider) {
   }
 
   ionViewDidLoad() {
     // load week
+    this.loadingProvider.showLoader();
     this.loadWeekRosters(this.currentCompanyId);
     this.viewType = this.selectedView.code;
     let date = new Date();
@@ -81,6 +83,7 @@ export class EmployeeShiftsPage {
     let monthStartDate = new Date(date.getFullYear(), date.getMonth(), 1);
     let monthEndDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
     this.loadEmployeeMonthShifts(this.convertDateToLocale(monthStartDate, 'yyyy-MM-dd'), this.convertDateToLocale(monthEndDate, 'yyyy-MM-dd'));
+    this.loadingProvider.hideLoader();
   }
 
   /**
@@ -95,9 +98,13 @@ export class EmployeeShiftsPage {
     this.selectedDate = currentDate;
     console.log(currentDate);
     if(this.viewType === this.VIEW_MONTH) {
+      this.loadingProvider.showLoader();
       this.loadEmployeeShiftsForSelectedDate(this.selectedDate);
+      this.loadingProvider.hideLoader();
     } else {
+      this.loadingProvider.showLoader();
       this.loadWeekRosters(this.currentCompanyId);
+      this.loadingProvider.hideLoader();
     }
     // this.loadEmployeeShiftsForSelectedDate(currentDate);
   }
@@ -589,7 +596,9 @@ export class EmployeeShiftsPage {
 
     this.selectedDate = this.convertDateToLocale(date, 'yyyy-MM-dd');
     this.shifts = [];
+    this.loadingProvider.showLoader();
     this.loadEmployeeShiftsForSelectedDate(date);
+    this.loadingProvider.hideLoader();
   }
 
   /**
@@ -602,7 +611,9 @@ export class EmployeeShiftsPage {
     // load month
     let monthStartDate = new Date(event.year, event.month, 1);
     let monthEndDate = new Date(event.year, event.month + 1, 0);
+    this.loadingProvider.showLoader();
     this.loadEmployeeMonthShifts(this.convertDateToLocale(monthStartDate, 'yyyy-MM-dd'), this.convertDateToLocale(monthEndDate, 'yyyy-MM-dd'));
+    this.loadingProvider.hideLoader();
   }
 
   /**
@@ -765,9 +776,13 @@ export class EmployeeShiftsPage {
         if(this.viewType === this.VIEW_MONTH) {
           let date = new Date(shift.shiftDate);
           this.selectedDate = this.convertDateToLocale(date, 'yyyy-MM-dd');
+          this.loadingProvider.showLoader();
           this.loadEmployeeShiftsForSelectedDate(this.selectedDate);
+          this.loadingProvider.hideLoader();
         } else {
+          this.loadingProvider.showLoader();
           this.loadWeekRosters(this.currentCompanyId);
+          this.loadingProvider.hideLoader();
         }
       }
     });
