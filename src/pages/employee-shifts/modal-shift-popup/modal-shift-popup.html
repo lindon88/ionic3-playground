@@ -1,20 +1,30 @@
-<ion-header class="eos-cansel-header">
-  <div class="modal-header">
-    <h3>{{title}}</h3>
-  </div>
-</ion-header>
-<ion-content class="cancel-eos"  no-bounce>
 
+<ion-content class="cancel-eos" *ngIf="shift" no-bounce>
+  <div style="text-align: center; margin-top: 10px;">
+    <div style="font-weight: bold;">
+      {{persistLongWeekDay(shift.shiftDate)}}, {{persistLongMonth(shift.shiftDate)}} {{shift.dayNumber}} - {{shift.shiftText.time12Hr}}
+    </div>
+    <div *ngIf="shift.section.name" class="roster-info">
+      <span>{{shift.section.name}}</span> | <span>{{shift.job.name}}</span>
+    </div>
+    <div class="col badge-column popup-badge">
+      <div class="badge badge-red" *ngIf="shift.cancelable">Cancelable</div>
+      <div class="badge badge-red" *ngIf="shift.offsite">Off Site</div>
+      <div class="badge badge-red" *ngIf="shift.drop">Drop Pending</div>
+    </div>
+  </div>
 </ion-content>
 <ion-footer>
   <div class="modal-footer">
     <ion-grid>
       <ion-row>
-        <ion-col col-6>
-          <button ion-button color="light" class="full-width" >Dismiss</button>
+        <ion-col col-12>
+          <button ion-button class="full-width save-button-eos">Dismiss</button>
         </ion-col>
-        <ion-col col-6>
-          <button ion-button class="full-width save-button-eos" >Save</button>
+      </ion-row>
+      <ion-row>
+        <ion-col col-12>
+          <button ion-button color="light" class="full-width">Cancel</button>
         </ion-col>
       </ion-row>
     </ion-grid>

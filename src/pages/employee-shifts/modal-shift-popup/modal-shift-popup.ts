@@ -25,6 +25,17 @@ export class ModalShiftPopupPage {
     this.title = this.navParams.get('popupTitle');
     this.request = this.navParams.get('request');
     this.shift = this.navParams.get('shift');
+    console.log(this.shift);
+  }
+
+  public persistLongMonth(date) {
+    date = new Date(date);
+    return date.toLocaleString('en-US', {month: 'long'});
+  }
+
+  public persistLongWeekDay(date) {
+    date = new Date(date);
+    return date.toLocaleString('en-US', {weekday: 'long'});
   }
 
 }

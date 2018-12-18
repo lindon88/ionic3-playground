@@ -49,6 +49,8 @@ export class EmployeeShiftsPage {
   public absenceTypes: any = null;
   // setting default month and day format
   public monthTextFormat: string = 'long';
+  public persistMonth: any;
+  public persistDay: any;
   public dayTextFormat: string = 'long';
   public weekRosterStart: any;
   public weekRosterEnd: any;
@@ -708,12 +710,12 @@ export class EmployeeShiftsPage {
   }
 
   public onShiftClick(shift) {
-    console.log(shift);
-    let shiftDate = new Date(shift);
+    let shiftDate = new Date(shift.shiftDate);
     let today = new Date();
-    if(shiftDate.getTime() < today.getTime()) {
-      return;
-    }
+
+    // if(shiftDate <= today) {
+    //   return;
+    // }
 
     if(shift === undefined || shift === null || shift.id === undefined) {
       return;
@@ -746,7 +748,7 @@ export class EmployeeShiftsPage {
       request = requestDrop;
     }
 
-    let modal = this.modalCtrl.create(ModalShiftPopupPage, {popupTitle: popupTitle, request: request, shift: shift}, {cssClass: 'cancelation-modal'});
+    let modal = this.modalCtrl.create(ModalShiftPopupPage, {popupTitle: popupTitle, request: request, shift: shift}, {cssClass: 'modal-shift-popup'});
     modal.present();
   }
 }

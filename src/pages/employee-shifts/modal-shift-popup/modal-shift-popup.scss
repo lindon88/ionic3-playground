@@ -1,3 +1,17 @@
-page-modal-shift-popup {
+.modal-shift-popup {
+  background: rgba(0, 0, 0, 0.5) !important;
+  //padding: 40% 10% !important;
+  .modal-wrapper {
+    width: 250px;
+    height: 210px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 150px auto auto;
+    border: 0;
 
+    page-modal-shift-popup ion-content {
+      background-color: rgba(255, 255, 255, 0.9);
+    }
+  }
 }
