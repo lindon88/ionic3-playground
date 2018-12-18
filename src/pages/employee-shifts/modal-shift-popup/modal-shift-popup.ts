@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
+import {NavController, NavParams, ViewController} from 'ionic-angular';
+import {ShiftsProvider} from "../../../providers/shifts/shifts";
 
 /**
  * Generated class for the ModalShiftPopupPage page.
@@ -17,7 +18,7 @@ export class ModalShiftPopupPage {
   public title: any;
   public shift: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public shiftProvider: ShiftsProvider) {
   }
 
   ionViewDidLoad() {
@@ -36,6 +37,33 @@ export class ModalShiftPopupPage {
   public persistLongWeekDay(date) {
     date = new Date(date);
     return date.toLocaleString('en-US', {weekday: 'long'});
+  }
+
+  dismiss() {
+    this.viewCtrl.dismiss();
+  }
+
+  clickRequest(shift) {
+    if(shift.drop !== undefined) {
+      // cancel request
+      console.log('cancel request');
+      this.shiftProvider.cancelRequest(shift.requestId, this.request).then(response => {
+        this.viewCtrl.dismiss();
+      })
+    } else {
+      // send request
+      console.log('send request');
+      this.shiftProvider.sendRequest(localStorage.getItem('currentPersonId'), this.request).then((response:any) => {
+        if(response.success !== undefined && !response.success) {
+          // show message
+          console.log(response.failMessage);
+          return;
+        }
+        console.log(response.success);
+
+        this.viewCtrl.dismiss();
+      })
+    }
   }
 
 }

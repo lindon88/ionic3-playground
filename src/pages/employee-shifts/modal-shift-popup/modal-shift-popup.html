@@ -19,12 +19,12 @@
     <ion-grid>
       <ion-row>
         <ion-col col-12>
-          <button ion-button class="full-width save-button-eos">Dismiss</button>
+          <button ion-button class="full-width save-button-eos" (click)="clickRequest(shift)">{{title}}</button>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col col-12>
-          <button ion-button color="light" class="full-width">Cancel</button>
+          <button ion-button color="light" class="full-width" (click)="dismiss()">Cancel</button>
         </ion-col>
       </ion-row>
     </ion-grid>
