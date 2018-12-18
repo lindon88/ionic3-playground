@@ -70,6 +70,8 @@ export class EmployeeShiftsPage {
   public monthViewData: any = [];
   public monthShift: any = [];
 
+  public selectedDate: any;
+
   public dayShiftCount: number  = 0;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public rosterProvider: RosterProvider, public shiftsProvider: ShiftsProvider, public absenceProvider: AbsenceProvider) {
@@ -493,6 +495,9 @@ export class EmployeeShiftsPage {
       }
     }
     console.log(this.monthShift);
+    if(!this.shifts) {
+      console.log("NOT AVAILABLE FOR THIS DAY");
+    }
   }
 
   public convertDateToLocale(date, format) {
@@ -518,6 +523,8 @@ export class EmployeeShiftsPage {
     this.weekDays = [];
 
     let date = new Date(event.year, event.month, event.date);
+
+    this.selectedDate = this.convertDateToLocale(date, 'yyyy-MM-dd');
     this.shifts = [];
     this.loadEmployeeShiftsForSelectedDate(date);
   }

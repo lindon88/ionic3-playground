@@ -85,7 +85,7 @@
 
   <div *ngIf="viewType === VIEW_MONTH">
     <div *ngFor="let shift of shifts">
-      <ion-grid (click)="onShiftClick(shift)" *ngIf="shift.id || shift.title !== 'Day Off'">
+      <ion-grid (click)="onShiftClick(shift)" *ngIf="shift.shiftDate === selectedDate">
         <div class="card">
           <ion-row class="item row employee-shift-item">
             <ion-col col-2 class="date-column col col-2">
