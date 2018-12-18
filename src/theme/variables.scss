@@ -79,7 +79,7 @@ $text-input-md-show-invalid-highlight: transparent;
 $text-input-md-highlight-color: transparent;
 $text-input-md-show-valid-highlight: transparent;
 
-$loading-ios-background: transparent;
+$loading-ios-background: rgba(0,0,0,0.8);
 $loading-md-background: $loading-ios-background;
 $loading-wp-background: $loading-ios-background;
 
