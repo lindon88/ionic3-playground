@@ -29,6 +29,7 @@ import {ModalDropAbsencePageModule} from "../pages/absence/modal-drop-absence/mo
 import {ModalAbsenceNotePageModule} from "../pages/absence/modal-absence-note/modal-absence-note.module";
 import { RosterProvider } from '../providers/roster/roster';
 import { CalendarModule} from 'ionic3-calendar-en';
+import {ModalShiftPopupPageModule} from "../pages/employee-shifts/modal-shift-popup/modal-shift-popup.module";
 
 
 @NgModule({
@@ -49,6 +50,7 @@ import { CalendarModule} from 'ionic3-calendar-en';
     ModalEosSuccessPageModule,
     ModalDropAbsencePageModule,
     ModalAbsenceNotePageModule,
+    ModalShiftPopupPageModule,
     CalendarModule
   ],
   bootstrap: [IonicApp],

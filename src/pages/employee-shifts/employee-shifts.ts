@@ -1,10 +1,11 @@
 import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {RosterProvider} from "../../providers/roster/roster";
 import {ShiftsProvider} from "../../providers/shifts/shifts";
 import {AbsenceProvider} from "../../providers/absence/absence";
 import {Observable} from "rxjs";
 import {DatePipe} from "@angular/common";
+import {ModalShiftPopupPage} from "./modal-shift-popup/modal-shift-popup";
 
 @IonicPage()
 @Component({
@@ -64,7 +65,7 @@ export class EmployeeShiftsPage {
   public monthShift: any = [];
   public selectedDate: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public rosterProvider: RosterProvider, public shiftsProvider: ShiftsProvider, public absenceProvider: AbsenceProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public rosterProvider: RosterProvider, public shiftsProvider: ShiftsProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController) {
   }
 
   ionViewDidLoad() {
@@ -704,5 +705,48 @@ export class EmployeeShiftsPage {
     return array.sort(function (a, b) {
       return new Date(a.shiftDate).getTime() - new Date(b.shiftDate).getTime();
     })
+  }
+
+  public onShiftClick(shift) {
+    console.log(shift);
+    let shiftDate = new Date(shift);
+    let today = new Date();
+    if(shiftDate.getTime() < today.getTime()) {
+      return;
+    }
+
+    if(shift === undefined || shift === null || shift.id === undefined) {
+      return;
+    }
+
+    if(shift.eonConfirmed || shift.locked) {
+      return;
+    }
+
+
+    let popupTitle = 'Request Drop';
+    let request = {};
+    // prepare request
+    let requestDrop = {
+      requesterId: this.currentPersonId,
+      shiftId: shift.id,
+      shiftType: 'SHIFT',
+      requestType: 'CANNOT_WORK',
+      requestNote: 'CANNOT WORK'
+    };
+
+    if(shift.drop !== undefined) {
+      popupTitle = 'Cancel Drop Request';
+      let requestCancel = {
+        shiftRequestId: shift.requestId,
+        note: 'Cancel Drop Request'
+      };
+      request = requestCancel;
+    } else {
+      request = requestDrop;
+    }
+
+    let modal = this.modalCtrl.create(ModalShiftPopupPage, {popupTitle: popupTitle, request: request, shift: shift}, {cssClass: 'cancelation-modal'});
+    modal.present();
   }
 }
