@@ -90,6 +90,16 @@ export class EmployeeShiftsPage {
     this.loadEmployeeMonthShifts(this.convertDateToLocale(monthStartDate, 'yyyy-MM-dd'), this.convertDateToLocale(monthEndDate, 'yyyy-MM-dd'));
   }
 
+  public onViewChange() {
+    this.monthShift = [];
+    this.weekDays = [];
+    let date = new Date();
+    let currentDate = this.convertDateToLocale(date, 'yyyy-MM-dd');
+    this.selectedDate = currentDate;
+    console.log(currentDate);
+    this.loadEmployeeShiftsForSelectedDate(currentDate);
+  }
+
   public setMonthDayFormat() {
     if (window.screen.width < 380) {
       this.monthTextFormat = 'short';
@@ -495,9 +505,6 @@ export class EmployeeShiftsPage {
       }
     }
     console.log(this.monthShift);
-    if(!this.shifts) {
-      console.log("NOT AVAILABLE FOR THIS DAY");
-    }
   }
 
   public convertDateToLocale(date, format) {

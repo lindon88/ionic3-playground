@@ -16,7 +16,7 @@
     <ion-list>
       <ion-item class="center-selected-text">
         <ion-label><i class="fa fa-calendar"></i></ion-label>
-        <ion-select [(ngModel)]="viewType">
+        <ion-select [(ngModel)]="viewType" (ionChange)="onViewChange()">
           <ion-option *ngFor="let view of viewTypes" [value]="view.code" [selected]="view.code === selectedView.code">{{view.description}}
           </ion-option>
         </ion-select>
@@ -85,7 +85,7 @@
 
   <div *ngIf="viewType === VIEW_MONTH">
     <div *ngFor="let shift of shifts">
-      <ion-grid (click)="onShiftClick(shift)" *ngIf="shift.shiftDate === selectedDate">
+      <ion-grid (click)="onShiftClick(shift)" *ngIf="shift.shiftDate === selectedDate || shift.date === selectedDate">
         <div class="card">
           <ion-row class="item row employee-shift-item">
             <ion-col col-2 class="date-column col col-2">
