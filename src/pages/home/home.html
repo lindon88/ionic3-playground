@@ -12,5 +12,15 @@
 
 </ion-header>
 <ion-content no-bounce>
-Home
+  <ion-row class="dashboard-icon">
+    <ion-col col-4 class="dashboard-icon">
+      <img src="./assets/imgs/icon-checklist.png" (click)="navCtrl.setRoot('ChecklistsPage')">
+    </ion-col>
+    <ion-col col-4 class="dashboard-icon">
+      <img src="./assets/imgs/icon-checklist.png" (click)="navCtrl.setRoot('AbsencePage')">
+    </ion-col>
+    <ion-col col-4 class="dashboard-icon">
+      <img src="./assets/imgs/icon-clock.png" (click)="navCtrl.setRoot('EmployeeShiftsPage')">
+    </ion-col>
+  </ion-row>
 </ion-content>

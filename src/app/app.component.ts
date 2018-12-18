@@ -36,6 +36,7 @@ export class MyApp {
     });
     // define pages for sidemenu
     this.pages = [
+      { icon: 'fa fa-tachometer', title: 'Dashboard', component: 'HomePage', click: null },
       { icon: 'fa fa-calendar', title: 'My Schedule', component: "EmployeeShiftsPage", click: null },
       { icon: 'fa fa-calendar-o', title: 'Open Shifts', component: "EmployeeOpenShiftPage", click: null },
       { icon: 'fa fa-check-square-o', title: 'Checklists', component: "ChecklistsPage", click: null },
