@@ -94,7 +94,12 @@ export class EmployeeShiftsPage {
     let currentDate = this.convertDateToLocale(date, 'yyyy-MM-dd');
     this.selectedDate = currentDate;
     console.log(currentDate);
-    this.loadEmployeeShiftsForSelectedDate(currentDate);
+    if(this.viewType === this.VIEW_MONTH) {
+      this.loadEmployeeShiftsForSelectedDate(this.selectedDate);
+    } else {
+      this.loadWeekRosters(this.currentCompanyId);
+    }
+    // this.loadEmployeeShiftsForSelectedDate(currentDate);
   }
 
   /**
@@ -135,9 +140,13 @@ export class EmployeeShiftsPage {
       for (let i = 0; i < response.length; i++) {
         let item = response[i];
         item.formatedEndDate = item.endDate;
+        let formatedEndDate = new Date(item.formatedEndDate);
+        let formatedMonth = formatedEndDate.toLocaleString('en-US', {month: 'short'});
+        let formatedYear = formatedEndDate.getFullYear();
+        let formatedDate = formatedEndDate.getDate();
         if (item.formatedEndDate) {
           // format week rosters title
-          item.description = 'Week Ending ' + item.formatedEndDate;
+          item.description = 'Week Ending ' + formatedMonth + ',' + formatedDate + ' ' + formatedYear;
         }
 
         if (item.published !== undefined && item.published) {
@@ -749,6 +758,19 @@ export class EmployeeShiftsPage {
     }
 
     let modal = this.modalCtrl.create(ModalShiftPopupPage, {popupTitle: popupTitle, request: request, shift: shift}, {cssClass: 'modal-shift-popup'});
+    modal.onDidDismiss(data => {
+      if(data === true) {
+        // request send or cancelled
+        // reload
+        if(this.viewType === this.VIEW_MONTH) {
+          let date = new Date(shift.shiftDate);
+          this.selectedDate = this.convertDateToLocale(date, 'yyyy-MM-dd');
+          this.loadEmployeeShiftsForSelectedDate(this.selectedDate);
+        } else {
+          this.loadWeekRosters(this.currentCompanyId);
+        }
+      }
+    });
     modal.present();
   }
 }

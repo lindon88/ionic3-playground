@@ -43,7 +43,10 @@
               <div class="dates">
                 <div class="month">{{shift.monthText}}</div>
                 <div class="dayDate">
-                  <div class="date">{{shift.dayNumber}}</div>
+                  <div class="date">
+                    {{shift.dayNumber}}
+                    <i *ngIf="shift.hasWarning" class="fa fa-exclamation-triangle warning-shift"></i>
+                  </div>
                   <div class="day">{{shift.dayText}}</div>
                 </div>
               </div>
@@ -92,7 +95,10 @@
               <div class="dates">
                 <div class="month">{{shift.monthText}}</div>
                 <div class="dayDate">
-                  <div class="date">{{shift.dayNumber}}</div>
+                  <div class="date" style="position: relative">
+                    {{shift.dayNumber}}
+                    <i *ngIf="shift.hasWarning" class="fa fa-exclamation-triangle warning-shift"></i>
+                  </div>
                   <div class="day">{{shift.dayText}}</div>
                 </div>
               </div>
@@ -110,20 +116,12 @@
             <ion-col col-3 *ngIf="shift.eonConfirmed || shift.locked" class="col badge-column">
               <i class="fa fa-lock"></i>
             </ion-col>
-            <ion-col col-3 *ngIf="shift.offsite" class="col badge-column">
-              <div class="badge right-badge badge-blue">Off Site</div>
-            </ion-col>
-            <ion-col col-3 *ngIf="shift.drop" class="col badge-column">
-              <div class="badge right-badge badge-orange">Drop pending</div>
-            </ion-col>
-            <ion-col col-3 *ngIf="shift.openShift" class="col badge-column">
-              <div class="badge right-badge badge-orange">Request pending</div>
-            </ion-col>
-            <ion-col col-3 *ngIf="shift.cancelable" class="col badge-column">
-              <div class="badge right-badge badge-red">Cancelable</div>
-            </ion-col>
-            <ion-col col-3 *ngIf="shift.hasWarning" class="col badge-column">
-              <div class="badge right-badge badge-red">Overlap Warning</div>
+            <ion-col col-3  class="col badge-column">
+              <div *ngIf="shift.offsite" class="badge right-badge badge-blue">Off Site</div>
+              <div *ngIf="shift.drop" class="badge right-badge badge-orange">Drop pending</div>
+              <div *ngIf="shift.openShift" class="badge right-badge badge-orange">Request pending</div>
+              <div *ngIf="shift.cancelable" class="badge right-badge badge-red">Cancelable</div>
+              <div *ngIf="shift.hasWarning" class="badge right-badge badge-red">Overlap Warning</div>
             </ion-col>
           </ion-row>
         </div>

@@ -9,8 +9,8 @@
     </div>
     <div class="col badge-column popup-badge">
       <div class="badge badge-red" *ngIf="shift.cancelable">Cancelable</div>
-      <div class="badge badge-red" *ngIf="shift.offsite">Off Site</div>
-      <div class="badge badge-red" *ngIf="shift.drop">Drop Pending</div>
+      <div class="badge badge-blue" *ngIf="shift.offsite">Off Site</div>
+      <div class="badge badge-orange" *ngIf="shift.drop">Drop Pending</div>
     </div>
   </div>
 </ion-content>

@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams, ViewController} from 'ionic-angular';
+import {AlertController, NavController, NavParams, ViewController} from 'ionic-angular';
 import {ShiftsProvider} from "../../../providers/shifts/shifts";
 
 /**
@@ -18,7 +18,7 @@ export class ModalShiftPopupPage {
   public title: any;
   public shift: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public shiftProvider: ShiftsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public shiftProvider: ShiftsProvider, public alertCtrl: AlertController) {
   }
 
   ionViewDidLoad() {
@@ -40,7 +40,7 @@ export class ModalShiftPopupPage {
   }
 
   dismiss() {
-    this.viewCtrl.dismiss();
+    this.viewCtrl.dismiss(false);
   }
 
   clickRequest(shift) {
@@ -48,7 +48,7 @@ export class ModalShiftPopupPage {
       // cancel request
       console.log('cancel request');
       this.shiftProvider.cancelRequest(shift.requestId, this.request).then(response => {
-        this.viewCtrl.dismiss();
+        this.viewCtrl.dismiss(true);
       })
     } else {
       // send request
@@ -56,12 +56,20 @@ export class ModalShiftPopupPage {
       this.shiftProvider.sendRequest(localStorage.getItem('currentPersonId'), this.request).then((response:any) => {
         if(response.success !== undefined && !response.success) {
           // show message
-          console.log(response.failMessage);
+          let alert = this.alertCtrl.create({
+            title: 'Error',
+            message: response.failMessage,
+            buttons: [{text: 'OK', cssClass: 'save-button-eos', handler: () => {
+              console.log('ok => ' + response.failMessage);
+              this.viewCtrl.dismiss();
+            }}]
+          });
+          alert.present();
           return;
         }
         console.log(response.success);
 
-        this.viewCtrl.dismiss();
+        this.viewCtrl.dismiss(true);
       })
     }
   }

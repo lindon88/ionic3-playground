@@ -69,6 +69,10 @@ $black: #000;
   color: #000;
 }
 
+.scroll-content {
+  overflow-y: auto!important;
+}
+
 //.item-ios.item-block .item-inner {
 //  border-bottom: none;
 //}
