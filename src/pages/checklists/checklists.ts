@@ -11,6 +11,7 @@ import {WorkflowProvider} from "../../providers/workflow/workflow";
 import {DatePipe} from "@angular/common";
 import {ChecklistFilterPopoverPage} from "../checklist-filter-popover/checklist-filter-popover";
 import {LoadingProvider} from "../../providers/loading/loading";
+import {AuthenticationProvider} from "../../providers/authentication/authentication";
 
 @IonicPage()
 @Component({
@@ -23,7 +24,7 @@ export class ChecklistsPage {
   public isAllowedEdit: boolean = false;
   public currentCompanyId: any = localStorage.getItem('currentCompanyId');
   public userInfo:any = JSON.parse(localStorage.getItem('userInfo'));
-  public allowedOutlets:any = this.userInfo.allowedCompanies;
+  public allowedOutlets:any;
 
   // date vars
   // public datePipe: DatePipe;
@@ -35,11 +36,24 @@ export class ChecklistsPage {
 
   public showAll: boolean = true;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public workflowProvider: WorkflowProvider, public popoverCtrl: PopoverController, public menuCtrl: MenuController, public loadingProvider: LoadingProvider) {
+  public isValidToken: boolean;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthenticationProvider, public workflowProvider: WorkflowProvider, public popoverCtrl: PopoverController, public menuCtrl: MenuController, public loadingProvider: LoadingProvider) {
     console.log("loading tasks....");
   }
 
-  ionViewDidEnter() {
+  ionViewCanEnter() {
+    const isAllowed = this.authProvider.isAuth(this.navCtrl);
+    if(isAllowed === false) {
+      setTimeout(() => {
+        this.navCtrl.setRoot('LoginPage');
+      }, 0);
+    }
+    return isAllowed;
+  }
+
+  ionViewDidLoad() {
+    this.allowedOutlets = this.userInfo.allowedCompanies;
     this.loadTasks();
   }
 

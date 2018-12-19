@@ -1,12 +1,15 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {ServerProvider} from "../server/server";
+import {NavController} from "ionic-angular";
+import {TokenProvider} from "../token/token";
 
 @Injectable()
 export class AuthenticationProvider {
   private userInfo: any;
+  private isValidToken: boolean;
 
-  constructor(public http: HttpClient, private serverProvider: ServerProvider) {
+  constructor(public http: HttpClient, private serverProvider: ServerProvider, private tokenProvider: TokenProvider) {
   }
 
   public login(username, password) {
@@ -78,6 +81,31 @@ export class AuthenticationProvider {
         reject(error);
       })
     });
+  }
+
+  public isAuth(nav: NavController) {
+    this.validateToken();
+    return !((localStorage.getItem('userInfo') === null || localStorage.getItem('userInfo') === undefined) && this.isValidToken === false);
+  }
+
+  validateToken() {
+    this.isTokenValid().then((response: any) => {
+      this.isValidToken = response.valid;
+      console.log(this.isValidToken);
+    })
+  }
+
+  public isTokenValid() {
+    let token = localStorage.getItem('accessToken');
+    console.log(token);
+    let headers = {'Content-Type': 'application/json'};
+    return new Promise((resolve, reject) => {
+      this.http.post(this.serverProvider.getServerURL() + 'security/loginToken/verify', token, {headers: headers}).subscribe((response: any) => {
+        resolve(response);
+      }, error => {
+        reject(error);
+      })
+    })
   }
 
   public resetPassword(email) {
