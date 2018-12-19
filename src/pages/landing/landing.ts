@@ -17,7 +17,7 @@ export class LandingPage {
     renderer: 'svg',
     autoplay: true,
     autoloadSegments: true,
-    path: '../../../assets/animations/data.json'
+    path: './assets/animations/data.json'
   };
 
   constructor(public navCtrl: NavController, private serverProvider: ServerProvider, private apiProvider: ApiProvider, private tokenProvider: TokenProvider) {
