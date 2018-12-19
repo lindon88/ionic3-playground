@@ -80,5 +80,9 @@ export class LoginPage {
     })
   }
 
+  public gotoReset() {
+    this.navCtrl.setRoot("ResetPasswordPage");
+  }
+
 
 }

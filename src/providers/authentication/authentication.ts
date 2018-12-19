@@ -77,7 +77,18 @@ export class AuthenticationProvider {
       }, (error) => {
         reject(error);
       })
-    })
+    });
+  }
 
+  public resetPassword(email) {
+    let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
+    let req = {email: email};
+    return new Promise((resolve, reject) => {
+      this.http.put(this.serverProvider.getServerURL() + 'security/resetPassword', req).subscribe((result:any) => {
+        resolve(result);
+      }, error => {
+        reject(error);
+      })
+    })
   }
 }
