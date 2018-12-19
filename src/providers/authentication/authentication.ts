@@ -2,14 +2,13 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {ServerProvider} from "../server/server";
 import {NavController} from "ionic-angular";
-import {TokenProvider} from "../token/token";
 
 @Injectable()
 export class AuthenticationProvider {
   private userInfo: any;
   private isValidToken: boolean;
 
-  constructor(public http: HttpClient, private serverProvider: ServerProvider, private tokenProvider: TokenProvider) {
+  constructor(public http: HttpClient, private serverProvider: ServerProvider) {
   }
 
   public login(username, password) {
@@ -108,7 +107,6 @@ export class AuthenticationProvider {
   }
 
   public resetPassword(email) {
-    let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
     let req = {email: email};
     return new Promise((resolve, reject) => {
       this.http.put(this.serverProvider.getServerURL() + 'security/resetPassword', req).subscribe((result:any) => {

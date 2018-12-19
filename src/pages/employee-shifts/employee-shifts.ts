@@ -744,9 +744,9 @@ export class EmployeeShiftsPage {
     let shiftDate = new Date(shift.shiftDate);
     let today = new Date();
 
-    // if(shiftDate <= today) {
-    //   return;
-    // }
+    if(shiftDate <= today) {
+      return;
+    }
 
     if(shift === undefined || shift === null || shift.id === undefined) {
       return;
