@@ -1,3 +1,18 @@
 .dashboard-icon {
   padding: 10px;
+  margin: 0 auto;
+  text-align: center;
+  img {
+    max-width: 90px;
+  }
+}
+
+.shortcut-label {
+  display: block;
+  margin-top: .5em;
+  font-weight: 400;
+  color: #666;
+  height: 40px;
+  line-height: 13px;
+  text-align: center;
 }

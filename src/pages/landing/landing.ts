@@ -50,7 +50,6 @@ export class LandingPage {
       if (response === null || response === undefined || response.userId === undefined) {
         this.navCtrl.setRoot("LoginPage");
       }
-      // this.navCtrl.push("PinEntry")
       this.navCtrl.setRoot("PinConfirmPage");
     }).catch((err) => {
       console.log(err);
