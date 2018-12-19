@@ -7,6 +7,7 @@ import {Observable} from "rxjs";
 import {DatePipe} from "@angular/common";
 import {ModalShiftPopupPage} from "./modal-shift-popup/modal-shift-popup";
 import {LoadingProvider} from "../../providers/loading/loading";
+import {AuthenticationProvider} from "../../providers/authentication/authentication";
 
 @IonicPage()
 @Component({
@@ -68,7 +69,17 @@ export class EmployeeShiftsPage {
   public monthShift: any = [];
   public selectedDate: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public rosterProvider: RosterProvider, public shiftsProvider: ShiftsProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController, public loadingProvider: LoadingProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthenticationProvider, public rosterProvider: RosterProvider, public shiftsProvider: ShiftsProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController, public loadingProvider: LoadingProvider) {
+  }
+
+  ionViewCanEnter() {
+    const isAllowed = this.authProvider.isAuth(this.navCtrl);
+    if(isAllowed === false) {
+      setTimeout(() => {
+        this.navCtrl.setRoot('LoginPage');
+      }, 0);
+    }
+    return isAllowed;
   }
 
   ionViewDidLoad() {

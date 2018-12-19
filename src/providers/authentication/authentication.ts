@@ -97,7 +97,6 @@ export class AuthenticationProvider {
 
   public isTokenValid() {
     let token = localStorage.getItem('accessToken');
-    console.log(token);
     let headers = {'Content-Type': 'application/json'};
     return new Promise((resolve, reject) => {
       this.http.post(this.serverProvider.getServerURL() + 'security/loginToken/verify', token, {headers: headers}).subscribe((response: any) => {

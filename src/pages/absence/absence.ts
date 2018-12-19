@@ -6,6 +6,7 @@ import {DatePipe} from "@angular/common";
 import {ModalDropAbsencePage} from "./modal-drop-absence/modal-drop-absence";
 import {ModalAbsenceNotePage} from "./modal-absence-note/modal-absence-note";
 import {LoadingProvider} from "../../providers/loading/loading";
+import {AuthenticationProvider} from "../../providers/authentication/authentication";
 
 @IonicPage()
 @Component({
@@ -27,8 +28,18 @@ export class AbsencePage {
   public togglePast: boolean = false;
 
   public currentDate: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public employeeProvider: EmployeeProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController, public menuCtrl: MenuController, public loadingProvider: LoadingProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public employeeProvider: EmployeeProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController, public menuCtrl: MenuController, public loadingProvider: LoadingProvider, public authProvider: AuthenticationProvider) {
     this.currentDate = new Date();
+  }
+
+  ionViewCanEnter() {
+    const isAllowed = this.authProvider.isAuth(this.navCtrl);
+    if(isAllowed === false) {
+      setTimeout(() => {
+        this.navCtrl.setRoot('LoginPage');
+      }, 0);
+    }
+    return isAllowed;
   }
 
   ionViewDidLoad() {

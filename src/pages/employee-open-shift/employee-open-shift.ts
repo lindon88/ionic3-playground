@@ -8,6 +8,7 @@ import {ModalEosSendPage} from "./modal-eos-send/modal-eos-send";
 import {ModalEosSuccessPage} from "./modal-eos-success/modal-eos-success";
 import {ModalEosErrorPage} from "./modal-eos-error/modal-eos-error";
 import {LoadingProvider} from "../../providers/loading/loading";
+import {AuthenticationProvider} from "../../providers/authentication/authentication";
 
 @IonicPage()
 @Component({
@@ -41,7 +42,17 @@ export class EmployeeOpenShiftPage {
   // screen width
   screenWidth: number = window.screen.width;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public shiftsProvider: ShiftsProvider, public modalCtrl: ModalController, private menuCtrl: MenuController, public loadingProvider: LoadingProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthenticationProvider, public shiftsProvider: ShiftsProvider, public modalCtrl: ModalController, private menuCtrl: MenuController, public loadingProvider: LoadingProvider) {
+  }
+
+  ionViewCanEnter() {
+    const isAllowed = this.authProvider.isAuth(this.navCtrl);
+    if(isAllowed === false) {
+      setTimeout(() => {
+        this.navCtrl.setRoot('LoginPage');
+      }, 0);
+    }
+    return isAllowed;
   }
 
   ionViewDidLoad() {

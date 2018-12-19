@@ -7,6 +7,7 @@ import {ChecklistSubtasksPopoverPage} from "../checklist-subtasks-popover/checkl
 import {ModalTaskNotePage} from "./modal-task-note/modal-task-note";
 import {Navbar} from "ionic-angular";
 import {LoadingProvider} from "../../providers/loading/loading";
+import {AuthenticationProvider} from "../../providers/authentication/authentication";
 
 
 @IonicPage({
@@ -28,8 +29,18 @@ export class ChecklistSubtasksPage {
   public showAll: boolean = true;
   @ViewChild(Navbar) navBar: Navbar;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public workflowProvider: WorkflowProvider, public companyProvider: CompanyProvider, public popoverCtrl: PopoverController, public modalCtrl: ModalController, public loadingProvider: LoadingProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthenticationProvider, public workflowProvider: WorkflowProvider, public companyProvider: CompanyProvider, public popoverCtrl: PopoverController, public modalCtrl: ModalController, public loadingProvider: LoadingProvider) {
 
+  }
+
+  ionViewCanEnter() {
+    const isAllowed = this.authProvider.isAuth(this.navCtrl);
+    if(isAllowed === false) {
+      setTimeout(() => {
+        this.navCtrl.setRoot('LoginPage');
+      }, 0);
+    }
+    return isAllowed;
   }
 
   ionViewDidLoad() {

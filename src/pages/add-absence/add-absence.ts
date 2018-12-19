@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {AbsenceProvider} from "../../providers/absence/absence";
 import {Validators, FormBuilder, FormGroup} from "@angular/forms";
 import {LoadingProvider} from "../../providers/loading/loading";
+import {AuthenticationProvider} from "../../providers/authentication/authentication";
 
 /**
  * Generated class for the AddAbsencePage page.
@@ -29,13 +30,23 @@ export class AddAbsencePage {
   public selectedCompanyId: any = localStorage.getItem('currentCompanyId');
   public currentCorporateId: any = localStorage.getItem('currentCorporateId');
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private absenceProvider: AbsenceProvider, private formBuilder: FormBuilder, public loadingProvider: LoadingProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthenticationProvider, private absenceProvider: AbsenceProvider, private formBuilder: FormBuilder, public loadingProvider: LoadingProvider) {
     this.absenceTypeForm = this.formBuilder.group({
       selectedAbsenceField: ['', Validators.required],
       startDateField: ['', Validators.required],
       endDateField: ['', Validators.required],
       absenceReasonText: ['']
     })
+  }
+
+  ionViewCanEnter() {
+    const isAllowed = this.authProvider.isAuth(this.navCtrl);
+    if(isAllowed === false) {
+      setTimeout(() => {
+        this.navCtrl.setRoot('LoginPage');
+      }, 0);
+    }
+    return isAllowed;
   }
 
   ionViewDidLoad() {
