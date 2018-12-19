@@ -8,19 +8,34 @@
   </div>
 
   <div class="login-container">
-    <form name="loginform" (ngSubmit)="login(loginForm.value)" #loginForm="ngForm" role="form" autocomplete="off">
-      <ion-list>
-        <ion-item>
-          <ion-label><ion-icon name="person" item-start></ion-icon></ion-label>
-          <ion-input type="text" [ngModel]="email" name="email" placeholder="Email"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label><ion-icon name="lock" item-start></ion-icon></ion-label>
-          <ion-input type="password" [ngModel]="password" name="password" placeholder="Password"></ion-input>
-        </ion-item>
-      </ion-list>
-      <button ion-button color="secondary" type="submit"  block class="login-button" margin-bottom>Login</button>
-      <button ion-button color="no-color" block class="reset-password-button">Reset Password</button>
+    <form name="loginform" id="login-form" (ngSubmit)="login(loginForm.value)" #loginForm="ngForm" role="form" autocomplete="off">
+      <!--<ion-list>-->
+        <!--<ion-item>-->
+          <!--<ion-label><i class="fa fa-user"></i></ion-label>-->
+          <!--<ion-input type="text" [ngModel]="email" name="email" placeholder="Email"></ion-input>-->
+        <!--</ion-item>-->
+        <!--<ion-item>-->
+          <!--<ion-label><i class="fa fa-lock"></i></ion-label>-->
+          <!--<ion-input type="password" [ngModel]="password" name="password" placeholder="Password"></ion-input>-->
+        <!--</ion-item>-->
+      <!--</ion-list>-->
+      <!--<button ion-button color="secondary" type="submit"  block class="login-button" margin-bottom>Login</button>-->
+      <!--<button ion-button color="no-color" block class="reset-password-button">Reset Password</button>-->
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-user fa-lg"></i></span>
+        <input type="text" placeholder="Email" [ngModel]="email" name="email" class="form-control">
+      </div>
+      <br>
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-lock fa-lg"></i></span>
+        <input type="password" placeholder="Password" name="password" [ngModel]="password" class="form-control">
+      </div>
+      <div class="login-button">
+        <button ion-button color="secondary" type="submit" block margin-bottom margin-top>Login</button>
+      </div>
+      <div class="login-button">
+        <button ion-button color="no-color" block class="reset-password-button">Reset Password</button>
+      </div>
     </form>
   </div>
 </ion-content>

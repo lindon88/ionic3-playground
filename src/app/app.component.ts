@@ -89,7 +89,7 @@ export class MyApp {
     }
     this.userInfo = null;
 
-    this.rootPage = 'LoginPage';
+    this.navCtrl.setRoot("LoginPage");
     // this.authenticationProvider.logout().then(response => {
     //   this.navCtrl.setRoot("LoginPage");
     // }, error => {
