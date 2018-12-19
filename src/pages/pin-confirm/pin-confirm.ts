@@ -85,4 +85,39 @@ export class PinConfirmPage {
     });
   }
 
+  public logout() {
+    if (localStorage.getItem('accessToken')) {
+      localStorage.removeItem('accessToken');
+    }
+
+    if (localStorage.getItem('PIN')) {
+      localStorage.removeItem('PIN');
+    }
+
+    if (localStorage.getItem('currentCompanyId')) {
+      localStorage.removeItem('currentCompanyId');
+    }
+
+    if (localStorage.getItem('currentCorporateId')) {
+      localStorage.removeItem('currentCorporateId');
+    }
+
+    if (localStorage.getItem('currentPersonId')) {
+      localStorage.removeItem('currentPersonId');
+    }
+
+    if (localStorage.getItem('userInfo')) {
+      localStorage.removeItem('userInfo');
+    }
+    this.userInfo = null;
+
+    this.navCtrl.setRoot("LoginPage");
+    // this.authenticationProvider.logout().then(response => {
+    //   this.navCtrl.setRoot("LoginPage");
+    // }, error => {
+    //   console.log(error);
+    // })
+  }
+
+
 }
