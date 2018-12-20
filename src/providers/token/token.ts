@@ -7,6 +7,10 @@ export class TokenProvider {
   constructor(public http: HttpClient) {
   }
 
+  /**
+   * Check current user
+   * @param url
+   */
   public checkCurrentUser (url: string) {
     let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
     return new Promise((resolve, reject) => {

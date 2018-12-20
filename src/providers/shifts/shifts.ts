@@ -9,6 +9,11 @@ export class ShiftsProvider {
 
   }
 
+  /**
+   * Get available shifts for logged user
+   * @param start
+   * @param end
+   */
   public getMyAvailableShifts(start, end) {
     return new Promise((resolve, reject) => {
       let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
@@ -28,6 +33,11 @@ export class ShiftsProvider {
     });
   }
 
+  /**
+   * get requests
+   * @param start
+   * @param end
+   */
   public getMyRequests(start, end) {
     return new Promise((resolve, reject) => {
       let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
@@ -47,6 +57,11 @@ export class ShiftsProvider {
     });
   }
 
+  /**
+   * get shift details
+   * @param shiftType
+   * @param shiftId
+   */
   public getShiftDetails(shiftType, shiftId) {
     return new Promise((resolve, reject) => {
       let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
@@ -64,6 +79,11 @@ export class ShiftsProvider {
     })
   }
 
+  /**
+   * cancel request
+   * @param shiftId
+   * @param request
+   */
   public cancelRequest(shiftId, request) {
     return new Promise((resolve, reject) => {
       let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
@@ -81,6 +101,11 @@ export class ShiftsProvider {
     })
   }
 
+  /**
+   * send request
+   * @param personId
+   * @param request
+   */
   public sendRequest(personId, request) {
     return new Promise((resolve, reject) => {
       let headers = {'synergy-login-token': localStorage.getItem('accessToken')};

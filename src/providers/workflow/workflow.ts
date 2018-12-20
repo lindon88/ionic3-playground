@@ -9,6 +9,12 @@ export class WorkflowProvider {
 
   }
 
+  /**
+   * get workflow
+   * @param companyId
+   * @param date
+   * @param type
+   */
   public getWorkflow(companyId, date, type) {
 
     const params = {
@@ -27,6 +33,12 @@ export class WorkflowProvider {
     })
   }
 
+  /**
+   * get task
+   * @param taskId
+   * @param companyId
+   * @param date
+   */
   public getWorkflowTask(taskId, companyId, date) {
 
     const params = {
@@ -103,6 +115,14 @@ export class WorkflowProvider {
     })
   }
 
+  /**
+   * Set subtask note
+   * @param subtaskId
+   * @param userId
+   * @param companyId
+   * @param date
+   * @param note
+   */
   public setSubtaskResultNote(subtaskId, userId, companyId, date, note) {
     const params = {
       subtaskId: subtaskId,
