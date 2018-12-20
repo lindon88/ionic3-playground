@@ -14,24 +14,26 @@ import {AuthenticationProvider} from "../../providers/authentication/authenticat
   templateUrl: 'absence.html',
 })
 export class AbsencePage {
+
+  // vars
   public currentPersonId: any = localStorage.getItem('currentPersonId');
   public selectedCompanyId: any = localStorage.getItem('currentCompanyId');
   public currentCorporateId: any = localStorage.getItem('currentCorporateId');
   public absenceTypes: any = [];
   public absenceTypesHash: any = {};
   public selected: any = {};
-  public absenceStartDate: any = new Date();
-  public absenceEndDate: any = new Date();
   public pastAbsenceRequests: any = [];
   public myAbsenceRequests: any = [];
   public toggleCurrent: boolean = false;
   public togglePast: boolean = false;
 
   public currentDate: any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public employeeProvider: EmployeeProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController, public menuCtrl: MenuController, public loadingProvider: LoadingProvider, public authProvider: AuthenticationProvider) {
     this.currentDate = new Date();
   }
 
+  // Auth Guard
   ionViewCanEnter() {
     const isAllowed = this.authProvider.isAuth(this.navCtrl);
     if(isAllowed === false) {
@@ -50,10 +52,9 @@ export class AbsencePage {
     this.getAbsenceTypes();
     this.getMyRequests();
     this.loadingProvider.hideLoader();
-
-    console.log('ionViewDidLoad AbsencePage');
   }
 
+  // START: methods for enabling swipe back on this page
   public ionViewWillEnter(): void {
     this.menuCtrl.swipeEnable(true, 'menu1');
   }
@@ -61,7 +62,11 @@ export class AbsencePage {
   public ionViewWillLeave(): void {
     this.menuCtrl.swipeEnable(false, 'menu1');
   }
+  // END: methods for enabling swipe back for this page
 
+  /**
+   * Load absence types for company
+   */
   public getAbsenceTypes() {
     this.absenceProvider.getCompanyAbsenceTypes(this.selectedCompanyId).then((data: any) => {
       for(let i = 0; i < data.length; i++) {
@@ -80,6 +85,9 @@ export class AbsencePage {
     });
   }
 
+  /**
+   * Load persons previous absences
+   */
   public getPastPersonAbsences() {
     this.pastAbsenceRequests = [];
     this.absenceProvider.getPastPersonAbsences(this.currentPersonId).then((data: any) => {
@@ -96,6 +104,9 @@ export class AbsencePage {
     })
   }
 
+  /**
+   * Load current persons absences
+   */
   public getCurrentPersonAbsences() {
     this.myAbsenceRequests = [];
     this.absenceProvider.getCurrentPersonAbsences(this.currentPersonId).then((data: any) => {
@@ -111,6 +122,9 @@ export class AbsencePage {
     })
   }
 
+  /**
+   * Load current and past absencess
+   */
   public getMyRequests() {
     // start loading
     this.getCurrentPersonAbsences();
@@ -118,17 +132,30 @@ export class AbsencePage {
     // stop loading
   }
 
+  /**
+   * Show current
+   * @param type
+   */
   public toggleC(type) {
     this.toggleCurrent = !type;
     console.log(this.toggleCurrent);
   }
 
+  /**
+   * Show past
+   * @param type
+   */
   public toggleP(type) {
     this.togglePast = !type;
     console.log(this.togglePast);
     console.log(this.absenceTypesHash);
   }
 
+  /**
+   * Convert date to format 'yyyy/MM/dd'
+   * locale should be working, but setting it to en-GB, because sr-SR was not recognized in testing
+   * @param date
+   */
   public convertDateToLocale(date) {
     // const locale = window.navigator.language;
     const locale = 'en-GB';
@@ -137,6 +164,11 @@ export class AbsencePage {
     return datePipe.transform(date, 'yyyy/MM/dd');
   }
 
+  /**
+   * Modal for dropping absence request
+   * @param request
+   * @param description
+   */
   public dropAbsenceRequestPopup(request, description) {
     let modal = this.modalCtrl.create(ModalDropAbsencePage, {request: request, description: description }, {cssClass: 'drop-modal-absence' });
     modal.onDidDismiss(data => {
@@ -155,10 +187,17 @@ export class AbsencePage {
     modal.present();
   }
 
+  /**
+   * Navigate to add absence page
+   */
   public goToAddAbsence() {
     this.navCtrl.setRoot("AddAbsencePage");
   }
 
+  /**
+   * Display note as modal
+   * @param request
+   */
   public showNote(request) {
     let modal = this.modalCtrl.create(ModalAbsenceNotePage, {absenceRequest: request}, {cssClass: 'drop-modal-absence'});
     modal.present();
