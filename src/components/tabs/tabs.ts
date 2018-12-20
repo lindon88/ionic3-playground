@@ -7,8 +7,12 @@ import {TabComponent} from "../tab/tab";
 })
 export class TabsComponent {
 
+  // vars
   @ContentChildren(TabComponent) tabs: QueryList<TabComponent>;
 
+  /**
+   * After init, get active tabs
+   */
   ngAfterContentInit() {
     let activeTabs = this.tabs.filter((tab) => tab.active);
 
@@ -17,6 +21,10 @@ export class TabsComponent {
     }
   }
 
+  /**
+   * Select tab`
+   * @param tab
+   */
   selectTab(tab: TabComponent) {
     // deactivate all tabs
     this.tabs.toArray().forEach(tab => tab.active = false);
