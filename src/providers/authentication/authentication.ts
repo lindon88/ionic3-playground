@@ -5,12 +5,18 @@ import {NavController} from "ionic-angular";
 
 @Injectable()
 export class AuthenticationProvider {
+  // vars
   private userInfo: any;
   private isValidToken: boolean;
 
   constructor(public http: HttpClient, private serverProvider: ServerProvider) {
   }
 
+  /**
+   * Post login data method
+   * @param username
+   * @param password
+   */
   public login(username, password) {
     let headers = new Headers();
     return new Promise((resolve, reject) => {
@@ -82,11 +88,18 @@ export class AuthenticationProvider {
     });
   }
 
+  /**
+   * Is authenticated
+   * @param nav
+   */
   public isAuth(nav: NavController) {
     this.validateToken();
     return !((localStorage.getItem('userInfo') === null || localStorage.getItem('userInfo') === undefined) && this.isValidToken === false);
   }
 
+  /**
+   * Set isValidToken based on token validation
+   */
   validateToken() {
     this.isTokenValid().then((response: any) => {
       this.isValidToken = response.valid;
@@ -94,6 +107,9 @@ export class AuthenticationProvider {
     })
   }
 
+  /**
+   * Token validation
+   */
   public isTokenValid() {
     let token = localStorage.getItem('accessToken');
     let headers = {'Content-Type': 'application/json'};
@@ -106,6 +122,10 @@ export class AuthenticationProvider {
     })
   }
 
+  /**
+   * Reset password
+   * @param email
+   */
   public resetPassword(email) {
     let req = {email: email};
     return new Promise((resolve, reject) => {
