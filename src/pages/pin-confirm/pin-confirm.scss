@@ -15,12 +15,20 @@
   margin-top: 3%;
 }
 
+
 .fixed-PIN input[type=password] {
   font-size: 23px;
   font-weight: 300;
   height: 60px;
   line-height: 88%;
   text-align: center;
+}
+
+@media only screen and (max-width: 600px) {
+  .fixed-PIN {
+    margin-left: 0!important;
+    margin-right: 0!important;
+  }
 }
 
 .fixed-PIN input[type=password]:read-only{
