@@ -7,30 +7,42 @@ import {DatePipe} from "@angular/common";
   templateUrl: 'modal-drop-absence.html',
 })
 export class ModalDropAbsencePage {
+  // vars
   public request: any;
   public description: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController) {
   }
 
+  /**
+   * If modal loaded, get params for description and request
+   */
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ModalDropAbsencePage');
     this.description = this.navParams.get('description');
     this.request = this.navParams.get('request');
-
   }
 
+  /**
+   * Format date
+   * @param date
+   * @param format
+   */
   formatDate(date, format) {
     date = new Date(date);
     const datePipe = new DatePipe('en-US');
     return datePipe.transform(date, format);
   }
 
-  // return request id for deleting
+  /**
+   * Return requestID on cancel
+   */
   cancelAbsenceRequest() {
     this.viewCtrl.dismiss(this.request.id);
   }
 
+  /**
+   * Dismiss modal
+   */
   dismiss() {
     console.log(this.description);
     console.log(this.request);

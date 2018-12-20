@@ -5,21 +5,14 @@ import {Validators, FormBuilder, FormGroup} from "@angular/forms";
 import {LoadingProvider} from "../../providers/loading/loading";
 import {AuthenticationProvider} from "../../providers/authentication/authentication";
 
-/**
- * Generated class for the AddAbsencePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
   selector: 'page-add-absence',
   templateUrl: 'add-absence.html',
 })
 export class AddAbsencePage {
+  // vars
   public absenceTypeForm: FormGroup;
-
   public startDate: any;
   public endDate: any;
   public absenceTypes: any = [];
@@ -31,6 +24,7 @@ export class AddAbsencePage {
   public currentCorporateId: any = localStorage.getItem('currentCorporateId');
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthenticationProvider, private absenceProvider: AbsenceProvider, private formBuilder: FormBuilder, public loadingProvider: LoadingProvider) {
+    // form validation (only required is needed)
     this.absenceTypeForm = this.formBuilder.group({
       selectedAbsenceField: ['', Validators.required],
       startDateField: ['', Validators.required],
@@ -39,6 +33,9 @@ export class AddAbsencePage {
     })
   }
 
+  /**
+   * Auth Guard
+   */
   ionViewCanEnter() {
     const isAllowed = this.authProvider.isAuth(this.navCtrl);
     if(isAllowed === false) {
@@ -49,16 +46,23 @@ export class AddAbsencePage {
     return isAllowed;
   }
 
+  /**
+   * When page loaded, load absence types
+   */
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AddAbsencePage');
     this.getAbsenceTypes();
   }
 
-  // Go back to checklist
+  /**
+   * Navigate back to absences page
+   */
   public goToAbsences() {
     this.navCtrl.setRoot("AbsencePage");
   }
 
+  /**
+   * Load absence types
+   */
   public getAbsenceTypes() {
     this.loadingProvider.showLoader();
     this.absenceProvider.getCompanyAbsenceTypes(this.selectedCompanyId).then((data: any) => {
@@ -79,23 +83,16 @@ export class AddAbsencePage {
     this.loadingProvider.hideLoader();
   }
 
+  /**
+   * Add absence method
+   */
   public addAbsence() {
-    console.log("***** End date: " + this.endDate);
-    console.log("***** Start date: " + this.startDate);
-    console.log("***** Selected Type: " + this.selected.absence);
-    console.log("***** Reason Text: " + this.absenceReason.text);
-
     let request = {
       startDate: this.startDate,
       endDate: this.endDate,
       reason: this.absenceReason.text,
       absenceTypeId: this.selected.absence
     };
-    console.log("**** Request: ");
-    console.log(request);
-    console.log("**** Person ID: ");
-    console.log(this.currentPersonId);
-
     this.loadingProvider.showLoader();
     this.absenceProvider.addAbsence(request, this.currentPersonId).then((response:any) => {
       this.absenceReason = {text: ''};
@@ -106,5 +103,4 @@ export class AddAbsencePage {
     });
     this.loadingProvider.hideLoader();
   }
-
 }
