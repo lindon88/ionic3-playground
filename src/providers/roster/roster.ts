@@ -9,6 +9,10 @@ export class RosterProvider {
   constructor(public http: HttpClient, public serverProvider: ServerProvider) {
   }
 
+  /**
+   * Get rosters
+   * @param companyId
+   */
   public getRosters(companyId) {
     return new Promise((resolve, reject) => {
       let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
@@ -28,6 +32,13 @@ export class RosterProvider {
     })
   }
 
+  /**
+   * Get employee shifts
+   * @param date
+   * @param startDate
+   * @param endDate
+   * @param options
+   */
   public getLoggedEmployeeShifts(date, startDate, endDate, options) {
     let params:any = {};
     if(options !== undefined && options !== null && isObject(options)) {
@@ -47,9 +58,6 @@ export class RosterProvider {
       params.end = endDate;
     }
 
-    console.log('PARAMS');
-    console.log(params);
-
     return new Promise((resolve, reject) => {
       let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
       this.http.get(this.serverProvider.getServerURL() + 'hrm/rosterEditor/shifts/myShifts', {headers: headers, params: params}).subscribe((result: any) => {
@@ -65,6 +73,11 @@ export class RosterProvider {
     })
   }
 
+  /**
+   * Get roster days
+   * @param companyId
+   * @param params
+   */
   public getRosterDaysStatus(companyId, params) {
     return new Promise((resolve, reject) => {
       if(companyId === undefined || companyId === null || companyId === '') {
