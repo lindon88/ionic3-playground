@@ -10,10 +10,11 @@ import {AuthenticationProvider} from "../../providers/authentication/authenticat
 export class HomePage {
 
   constructor(public navCtrl: NavController, public menuCtrl: MenuController, public authProvider: AuthenticationProvider) {
-    // this.navCtrl.setRoot("HomePage");
-
   }
 
+  /**
+   * Auth Guard
+   */
   ionViewCanEnter() {
     const isAllowed = this.authProvider.isAuth(this.navCtrl);
     if(isAllowed === false) {
@@ -24,6 +25,7 @@ export class HomePage {
     return isAllowed;
   }
 
+  // START - Swipe back enable
   public ionViewWillEnter(): void {
     this.menuCtrl.swipeEnable(true, 'menu1');
   }
@@ -31,5 +33,5 @@ export class HomePage {
   public ionViewWillLeave(): void {
     this.menuCtrl.swipeEnable(false, 'menu1');
   }
-
+  // END - Swipe back enable
 }

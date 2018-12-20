@@ -10,8 +10,10 @@ import {TokenProvider} from "../../providers/token/token";
   templateUrl: 'landing.html'
 })
 export class LandingPage {
+  // vars
   public animation: any;
 
+  // lottie config
   animationOption = {
     loop: false,
     renderer: 'svg',
@@ -24,11 +26,15 @@ export class LandingPage {
 
   }
 
+  // On init, wait 5s to call redirect method
   ngOnInit() {
     // timeout for calling redirect function
     Observable.interval(5000).take(1).subscribe(() => this.redirect());
   }
 
+  /**
+   * Based on existing data in local storage, redirect to login or pin confirm page
+   */
   public redirect() {
     let userToken = localStorage['accessToken'];
     let serverUrl = localStorage['serverUrl'];
@@ -38,8 +44,7 @@ export class LandingPage {
       this.navCtrl.setRoot("LoginPage");
       return;
     }
-    // set to root, because we don't want to be able to return to landing page
-    //this.navCtrl.setRoot("LoginPage");
+
     this.serverProvider.setServerUrl(serverUrl);
     this.serverProvider.setDevServerUrl(serverUrl);
     this.apiProvider.setBaseUrl(this.serverProvider.getServerURL());
