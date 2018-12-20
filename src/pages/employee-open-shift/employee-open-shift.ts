@@ -16,6 +16,8 @@ import {AuthenticationProvider} from "../../providers/authentication/authenticat
   templateUrl: 'employee-open-shift.html',
 })
 export class EmployeeOpenShiftPage {
+  // vars
+
   // shift types
   OPEN_SHIFT: string = 'OPEN_SHIFT';
   SHIFT: string = 'SHIFT';
@@ -45,6 +47,9 @@ export class EmployeeOpenShiftPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthenticationProvider, public shiftsProvider: ShiftsProvider, public modalCtrl: ModalController, private menuCtrl: MenuController, public loadingProvider: LoadingProvider) {
   }
 
+  /**
+   * Auth Guard
+   */
   ionViewCanEnter() {
     const isAllowed = this.authProvider.isAuth(this.navCtrl);
     if(isAllowed === false) {
@@ -55,6 +60,9 @@ export class EmployeeOpenShiftPage {
     return isAllowed;
   }
 
+  /**
+   * If page loaded, load open shifts
+   */
   ionViewDidLoad() {
     this.currentPersonId = localStorage.getItem('currentPersonId');
     this.currentCompanyId = localStorage.getItem('currentCompanyId');
@@ -63,6 +71,7 @@ export class EmployeeOpenShiftPage {
     this.loadOpenShifts();
   }
 
+  // START - Swipe back enable
   public ionViewWillEnter(): void {
     this.menuCtrl.swipeEnable(true, 'menu1');
   }
@@ -70,7 +79,12 @@ export class EmployeeOpenShiftPage {
   public ionViewWillLeave(): void {
     this.menuCtrl.swipeEnable(false, 'menu1');
   }
+  // END - Swipe back disable
 
+  /**
+   * On resize should change screenWidth public var
+   * @param event
+   */
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.screenWidth = event.target.innerWidth;
@@ -93,8 +107,6 @@ export class EmployeeOpenShiftPage {
     Observable.forkJoin(this.getMyAvailableShifts(datePipe.transform(startDate, 'yyyy-MM-dd'), datePipe.transform(endDate, 'yyyy-MM-dd')), this.getMyRequests(datePipe.transform(startDate, 'yyyy-MM-dd'), datePipe.transform(endDate, 'yyyy-MM-dd')))
       .subscribe(results => {
         const [availableShifts, requests] = results;
-        console.log(results);
-
         // format shifts
         for(let i = 0; i < (<any>availableShifts).length; i++) {
           let item = availableShifts[i];
@@ -106,7 +118,6 @@ export class EmployeeOpenShiftPage {
                 item.requestType = request.requestType;
                 item.requesterEmployee = request.requesterEmployee;
                 item.requestId = request.id;
-
                 (<any>requests).splice(j, 1);
                 break;
               }
@@ -115,7 +126,6 @@ export class EmployeeOpenShiftPage {
           this.formatShift(item);
           this.availableShifts.push(item);
         }
-
         // define other requests
         if((<any>requests).length > 0) {
           for(let k = 0; k < (<any>requests).length; k++) {
@@ -138,7 +148,6 @@ export class EmployeeOpenShiftPage {
    */
   public onShiftClick(shift) {
     if(shift.showDrop !== undefined && shift.showDrop) {
-      // dropOpenShiftRequestPopup(shift)
       let modal = this.modalCtrl.create(ModalEosCancelPage, {data: shift}, {cssClass: 'cancelation-modal'});
       modal.onDidDismiss(data => {
         console.log(data);
@@ -278,5 +287,4 @@ export class EmployeeOpenShiftPage {
       console.log(error);
     })
   }
-
 }
