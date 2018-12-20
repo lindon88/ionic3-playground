@@ -3,16 +3,11 @@
     <button ion-button icon-only menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-
     <ion-title class="main-title">
       <img (click)="navCtrl.setRoot('HomePage')" src="./assets/imgs/Cover-logo-blue.png" alt="Cover">
     </ion-title>
-
   </ion-navbar>
-
 </ion-header>
-
-
 <ion-content no-bounce>
   <tabs>
     <tab [tabTitle]="'Pickup Request'">
@@ -25,14 +20,14 @@
                   <div class="month" *ngIf="screenWidth > 460">{{shift.monthText}}</div>
                   <div class="month" *ngIf="screenWidth <= 460">{{shift.monthText | slice: 0:3}}</div>
                   <div class="dayDate">
-                    <div class="date">{{shift.dayNumber}}</div>
+                    <div class="date" *ngIf="shift.dayNumber">{{shift.dayNumber}}</div>
                     <div class="day" *ngIf="screenWidth > 460">{{shift.dayText}}</div>
                     <div class="day" *ngIf="screenWidth <= 460">{{shift.dayText | slice: 0:3}}</div>
                   </div>
                 </div>
               </ion-col>
               <ion-col col-7 class="col col-7 description-column">
-                <div class="title">
+                <div class="title" *ngIf="shift.outlet">
                   {{shift.outlet.name}}
                 </div>
                 <div class="roster-info">
@@ -48,12 +43,11 @@
             </ion-row>
           </div>
         </ion-grid>
-
       </div>
     </tab>
     <tab [tabTitle]="'Drop Request'">
       <div *ngFor="let shift of availableShifts">
-        <ion-grid (click)="onShiftClick(shift)" *ngIf="shift.tab === 2">
+        <ion-grid (click)="onShiftClick(shift)" *ngIf="shift.tab === 2 && shift.outlet">
           <div class="card">
             <ion-row class="item row employee-shift-item">
               <ion-col col-2 class="date-column col col-2">
@@ -61,14 +55,14 @@
                   <div class="month" *ngIf="screenWidth > 460">{{shift.monthText}}</div>
                   <div class="month" *ngIf="screenWidth <= 460">{{shift.monthText | slice: 0:3}}</div>
                   <div class="dayDate">
-                    <div class="date">{{shift.dayNumber}}</div>
+                    <div class="date" *ngIf="shift.dayNumber">{{shift.dayNumber}}</div>
                     <div class="day" *ngIf="screenWidth > 460">{{shift.dayText}}</div>
                     <div class="day" *ngIf="screenWidth <= 460">{{shift.dayText | slice: 0:3}}</div>
                   </div>
                 </div>
               </ion-col>
               <ion-col col-7 class="col col-7 description-column">
-                <div class="title">
+                <div class="title" *ngIf="shift.outlet">
                   {{shift.outlet.name}}
                 </div>
                 <div class="roster-info">
@@ -83,7 +77,6 @@
             </ion-row>
           </div>
         </ion-grid>
-
       </div>
     </tab>
   </tabs>
