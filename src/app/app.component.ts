@@ -1,9 +1,9 @@
 import {Component, ViewChild} from '@angular/core';
 import {Events, MenuController, Nav, Platform} from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
+import {StatusBar} from '@ionic-native/status-bar';
+import {SplashScreen} from '@ionic-native/splash-screen';
 
-import { LandingPage } from "../pages/landing/landing";
+import {LandingPage} from "../pages/landing/landing";
 import {EmployeeProvider} from "../providers/employee/employee";
 import {CompanyProvider} from "../providers/company/company";
 import {AuthenticationProvider} from "../providers/authentication/authentication";
@@ -14,10 +14,11 @@ import {AuthenticationProvider} from "../providers/authentication/authentication
 export class MyApp {
   @ViewChild(Nav) navCtrl: Nav;
   // root page should be landing page
-  rootPage:any = LandingPage;
+  rootPage: any = LandingPage;
   public user: any;
-  public company; any;
-  pages: Array<{icon: string, title: string, component: any, click: any}>;
+  public company;
+  any;
+  pages: Array<{ icon: string, title: string, component: any, click: any }>;
   public userInfo: any = JSON.parse(localStorage.getItem('userInfo'));
   public companyId: any = localStorage.getItem('currentCompanyId');
 
@@ -36,25 +37,32 @@ export class MyApp {
     });
     // define pages for sidemenu
     this.pages = [
-      { icon: 'fa fa-tachometer', title: 'Dashboard', component: 'HomePage', click: null },
-      { icon: 'fa fa-calendar', title: 'My Schedule', component: "EmployeeShiftsPage", click: null },
-      { icon: 'fa fa-calendar-o', title: 'Open Shifts', component: "EmployeeOpenShiftPage", click: null },
-      { icon: 'fa fa-check-square-o', title: 'Checklists', component: "ChecklistsPage", click: null },
-      { icon: 'fa fa-sun-o', title: 'Absence Requests', component: "AbsencePage", click: null },
-      { icon: 'fa fa-sign-out', title: 'Log out', component: null, click: 'logout' }
+      {icon: 'fa fa-tachometer', title: 'Dashboard', component: 'HomePage', click: null},
+      {icon: 'fa fa-calendar', title: 'My Schedule', component: "EmployeeShiftsPage", click: null},
+      {icon: 'fa fa-calendar-o', title: 'Open Shifts', component: "EmployeeOpenShiftPage", click: null},
+      {icon: 'fa fa-check-square-o', title: 'Checklists', component: "ChecklistsPage", click: null},
+      {icon: 'fa fa-sun-o', title: 'Absence Requests', component: "AbsencePage", click: null},
+      {icon: 'fa fa-sign-out', title: 'Log out', component: null, click: 'logout'}
     ];
   }
 
+  /**
+   * Open page from menu
+   * @param page
+   */
   openPage(page) {
-    if(page.click === 'logout') {
+    if (page.click === 'logout') {
       this.logout();
       return;
     }
     this.navCtrl.setRoot(page.component);
   }
 
+  /**
+   * Get user info
+   */
   public getUserInfo() {
-    if(this.userInfo !== undefined && this.userInfo!==null) {
+    if (this.userInfo !== undefined && this.userInfo !== null) {
       this.employeeProvider.getEmployee(null, this.userInfo.userId).then((res) => {
         this.user = res;
       }, (err) => {
@@ -63,6 +71,9 @@ export class MyApp {
     }
   }
 
+  /**
+   * Logout method
+   */
   public logout() {
     if (localStorage.getItem('accessToken')) {
       localStorage.removeItem('accessToken');
@@ -90,30 +101,25 @@ export class MyApp {
     this.userInfo = null;
 
     this.navCtrl.setRoot("LoginPage");
-    // this.authenticationProvider.logout().then(response => {
-    //   this.navCtrl.setRoot("LoginPage");
-    // }, error => {
-    //   console.log(error);
-    // })
   }
 
+  /**
+   * Get allowed companies
+   */
   public getAllowedCompanies() {
-    if(this.userInfo !== undefined && this.userInfo!==null){
-    console.log(this.userInfo);
-    console.log("Current company id: " + this.companyId);
-    console.log("Current user id: " + this.userInfo.userId);
-    this.companyProvider.getAllAllowedCompanies(this.userInfo.userId).then( (res) => {
-      this.companies = res;
-      for(let i = 0; i < this.companies.length; i++) {
-        if(this.companies[i].id === this.companyId) {
-          this.company = this.companies[i];
-          console.log(this.company);
+    if (this.userInfo !== undefined && this.userInfo !== null) {
+      this.companyProvider.getAllAllowedCompanies(this.userInfo.userId).then((res) => {
+        this.companies = res;
+        for (let i = 0; i < this.companies.length; i++) {
+          if (this.companies[i].id === this.companyId) {
+            this.company = this.companies[i];
+            console.log(this.company);
+          }
         }
-      }
-    }, (err) => {
-      console.error(err);
-    })
-  }
+      }, (err) => {
+        console.error(err);
+      })
+    }
   }
 }
 
