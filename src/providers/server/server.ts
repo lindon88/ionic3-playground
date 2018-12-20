@@ -19,6 +19,9 @@ export class ServerProvider {
   constructor(public http: HttpClient, public alertCtrl: AlertController) {
   }
 
+  /**
+   * Check if developer mode
+   */
   private isDeveloperMode () {
     if (!window.cordova) return true;
     if (this.devMode == null) {
@@ -28,6 +31,9 @@ export class ServerProvider {
     return this.devMode;
   }
 
+  /**
+   * Get server url
+   */
   public getServerURL () {
     if (this.isDeveloperMode()) {
       return this.serverUrl;
@@ -36,26 +42,46 @@ export class ServerProvider {
     }
   }
 
+  /**
+   * Get sandbox url
+   */
   public getSandboxURL () {
     return this.sandboxServerUrl;
   }
 
+  /**
+   * get origin server url
+   */
   public getOriginServerURL () {
     return this.originalServerUrl;
   }
 
+  /**
+   * get origin dev server url
+   */
   public getOriginDevServerURL () {
     return this.originalDevServerUrl;
   }
 
+  /**
+   * set server url
+   * @param url
+   */
   public setServerUrl (url: string) {
     this.serverUrl = url;
   }
 
+  /**
+   * set dev server url
+   * @param url
+   */
   public setDevServerUrl (url: string) {
     this.devServerUrl = url;
   }
 
+  /**
+   * Check connection
+   */
   public checkConnection () {
     let result = {
       connected: false,
@@ -97,9 +123,11 @@ export class ServerProvider {
         resolve(result);
       });
     })
-
   }
 
+  /**
+   * Ping
+   */
   public ping () {
     let result = {
       start : new Date().getTime(),
