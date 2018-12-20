@@ -51,8 +51,6 @@ export class EmployeeShiftsPage {
   public absenceTypes: any = null;
   // setting default month and day format
   public monthTextFormat: string = 'long';
-  public persistMonth: any;
-  public persistDay: any;
   public dayTextFormat: string = 'long';
   public weekRosterStart: any;
   public weekRosterEnd: any;
@@ -72,6 +70,9 @@ export class EmployeeShiftsPage {
   constructor(public navCtrl: NavController, public menuCtrl: MenuController, public navParams: NavParams, public authProvider: AuthenticationProvider, public rosterProvider: RosterProvider, public shiftsProvider: ShiftsProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController, public loadingProvider: LoadingProvider) {
   }
 
+  /**
+   * Auth Guard
+   */
   ionViewCanEnter() {
     const isAllowed = this.authProvider.isAuth(this.navCtrl);
     if(isAllowed === false) {
@@ -82,6 +83,9 @@ export class EmployeeShiftsPage {
     return isAllowed;
   }
 
+  /**
+   * If page loaded, load week rosters and employee month shifts
+   */
   ionViewDidLoad() {
     // load week
     this.loadingProvider.showLoader();
@@ -97,6 +101,7 @@ export class EmployeeShiftsPage {
     this.loadingProvider.hideLoader();
   }
 
+  // START - Swipe back enable
   public ionViewWillEnter(): void {
     this.menuCtrl.swipeEnable(true, 'menu1');
   }
@@ -104,6 +109,7 @@ export class EmployeeShiftsPage {
   public ionViewWillLeave(): void {
     this.menuCtrl.swipeEnable(false, 'menu1');
   }
+  // END - Swipe back enable
 
   /**
    * Setting selected date for view change
@@ -113,9 +119,7 @@ export class EmployeeShiftsPage {
     this.monthShift = [];
     this.weekDays = [];
     let date = new Date();
-    let currentDate = this.convertDateToLocale(date, 'yyyy-MM-dd');
-    this.selectedDate = currentDate;
-    console.log(currentDate);
+    this.selectedDate = this.convertDateToLocale(date, 'yyyy-MM-dd');
     if(this.viewType === this.VIEW_MONTH) {
       this.loadingProvider.showLoader();
       this.loadEmployeeShiftsForSelectedDate(this.selectedDate);
@@ -125,7 +129,6 @@ export class EmployeeShiftsPage {
       this.loadWeekRosters(this.currentCompanyId);
       this.loadingProvider.hideLoader();
     }
-    // this.loadEmployeeShiftsForSelectedDate(currentDate);
   }
 
   /**
@@ -199,6 +202,7 @@ export class EmployeeShiftsPage {
 
   /**
    * Load employee shifts
+   * Observable for loading multiple request parallel
    * @param date
    * @param startDate
    * @param endDate
@@ -237,7 +241,6 @@ export class EmployeeShiftsPage {
       this.fillFullWeekWithData(this.shiftsObservableResponse, this.openShiftsObservableResponse, this.daysObservableResponse, this.absenceTypesObservableResponse);
 
       this.shifts = this.sortShiftByDate(this.shifts);
-      console.log(this.shifts);
     })
   }
 
@@ -247,7 +250,6 @@ export class EmployeeShiftsPage {
    * @param endDate
    */
   public loadEmployeeMonthShifts(startDate, endDate) {
-    console.clear();
     this.monthViewData = [];
     this.shifts = [];
 
@@ -263,9 +265,7 @@ export class EmployeeShiftsPage {
 
         this.defineMonthShifts(this.shiftsObservableResponse, this.openShiftsObservableResponse);
         this.defineMonthOpenShifts(this.openShiftsObservableResponse);
-        //
       }
-
     })
   }
 
@@ -295,19 +295,19 @@ export class EmployeeShiftsPage {
             }
             shifts[key].push(shift);
             count = shifts[key].length;
-            console.log("************  COUNT  ***************");
-            console.log(count);
 
             let newDate = new Date(shift.shiftDate);
 
+            // if there is an event for that day, remove it's count so a new count could be set
             for(let ev in this.currentEvents) {
-              let currentEvent = this.currentEvents[ev];
-              if(currentEvent.year === newDate.getFullYear() && currentEvent.month === newDate.getMonth() && currentEvent.date === newDate.getDate()) {
-                console.log('EXISTS');
-                this.currentEvents[ev]--;
+              if(this.currentEvents.hasOwnProperty(ev)) {
+                let currentEvent = this.currentEvents[ev];
+                if(currentEvent.year === newDate.getFullYear() && currentEvent.month === newDate.getMonth() && currentEvent.date === newDate.getDate()) {
+                  this.currentEvents[ev]--;
+                }
               }
             }
-
+            // Object for setting regular shift on month
             let dateObj = {
               year: newDate.getFullYear(),
               month: newDate.getMonth(),
@@ -319,10 +319,15 @@ export class EmployeeShiftsPage {
           }
         }
       }
-      console.log(this.currentEvents);
-
     });
+    this.defineMonthAbsences(employee)
+  }
 
+  /**
+   * Defining absences
+   * @param employee
+   */
+  public defineMonthAbsences(employee) {
     // defining absences
     if (employee.absences !== undefined) {
       let absences = employee.absences;
@@ -334,23 +339,24 @@ export class EmployeeShiftsPage {
           if (typeof absences[i] === 'object') {
             count = 1;
           } else {
+            // if there is an event for that day, remove it's count so a new count could be set
             for(let ev in this.currentEvents) {
-              let currentEvent = this.currentEvents[ev];
-              if(currentEvent.year === newDate.getFullYear() && currentEvent.month === newDate.getMonth() && currentEvent.date === newDate.getDate()) {
-                console.log('EXISTS');
-                if(currentEvent.color === 'purple') {
-                  count = currentEvent.count + absences[i].length;
-                  currentEvent--;
-                } else {
-                  currentEvent--;
-                  count = absences[i].length;
+              if(this.currentEvents.hasOwnProperty(ev)){
+                let currentEvent = this.currentEvents[ev];
+                if(currentEvent.year === newDate.getFullYear() && currentEvent.month === newDate.getMonth() && currentEvent.date === newDate.getDate()) {
+                  if(currentEvent.color === 'purple') {
+                    count = currentEvent.count + absences[i].length;
+                    currentEvent--;
+                  } else {
+                    currentEvent--;
+                    count = absences[i].length;
+                  }
                 }
               }
             }
-            // count = absences[i].length;
-            console.log(this.currentEvents);
           }
 
+          // Object for absence
           let dateObj = {
             year: newDate.getFullYear(),
             month: newDate.getMonth(),
@@ -401,9 +407,6 @@ export class EmployeeShiftsPage {
             count: count
           };
           this.currentEvents.push(dateObj);
-          console.log(this.currentEvents);
-          console.log(openShiftsObj[shift.date]);
-          // this.shifts.push(openShiftsObj[shift.date]);
         }
       });
     }
@@ -472,27 +475,28 @@ export class EmployeeShiftsPage {
    */
   public defineAbsences(shifts, openShifts, days, absences) {
     for (let i in this.weekDays) {
-      let weekDay = this.weekDays[i];
-      if (this.employee.absences[weekDay.date] !== undefined) {
-        let absence = this.employee.absences[weekDay.date];
-        for (let key in this.absenceTypes) {
-          if (this.absenceTypes.hasOwnProperty(key)) {
-            let absenceType = this.absenceTypes[key];
-            if (absenceType.id === absence.absenceTypeId) {
-              this.weekDays[i].has = true;
-              let date = new Date(weekDay.date);
-              this.shifts.push({
-                title: absenceType.description,
-                shiftDate: weekDay.date,
-                monthText: date.toLocaleString('en-US', {month: this.monthTextFormat}),
-                dayText: date.toLocaleString('en-US', {weekday: this.dayTextFormat}),
-                dayNumber: date.getDate()
-              });
+      if(this.weekDays.hasOwnProperty(i)) {
+        let weekDay = this.weekDays[i];
+        if (this.employee.absences[weekDay.date] !== undefined) {
+          let absence = this.employee.absences[weekDay.date];
+          for (let key in this.absenceTypes) {
+            if (this.absenceTypes.hasOwnProperty(key)) {
+              let absenceType = this.absenceTypes[key];
+              if (absenceType.id === absence.absenceTypeId) {
+                this.weekDays[i].has = true;
+                let date = new Date(weekDay.date);
+                this.shifts.push({
+                  title: absenceType.description,
+                  shiftDate: weekDay.date,
+                  monthText: date.toLocaleString('en-US', {month: this.monthTextFormat}),
+                  dayText: date.toLocaleString('en-US', {weekday: this.dayTextFormat}),
+                  dayNumber: date.getDate()
+                });
+              }
             }
           }
         }
       }
-      console.log('ABSENCES!!!!!');
     }
   }
 
@@ -576,7 +580,6 @@ export class EmployeeShiftsPage {
         }
       }
     }
-    console.log(this.monthShift);
   }
 
   /**
@@ -748,6 +751,10 @@ export class EmployeeShiftsPage {
     })
   }
 
+  /**
+   * Show popup on shift click if today is smaller date than clicked one
+   * @param shift
+   */
   public onShiftClick(shift) {
     let shiftDate = new Date(shift.shiftDate);
     let today = new Date();
@@ -764,10 +771,8 @@ export class EmployeeShiftsPage {
       return;
     }
 
-
     let popupTitle = 'Request Drop';
     let request = {};
-    // prepare request
     let requestDrop = {
       requesterId: this.currentPersonId,
       shiftId: shift.id,
@@ -775,14 +780,12 @@ export class EmployeeShiftsPage {
       requestType: 'CANNOT_WORK',
       requestNote: 'CANNOT WORK'
     };
-
     if(shift.drop !== undefined) {
       popupTitle = 'Cancel Drop Request';
-      let requestCancel = {
+      request = {
         shiftRequestId: shift.requestId,
         note: 'Cancel Drop Request'
       };
-      request = requestCancel;
     } else {
       request = requestDrop;
     }
@@ -790,7 +793,6 @@ export class EmployeeShiftsPage {
     let modal = this.modalCtrl.create(ModalShiftPopupPage, {popupTitle: popupTitle, request: request, shift: shift}, {cssClass: 'modal-shift-popup'});
     modal.onDidDismiss(data => {
       if(data === true) {
-        // request send or cancelled
         // reload
         if(this.viewType === this.VIEW_MONTH) {
           let date = new Date(shift.shiftDate);
