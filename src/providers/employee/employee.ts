@@ -8,6 +8,11 @@ export class EmployeeProvider {
   constructor(public http: HttpClient, public serverProvider: ServerProvider) {
   }
 
+  /**
+   * Get employee
+   * @param companyId
+   * @param userId
+   */
   public getEmployee(companyId, userId) {
     return new Promise((resolve, reject) => {
       let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
@@ -32,6 +37,11 @@ export class EmployeeProvider {
     })
   }
 
+  /**
+   * not used
+   * @param shiftType
+   * @param shiftId
+   */
   public getShiftDetails(shiftType: any, shiftId: any) {
     return new Promise((resolve, reject) => {
       let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
@@ -43,6 +53,10 @@ export class EmployeeProvider {
     })
   }
 
+  /**
+   * not used
+   * @param personId
+   */
   public getPersonShiftRequests(personId: any) {
     return new Promise((resolve, reject) => {
       let headers = {'synergy-login-token': localStorage.getItem('accessToken')};

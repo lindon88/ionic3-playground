@@ -9,6 +9,10 @@ export class CompanyProvider {
     console.log('Hello CompanyProvider Provider');
   }
 
+  /**
+   * Get allowed companies for user
+   * @param userId
+   */
   public getAllAllowedCompanies(userId) {
     return new Promise((resolve, reject) => {
       let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
@@ -21,6 +25,10 @@ export class CompanyProvider {
     })
   }
 
+  /**
+   * Get current business date for company
+   * @param companyId
+   */
   public getCurrentBusinessDate(companyId) {
     return new Promise((resolve, reject) => {
       let headers = {'synergy-login-token': localStorage.getItem('accessToken')};

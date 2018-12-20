@@ -14,6 +14,9 @@ export class LoadingProvider {
   constructor(private loadingCtrl: LoadingController) {
   }
 
+  /**
+   * Show loading
+   */
   private showLoadingHandler() {
     if (this.loader === null) {
       this.loader = this.loadingCtrl.create({
@@ -33,6 +36,9 @@ export class LoadingProvider {
     }
   }
 
+  /**
+   * Hide loading
+   */
   private hideLoadingHandler() {
     if(this.loader !== null) {
       this.loader.dismiss();
@@ -40,10 +46,16 @@ export class LoadingProvider {
     }
   }
 
+  /**
+   * public show
+   */
   public showLoader() {
     this.showLoadingHandler();
   }
 
+  /**
+   * public hide
+   */
   public hideLoader() {
     this.hideLoadingHandler();
   }
