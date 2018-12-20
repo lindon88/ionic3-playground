@@ -98,7 +98,9 @@ export class EmployeeShiftsPage {
     let monthStartDate = new Date(date.getFullYear(), date.getMonth(), 1);
     let monthEndDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
     this.loadEmployeeMonthShifts(this.convertDateToLocale(monthStartDate, 'yyyy-MM-dd'), this.convertDateToLocale(monthEndDate, 'yyyy-MM-dd'));
-    this.loadingProvider.hideLoader();
+    if(this.shifts) {
+      this.loadingProvider.hideLoader();
+    }
   }
 
   // START - Swipe back enable
@@ -123,11 +125,15 @@ export class EmployeeShiftsPage {
     if(this.viewType === this.VIEW_MONTH) {
       this.loadingProvider.showLoader();
       this.loadEmployeeShiftsForSelectedDate(this.selectedDate);
-      this.loadingProvider.hideLoader();
+      if(this.shifts) {
+        this.loadingProvider.hideLoader();
+      }
     } else {
       this.loadingProvider.showLoader();
       this.loadWeekRosters(this.currentCompanyId);
-      this.loadingProvider.hideLoader();
+      if(this.shifts) {
+        this.loadingProvider.hideLoader();
+      }
     }
   }
 
