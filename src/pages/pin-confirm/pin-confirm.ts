@@ -8,6 +8,7 @@ import {PinProvider} from "../../providers/pin/pin";
   templateUrl: 'pin-confirm.html',
 })
 export class PinConfirmPage {
+  // vars
   public pin: string = '';
   public newPin: string = localStorage.getItem('newPin');
   public userInfo: any = JSON.parse(localStorage.getItem('userInfo'));
@@ -15,11 +16,9 @@ export class PinConfirmPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public pinProvider: PinProvider) {
   }
 
-  ionAfterViewInit() {
-    console.log('ionViewDidLoad PinConfirmPage');
-    console.log(localStorage.getItem('userInfo'));
-  }
-
+  /**
+   * Show error
+   */
   public showError() {
     this.alertCtrl.create({
       title: "Error",
@@ -29,6 +28,10 @@ export class PinConfirmPage {
     });
   }
 
+  /**
+   * Add pin sequence
+   * @param num
+   */
   public add(num: string) {
     if (this.pin.length < 4) {
       this.pin += num;
@@ -44,6 +47,8 @@ export class PinConfirmPage {
           }, () => {
             console.log("Error posting pin");
           });
+        } else {
+          this.showError();
         }
       }
     }
@@ -65,26 +70,32 @@ export class PinConfirmPage {
     this.navCtrl.setRoot("PinCreatePage");
   }
 
+  /**
+   * Verify pin
+   * @param pin
+   */
   public verifyPIN(pin: any) {
     let userId = this.userInfo.userId;
     this.pinProvider.getPasscode(userId, pin).then( (result) => {
-      console.log("RESULT VERIFY");
-      console.log(result);
       if(result['result'] === 'SUCCESS') {
         localStorage.setItem('currentPersonId', userId);
         // goto HOME
         this.navCtrl.setRoot("HomePage");
       } else if (result['result'] === 'ERROR') {
-        this.alertCtrl.create({
+        let alert = this.alertCtrl.create({
           title: "Login Error",
           message: "Please verify your PIN and try again"
         });
+        alert.present();
       }
     }, (err) => {
       console.log(err);
     });
   }
 
+  /**
+   * Logout method
+   */
   public logout() {
     if (localStorage.getItem('accessToken')) {
       localStorage.removeItem('accessToken');
@@ -112,11 +123,6 @@ export class PinConfirmPage {
     this.userInfo = null;
 
     this.navCtrl.setRoot("LoginPage");
-    // this.authenticationProvider.logout().then(response => {
-    //   this.navCtrl.setRoot("LoginPage");
-    // }, error => {
-    //   console.log(error);
-    // })
   }
 
 
