@@ -10,6 +10,7 @@ import {LoadingProvider} from "../../providers/loading/loading";
   templateUrl: 'login.html'
 })
 export class LoginPage {
+  // vars
   public userinfo: any;
 
   constructor(public navCtrl: NavController, private serverProvider: ServerProvider, public alertCtrl: AlertController, public authProvider: AuthenticationProvider, public loadingProvider: LoadingProvider) {
@@ -21,9 +22,12 @@ export class LoginPage {
 
   ionAfterViewInit() {
     this.navCtrl.setRoot("LoginPage");
-
   }
 
+  /**
+   * Login method
+   * @param data
+   */
   public login(data: any) {
     let username = data.email;
     let password = data.password;
@@ -74,12 +78,15 @@ export class LoginPage {
             // pin already exists, goto pin confirm
             this.navCtrl.setRoot("HomePage")
           }
-        })
+        });
         this.loadingProvider.hideLoader();
       }
     })
   }
 
+  /**
+   * Navigate to reset page
+   */
   public gotoReset() {
     this.navCtrl.setRoot("ResetPasswordPage");
   }
