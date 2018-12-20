@@ -7,6 +7,7 @@ import {IonicPage, NavController, NavParams, Platform} from 'ionic-angular';
   templateUrl: 'pin-create.html',
 })
 export class PinCreatePage {
+  // vars
   public pin: string = '';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform) {
@@ -17,7 +18,6 @@ export class PinCreatePage {
     if(this.navCtrl.canGoBack()) {
       this.platform.exitApp();
     }
-    console.log('ionViewDidLoad PinCreatePage');
   }
 
   /**
@@ -54,6 +54,9 @@ export class PinCreatePage {
     this.navCtrl.setRoot("LoginPage");
   }
 
+  /**
+   * Logout
+   */
   public logout() {
     if (localStorage.getItem('accessToken')) {
       localStorage.removeItem('accessToken');
@@ -80,11 +83,7 @@ export class PinCreatePage {
     }
 
     this.navCtrl.setRoot("LoginPage");
-    // this.authenticationProvider.logout().then(response => {
-    //   this.navCtrl.setRoot("LoginPage");
-    // }, error => {
-    //   console.log(error);
-    // })
+
   }
 
 
