@@ -15,6 +15,11 @@ export class PinProvider {
 
   }
 
+  /**
+   * Save PIN
+   * @param personId
+   * @param pin
+   */
   public save(personId: any, pin: any) {
     return new Promise((resolve, reject) => {
       console.log("PERSON: " + personId + ', PIN: ' + pin);
@@ -28,6 +33,11 @@ export class PinProvider {
     })
   }
 
+  /**
+   * GET PIN
+   * @param personId
+   * @param pin
+   */
   public getPasscode(personId: any, pin: any) {
     return new Promise((resolve, reject) => {
       let body = {personId: personId, pin: pin};
