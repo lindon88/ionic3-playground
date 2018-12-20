@@ -8,18 +8,25 @@ import {AuthenticationProvider} from "../../providers/authentication/authenticat
   templateUrl: 'reset-password.html',
 })
 export class ResetPasswordPage {
+  // vars
   public passwordResetResult: any = false;
   constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthenticationProvider) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ResetPasswordPage');
   }
 
+  /**
+   * Navigate to login page
+   */
   gotoLogin() {
     this.navCtrl.setRoot('LoginPage');
   }
 
+  /**
+   * Reset password
+   * @param data
+   */
   resetPassword(data: any) {
     let email = data.email;
     console.log(email);
@@ -27,5 +34,4 @@ export class ResetPasswordPage {
       this.passwordResetResult = result;
     });
   }
-
 }
