@@ -48,7 +48,7 @@ export class PinConfirmPage {
             console.log("Error posting pin");
           });
         } else {
-          this.showError();
+          // this.showError();
         }
       }
     }
