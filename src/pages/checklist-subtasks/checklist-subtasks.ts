@@ -19,13 +19,14 @@ import {AuthenticationProvider} from "../../providers/authentication/authenticat
   templateUrl: 'checklist-subtasks.html',
 })
 export class ChecklistSubtasksPage {
-  // @ViewChild(DatePipe) datePipe: DatePipe = new DatePipe('en-US');
+
+  // vars
   public task: any;
-  title: string;
-  subtasks: any;
-  showView: boolean;
-  currentPersonId: string;
-  currentDate: any;
+  public title: string;
+  public subtasks: any;
+  public showView: boolean;
+  public currentPersonId: string;
+  public currentDate: any;
   public showAll: boolean = true;
   @ViewChild(Navbar) navBar: Navbar;
 
@@ -33,6 +34,9 @@ export class ChecklistSubtasksPage {
 
   }
 
+  /**
+   * Auth Guard
+   */
   ionViewCanEnter() {
     const isAllowed = this.authProvider.isAuth(this.navCtrl);
     if(isAllowed === false) {
@@ -43,6 +47,9 @@ export class ChecklistSubtasksPage {
     return isAllowed;
   }
 
+  /**
+   * On page load, load workflow tasks
+   */
   ionViewDidLoad() {
     this.loadingProvider.showLoader();
     this.getCompanyCurrentDate(this.navParams.get('companyId')).then(dateSuccess => {
@@ -63,11 +70,19 @@ export class ChecklistSubtasksPage {
     this.loadingProvider.hideLoader();
   }
 
-  // Go back to checklist
+  /**
+   * Navigate back to checklist
+   */
   public goToChecklist() {
     this.navCtrl.setRoot("ChecklistsPage");
   }
 
+  /**
+   * Load workflow method
+   * @param taskId
+   * @param companyId
+   * @param date
+   */
   public loadWorkflowTask(taskId, companyId, date) {
     this.workflowProvider.getWorkflowTask(taskId, companyId, date).then( (data) => {
       this.task = data;
@@ -109,6 +124,11 @@ export class ChecklistSubtasksPage {
     return !task.expanded;
   }
 
+  /**
+   * Toggle task status
+   * @param task
+   * @param i
+   */
   public toggleTaskStatus(task, i) {
     if(!task.complete) {
       task.complete = true;
@@ -129,14 +149,16 @@ export class ChecklistSubtasksPage {
       this.workflowProvider.markUncomplete(task.id, task.resultId, this.currentPersonId, this.navParams.get('companyId'), this.currentDate).then(result => {
         let expanded = task.expanded;
         task.expanded = expanded;
-        console.log('UPDATED STATUS!!!');
       }, error => {
         task.complete = true;
       })
     }
   }
 
-
+  /**
+   * Show filter popup
+   * @param event
+   */
   public showFilterMenu(event) {
     let popover = this.popoverCtrl.create(ChecklistSubtasksPopoverPage, { 'checked':this.showAll }, { cssClass: ' custom-popover ' });
     popover.present({
@@ -153,13 +175,14 @@ export class ChecklistSubtasksPage {
     })
   }
 
+  /**
+   * Add note for task
+   * @param data
+   * @param i
+   */
   public addTaskNote(data, i) {
     let modal = this.modalCtrl.create(ModalTaskNotePage, { 'data': data }, {cssClass: 'select-modal' });
     modal.onDidDismiss(data => {
-      console.log(data);
-      console.log('person id: ' + this.currentPersonId);
-      console.log('company id: ' + this.navParams.get('companyId'));
-      console.log('current date: ' + this.currentDate);
       if(data === null || data === undefined) return;
       if(data.note === null || data.note === undefined || data.note === '') return;
       this.workflowProvider.setSubtaskResultNote(data.task.id, this.currentPersonId, this.navParams.get('companyId'), this.currentDate, data.note).then(result => {
@@ -172,29 +195,21 @@ export class ChecklistSubtasksPage {
     modal.present();
   }
 
-
   /**
    * Format single tasks
    * @param task
    */
   private formatTask(task) {
     // define status class
-    if(task.complete) {
-      task.statusClass = 'ion-checkmark-circled orange';
-    } else {
-      task.statusClass = 'ion-ios-circle-outline';
-    }
+    task.statusClass = task.complete ? 'ion-checkmark-circled orange' : 'ion-ios-circle-outline';
 
     if(task.expanded === undefined) {
       task.expanded = false;
     }
 
     task.show = !task.complete;
-
     // define it it's needed to show launch button
-
     task.showLaunchButton = !(task.wizard === undefined || task.wizard === null || task.wizard.appLink === undefined || task.wizard.appLink === null);
-
     return task;
   }
 
@@ -216,7 +231,4 @@ export class ChecklistSubtasksPage {
       return formattedDate;
     })
   }
-
-
-
 }
