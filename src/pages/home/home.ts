@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController} from 'ionic-angular';
+import {IonicPage, MenuController, NavController} from 'ionic-angular';
 import {AuthenticationProvider} from "../../providers/authentication/authentication";
 
 @IonicPage()
@@ -9,7 +9,7 @@ import {AuthenticationProvider} from "../../providers/authentication/authenticat
 })
 export class HomePage {
 
-  constructor(public navCtrl: NavController, public authProvider: AuthenticationProvider) {
+  constructor(public navCtrl: NavController, public menuCtrl: MenuController, public authProvider: AuthenticationProvider) {
     // this.navCtrl.setRoot("HomePage");
 
   }
@@ -22,6 +22,14 @@ export class HomePage {
       }, 0);
     }
     return isAllowed;
+  }
+
+  public ionViewWillEnter(): void {
+    this.menuCtrl.swipeEnable(true, 'menu1');
+  }
+
+  public ionViewWillLeave(): void {
+    this.menuCtrl.swipeEnable(false, 'menu1');
   }
 
 }

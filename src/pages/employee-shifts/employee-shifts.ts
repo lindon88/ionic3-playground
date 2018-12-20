@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, MenuController, ModalController, NavController, NavParams} from 'ionic-angular';
 import {RosterProvider} from "../../providers/roster/roster";
 import {ShiftsProvider} from "../../providers/shifts/shifts";
 import {AbsenceProvider} from "../../providers/absence/absence";
@@ -69,7 +69,7 @@ export class EmployeeShiftsPage {
   public monthShift: any = [];
   public selectedDate: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthenticationProvider, public rosterProvider: RosterProvider, public shiftsProvider: ShiftsProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController, public loadingProvider: LoadingProvider) {
+  constructor(public navCtrl: NavController, public menuCtrl: MenuController, public navParams: NavParams, public authProvider: AuthenticationProvider, public rosterProvider: RosterProvider, public shiftsProvider: ShiftsProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController, public loadingProvider: LoadingProvider) {
   }
 
   ionViewCanEnter() {
@@ -95,6 +95,14 @@ export class EmployeeShiftsPage {
     let monthEndDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
     this.loadEmployeeMonthShifts(this.convertDateToLocale(monthStartDate, 'yyyy-MM-dd'), this.convertDateToLocale(monthEndDate, 'yyyy-MM-dd'));
     this.loadingProvider.hideLoader();
+  }
+
+  public ionViewWillEnter(): void {
+    this.menuCtrl.swipeEnable(true, 'menu1');
+  }
+
+  public ionViewWillLeave(): void {
+    this.menuCtrl.swipeEnable(false, 'menu1');
   }
 
   /**
