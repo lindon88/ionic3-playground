@@ -5,6 +5,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class OrderPipe implements PipeTransform {
 
+  /**
+   * Order pipe
+   * @param array
+   * @param args
+   */
   transform(array: Array<string>, args: string): Array<string> {
     if (array !== undefined) {
       array.sort((a: any, b: any) => {

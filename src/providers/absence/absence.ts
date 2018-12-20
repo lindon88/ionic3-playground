@@ -25,6 +25,11 @@ export class AbsenceProvider {
     });
   }
 
+  /**
+   * Add absence
+   * @param request
+   * @param userId
+   */
   public addAbsence(request: any, userId) {
     return new Promise((resolve, reject) => {
       let header = {'synergy-login-token': localStorage.getItem('accessToken')};
@@ -60,6 +65,11 @@ export class AbsenceProvider {
     })
   }
 
+  /**
+   * Delete absence
+   * @param employeeId
+   * @param absenceId
+   */
   public deleteEmployeeAbsence(employeeId, absenceId) {
     return new Promise((resolve, reject) => {
       if ((employeeId === undefined || employeeId === null) || (absenceId === undefined || absenceId === null)) {
@@ -78,6 +88,10 @@ export class AbsenceProvider {
     })
   }
 
+  /**
+   * Get absence types
+   * @param companyId
+   */
   public getCompanyAbsenceTypes(companyId) {
     return new Promise((resolve, reject) => {
       let header = {'synergy-login-token': localStorage.getItem('accessToken')};
@@ -89,6 +103,10 @@ export class AbsenceProvider {
     })
   }
 
+  /**
+   * Get previous absences
+   * @param personId
+   */
   public getPastPersonAbsences(personId) {
     return new Promise((resolve, reject) => {
       let header = {'synergy-login-token': localStorage.getItem('accessToken')};
@@ -100,6 +118,10 @@ export class AbsenceProvider {
     })
   }
 
+  /**
+   * Get current absences
+   * @param personId
+   */
   public getCurrentPersonAbsences(personId) {
     return new Promise((resolve, reject) => {
       let header = {'synergy-login-token': localStorage.getItem('accessToken')};
@@ -111,6 +133,11 @@ export class AbsenceProvider {
     })
   }
 
+  /**
+   * Cancel absence request
+   * @param personId
+   * @param requestId
+   */
   public cancelAbsenceRequest(personId, requestId) {
     return new Promise((resolve, reject) => {
       let header = {'synergy-login-token': localStorage.getItem('accessToken')};
@@ -122,6 +149,10 @@ export class AbsenceProvider {
     })
   }
 
+  /**
+   * Get absence types
+   * @param corporateId
+   */
   public getAbsenceTypes(corporateId) {
     return new Promise((resolve, reject) => {
       let header = {'synergy-login-token': localStorage.getItem('accessToken')};
