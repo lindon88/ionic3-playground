@@ -1,11 +1,5 @@
 import { Component } from '@angular/core';
 import {IonicPage, NavParams, ViewController} from 'ionic-angular';
-/**
- * Generated class for the ChecklistFilterPopoverPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -24,18 +18,31 @@ import {IonicPage, NavParams, ViewController} from 'ionic-angular';
   `,
 })
 export class ChecklistFilterPopoverPage {
+  // vars
   public checked: boolean = true;
+
   constructor(private viewCtrl: ViewController, public navParams: NavParams) {
   }
 
+  /**
+   * On load, get checked from params
+   */
   ionViewDidLoad() {
     this.checked = this.navParams.get('checked');
   }
 
+  /**
+   * Dismiss popover
+   */
   close() {
     this.viewCtrl.dismiss();
   }
 
+  /**
+   * On click, pass back value
+   * @param event
+   * @param value
+   */
   public popoverItemClick(event, value) {
     this.checked = this.navParams.get('checked');
     this.viewCtrl.dismiss(value);
