@@ -6,6 +6,7 @@ import {NavController, NavParams, ViewController} from 'ionic-angular';
   templateUrl: 'modal-eos-send.html',
 })
 export class ModalEosSendPage {
+  // vars
   data: any;
   request: any;
   currentPersonId: any;
@@ -14,13 +15,17 @@ export class ModalEosSendPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
   }
 
+  /**
+   * If modal loaded, get data params
+   */
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ModalEosSendPage');
     this.data = this.navParams.get('data');
-    console.log(this.data);
     this.currentPersonId = localStorage.getItem('currentPersonId');
   }
 
+  /**
+   * On save, send back request object
+   */
   save() {
     this.request = {
       'requesterId': this.currentPersonId,
@@ -32,9 +37,11 @@ export class ModalEosSendPage {
     this.viewCtrl.dismiss(this.request);
   }
 
+  /**
+   * On dismiss, send back request as null
+   */
   dismiss() {
     this.request = null;
     this.viewCtrl.dismiss(this.request);
   }
-
 }
