@@ -243,3 +243,7 @@ ion-menu.show-menu + ion-nav {
   margin-left: 8%;
 }
 
+// Alerts
+.alert-button, .picker-button {
+  color: $secondaryColor!important;
+}
