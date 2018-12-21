@@ -31,6 +31,7 @@ import { RosterProvider } from '../providers/roster/roster';
 import { CalendarModule} from 'ionic3-calendar-en';
 import {ModalShiftPopupPageModule} from "../pages/employee-shifts/modal-shift-popup/modal-shift-popup.module";
 
+import {FingerprintAIO} from '@ionic-native/fingerprint-aio';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import {ModalShiftPopupPageModule} from "../pages/employee-shifts/modal-shift-po
     ShiftsProvider,
     AbsenceProvider,
     RosterProvider,
+    FingerprintAIO
   ]
 })
 export class AppModule {}

@@ -3,6 +3,7 @@ import {AlertController, IonicPage, NavController} from 'ionic-angular';
 import {ServerProvider} from "../../providers/server/server";
 import {AuthenticationProvider} from "../../providers/authentication/authentication";
 import {LoadingProvider} from "../../providers/loading/loading";
+import {FingerprintAIO} from '@ionic-native/fingerprint-aio';
 
 @IonicPage()
 @Component({
@@ -13,7 +14,7 @@ export class LoginPage {
   // vars
   public userinfo: any;
 
-  constructor(public navCtrl: NavController, private serverProvider: ServerProvider, public alertCtrl: AlertController, public authProvider: AuthenticationProvider, public loadingProvider: LoadingProvider) {
+  constructor(public navCtrl: NavController, private serverProvider: ServerProvider, public fingerpring:FingerprintAIO, public alertCtrl: AlertController, public authProvider: AuthenticationProvider, public loadingProvider: LoadingProvider) {
     let userToken = localStorage['accessToken'];
     if(userToken) {
       this.navCtrl.setRoot("HomePage");
@@ -75,7 +76,7 @@ export class LoginPage {
             });
             alert.present();
           } else {
-            // pin already exists, goto pin confirm
+            this.checkFingerprintAIO();
             this.navCtrl.setRoot("HomePage")
           }
         });
@@ -89,6 +90,16 @@ export class LoginPage {
    */
   public gotoReset() {
     this.navCtrl.setRoot("ResetPasswordPage");
+  }
+
+  public checkFingerprintAIO() {
+    console.log('show fp');
+    // @ts-ignore
+    this.fingerpring.isAvailable().then(result => {
+      console.log(result);
+    }).catch(error => {
+      console.log(error);
+    })
   }
 
 
