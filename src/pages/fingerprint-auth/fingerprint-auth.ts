@@ -30,11 +30,16 @@ export class FingerprintAuthPage {
     this.fingerprint.show({
       clientId: 'Cover',
       clientSecret: 'coverAppPassDemo',
-      disableBackup: true
+      disableBackup: false
     }).then((result: any) => {
       if(result.withFingerprint){
+        // fingerprint passed
+        this.navCtrl.setRoot('HomePage');
+      } else if(result.withPassword) {
+        // passcode passed (backup)
         this.navCtrl.setRoot('HomePage');
       } else {
+        // cancelled
         console.log('err');
       }
     }).catch(err => {
