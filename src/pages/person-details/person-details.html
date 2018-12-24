@@ -16,27 +16,27 @@
     <ion-list-header>Personal</ion-list-header>
     <ion-item>
       <ion-label>Email</ion-label>
-      <ion-input></ion-input>
+      <ion-input [(ngModel)]="user_email"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Home Phone</ion-label>
-      <ion-input></ion-input>
+      <ion-input [(ngModel)]="home_phone"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Mobile Phone</ion-label>
-      <ion-input></ion-input>
+      <ion-input [(ngModel)]="mobile_phone"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Address Line 1</ion-label>
-      <ion-input></ion-input>
+      <ion-input [(ngModel)]="address_line_1"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Address Line 2</ion-label>
-      <ion-input></ion-input>
+      <ion-input [(ngModel)]="address_line_2"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>State / Country</ion-label>
-      <ion-input></ion-input>
+      <ion-input [(ngModel)]="state_country"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Country</ion-label>
@@ -50,19 +50,19 @@
     <ion-list-header>Emergency</ion-list-header>
     <ion-item>
       <ion-label>Contact Name</ion-label>
-      <ion-input></ion-input>
+      <ion-input [(ngModel)]="emergency_contact_name"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Phone</ion-label>
-      <ion-input></ion-input>
+      <ion-input [(ngModel)]="emergency_phone"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Address</ion-label>
-      <ion-input></ion-input>
+      <ion-input [(ngModel)]="emergency_address"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>City</ion-label>
-      <ion-input></ion-input>
+      <ion-input [(ngModel)]="emergency_city"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Country</ion-label>
@@ -73,7 +73,7 @@
     </ion-item>
     <ion-item>
       <ion-label floating>Medical Conditions</ion-label>
-      <ion-textarea rows="4" maxlength="500"></ion-textarea>
+      <ion-textarea rows="4" maxlength="500" [(ngModel)]="emergency_medical_conditions"></ion-textarea>
     </ion-item>
   </ion-list>
 
