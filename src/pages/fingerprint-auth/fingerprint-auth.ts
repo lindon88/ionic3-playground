@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {FingerprintAIO} from "@ionic-native/fingerprint-aio";
 
 /**
@@ -16,23 +16,29 @@ import {FingerprintAIO} from "@ionic-native/fingerprint-aio";
 })
 export class FingerprintAuthPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public fingerprint: FingerprintAIO) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public fingerprint: FingerprintAIO, public alertCtrl: AlertController) {
   }
 
   ionViewDidLoad() {
     this.fingerAuth();
   }
 
+  /**
+   * Open finger auth dialog
+   */
   fingerAuth() {
     this.fingerprint.show({
       clientId: 'Cover',
       clientSecret: 'coverAppPassDemo',
+      disableBackup: true
     }).then((result: any) => {
       if(result.withFingerprint){
         this.navCtrl.setRoot('HomePage');
       } else {
-        alert('Error');
+        console.log('err');
       }
+    }).catch(err => {
+      console.log(err);
     })
   }
 
