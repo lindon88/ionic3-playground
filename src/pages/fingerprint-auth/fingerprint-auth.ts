@@ -2,13 +2,6 @@ import { Component } from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {FingerprintAIO} from "@ionic-native/fingerprint-aio";
 
-/**
- * Generated class for the FingerprintAuthPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
   selector: 'page-fingerprint-auth',
@@ -20,6 +13,7 @@ export class FingerprintAuthPage {
   }
 
   ionViewDidLoad() {
+    // on page load, show finger auth dialog
     this.fingerAuth();
   }
 
@@ -30,7 +24,9 @@ export class FingerprintAuthPage {
     this.fingerprint.show({
       clientId: 'Cover',
       clientSecret: 'coverAppPassDemo',
-      disableBackup: false
+      disableBackup: false,
+      localizedFallbackTitle: 'Use PIN',
+      localizedReason: 'Please authenticate'
     }).then((result: any) => {
       if(result.withFingerprint){
         // fingerprint passed
@@ -47,6 +43,9 @@ export class FingerprintAuthPage {
     })
   }
 
+  /**
+   * Go to pin page
+   */
   gotoPin() {
     this.navCtrl.setRoot('PinConfirmPage');
   }
