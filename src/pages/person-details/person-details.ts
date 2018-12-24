@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {EmployeeProvider} from "../../providers/employee/employee";
+import {CountryProvider} from "../../providers/country/country";
 
 /**
  * Generated class for the PersonDetailsPage page.
@@ -34,12 +35,23 @@ export class PersonDetailsPage {
   public emergency_country: any;
   public emergency_medical_conditions: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private employeeProvider: EmployeeProvider) {
+  // countries
+  public countries: any = [];
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private employeeProvider: EmployeeProvider, private countryProvider: CountryProvider) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PersonDetailsPage');
+    this.getCountries();
     this.getEmployee();
+  }
+
+  public getCountries() {
+    this.countryProvider.getCountries().then((result: any) => {
+      console.log(result);
+      this.countries = result;
+    })
   }
 
   public getEmployee() {

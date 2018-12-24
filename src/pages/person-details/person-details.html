@@ -40,9 +40,8 @@
     </ion-item>
     <ion-item>
       <ion-label>Country</ion-label>
-      <ion-select>
-        <ion-option>US</ion-option>
-        <ion-option>UK</ion-option>
+      <ion-select [(ngModel)]="country">
+        <ion-option *ngFor="let country of countries" [value]="country.id">{{country.name}}</ion-option>
       </ion-select>
     </ion-item>
   </ion-list>
@@ -66,9 +65,8 @@
     </ion-item>
     <ion-item>
       <ion-label>Country</ion-label>
-      <ion-select>
-        <ion-option>US</ion-option>
-        <ion-option>UK</ion-option>
+      <ion-select [(ngModel)]="emergency_country">
+        <ion-option *ngFor="let country of countries" [value]="country.id">{{country.name}}</ion-option>
       </ion-select>
     </ion-item>
     <ion-item>
