@@ -1,0 +1,23 @@
+<ion-content class="login-background" no-bounce>
+  <div class="logo-header-container">
+    <img class= "synergysuitelogo" src="./assets/imgs/Cover-logo-blue.png" alt="logo">
+    <div class="sub-logo-container">
+      <span>Powered By</span>
+      <img src="./assets/imgs/loginlogo2.png">
+    </div>
+  </div>
+
+  <div class="fingerprint-form">
+    <div class="fingerprint-logo">
+      <img src="./assets/imgs/fingerprint.png" alt="fingerprint">
+    </div>
+    <span class="fingerprint-text">Touch Sensor</span>
+    <ion-grid class="fingerprint-redirect">
+      <ion-row>
+        <ion-col col-12>
+          <button ion-button color="secondary" class="goto-pin" block (click)="gotoPin()">Use PIN</button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

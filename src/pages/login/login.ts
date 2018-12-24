@@ -14,7 +14,7 @@ export class LoginPage {
   // vars
   public userinfo: any;
 
-  constructor(public navCtrl: NavController, private serverProvider: ServerProvider, public fingerpring:FingerprintAIO, public alertCtrl: AlertController, public authProvider: AuthenticationProvider, public loadingProvider: LoadingProvider) {
+  constructor(public navCtrl: NavController, private serverProvider: ServerProvider, public fingerprint:FingerprintAIO, public alertCtrl: AlertController, public authProvider: AuthenticationProvider, public loadingProvider: LoadingProvider) {
     let userToken = localStorage['accessToken'];
     if(userToken) {
       this.navCtrl.setRoot("HomePage");
@@ -53,31 +53,14 @@ export class LoginPage {
           this.userinfo = result;
           console.log(this.userinfo.userRoles);
           console.log(this.userinfo);
-          if (this.userinfo.userPIN === null || this.userinfo.userPIN === undefined) {
-            // ask a user if he wants to add a pin
-            let alert = this.alertCtrl.create({
-              title: "You don't have a PIN",
-              subTitle: "Do You want to setup one?",
-              buttons: [
-                {
-                  text: 'Agree',
-                  handler: () => {
-                    // go to create pin view
-                    this.navCtrl.setRoot("PinCreatePage");
-                  }
-                },
-                {
-                  text: 'Disagree',
-                  handler: () => {
-                    // go to home
-                  }
-                }
-              ]
-            });
-            alert.present();
+          if(localStorage.getItem('useFingerprint') !== undefined && localStorage.getItem('useFingerprint') !== null && localStorage.getItem('useFingerprint').length > 0) {
+            if(localStorage.getItem('useFingerprint') === 'true') {
+              this.navCtrl.setRoot('FingerprintAuthPage');
+            } else {
+              this.pinSetup();
+            }
           } else {
             this.checkFingerprintAIO();
-            this.navCtrl.setRoot("HomePage")
           }
         });
         this.loadingProvider.hideLoader();
@@ -92,15 +75,71 @@ export class LoginPage {
     this.navCtrl.setRoot("ResetPasswordPage");
   }
 
+  /**
+   * Check if device uses fingerprint
+   */
   public checkFingerprintAIO() {
     console.log('show fp');
     // @ts-ignore
-    this.fingerpring.isAvailable().then(result => {
-      console.log(result);
+    this.fingerprint.isAvailable().then(result => {
+      if(result === "finger") {
+        let alert = this.alertCtrl.create({
+          title: 'Fingerprint Login',
+          message: 'Do you want to login using your fingerprint on this device?',
+          buttons: [
+            {
+              text: 'No Thanks',
+              handler: () => {
+                localStorage.setItem('useFingerprint', 'false');
+                this.navCtrl.setRoot('PinConfirmPage');
+              }
+            },
+            {
+              text: 'Yes Please',
+              handler: () => {
+                localStorage.setItem('useFingerprint', 'true');
+                this.navCtrl.setRoot('FingerprintAuthPage');
+              }
+            }
+          ]
+        });
+        alert.present();
+      }
+      // alert(result);
     }).catch(error => {
       console.log(error);
+      alert(error);
     })
   }
 
-
+  /**
+   * Check if user have, use or want to use pin
+   */
+  private pinSetup() {
+    if (this.userinfo.userPIN === null || this.userinfo.userPIN === undefined) {
+      // ask a user if he wants to add a pin
+      let alert = this.alertCtrl.create({
+        title: "You don't have a PIN",
+        subTitle: "Do You want to setup one?",
+        buttons: [
+          {
+            text: 'Agree',
+            handler: () => {
+              // go to create pin view
+              this.navCtrl.setRoot("PinCreatePage");
+            }
+          },
+          {
+            text: 'Disagree',
+            handler: () => {
+              this.navCtrl.setRoot('HomePage');
+            }
+          }
+        ]
+      });
+      alert.present();
+    } else {
+      this.navCtrl.setRoot('HomePage');
+    }
+  }
 }

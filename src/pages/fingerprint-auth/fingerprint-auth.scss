@@ -1,0 +1,35 @@
+
+.fingerprint-form {
+  width: 100%;
+  text-align: center;
+
+  .fingerprint-logo {
+    max-width: 33%;
+    margin: 0 auto;
+  }
+
+  .fingerprint-text {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .fingerprint-redirect {
+    margin-top: 50px;
+
+    ion-row {
+      ion-col {
+        text-align: center;
+        .goto-pin {
+          width: 80%;
+          margin: 0 auto;
+          -webkit-border-radius: 0!important;
+          -moz-border-radius: 0!important;
+          border-radius: 0!important;
+        }
+      }
+    }
+  }
+
+}
