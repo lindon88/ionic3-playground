@@ -121,5 +121,9 @@ export class MyApp {
       })
     }
   }
+
+  public gotoProfile() {
+    this.navCtrl.push('ProfilePage');
+  }
 }
 

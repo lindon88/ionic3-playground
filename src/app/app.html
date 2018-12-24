@@ -1,4 +1,4 @@
-<ion-menu [content]="content" id="menu1" >
+<ion-menu [content]="content" id="menu1" persistent="true">
 
   <ion-header class="sidemenu-header">
     <ion-toolbar color="primary" class="sidemenu-toolbar">
@@ -6,7 +6,7 @@
         <table>
           <tr>
             <td rowspan="2"><i class="sidemenu-title-icon fa fa-user"></i></td>
-            <td>{{user.firstName}} {{user.lastName}} <br>
+            <td menuClose (click)="gotoProfile()">{{user.firstName}} {{user.lastName}} <br>
               {{company.name}}</td>
           </tr>
         </table>

@@ -1,0 +1,23 @@
+<ion-header class="main-header">
+  <ion-navbar hideBackButton="true" color="primary" class="main-navbar">
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+
+    <ion-title class="main-title">
+      <img (click)="navCtrl.setRoot('HomePage')" src="./assets/imgs/Cover-logo-blue.png" alt="Cover">
+    </ion-title>
+
+  </ion-navbar>
+
+</ion-header>
+<ion-content no-bounce>
+  <ion-grid>
+    <ion-row *ngFor="let card of profile_content">
+      <ion-card (click)="profileGoTo(card.page)">
+        <ion-card-header>{{card.header}}</ion-card-header>
+        <ion-card-content>{{card.description}}</ion-card-content>
+      </ion-card>
+    </ion-row>
+  </ion-grid>
+</ion-content>
