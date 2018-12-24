@@ -142,7 +142,7 @@ ion-input {
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 
-input[type="text"], input[type="password"] {
+input[type="text"].form-control, input[type="password"].form-control {
   text-align: left;
   text-transform: none;
   padding: 9px 9px 9px 12px;

@@ -29,7 +29,7 @@ export class ProfilePage {
       {
         header: 'Personal Details',
         description: 'Update details for your HR team',
-        page: 'PersonalDetailsPage'
+        page: 'PersonDetailsPage'
       },
       {
         header: 'Request Payroll Changes',
@@ -50,6 +50,6 @@ export class ProfilePage {
   }
 
   public profileGoTo(page: string) {
-    console.log(page);
+    this.navCtrl.push(page);
   }
 }
