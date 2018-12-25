@@ -78,4 +78,26 @@ export class PersonDetailsPage {
     })
   }
 
+
+  public savePerson() {
+    let person = {
+      id: this.currentPersonId,
+      companyId: this.currentCompanyId,
+      email: this.user_email,
+      phone: this.home_phone,
+      mobile: this.mobile_phone,
+      address1: this.address_line_1,
+      address2: this.address_line_2,
+      address4: this.state_country,
+      country: {id: this.country},
+      emergencyContactName: this.emergency_contact_name,
+      emergencyAddress1: this.emergency_address,
+      emergencyContactPhone: this.emergency_phone,
+      emergencyAddress4: this.emergency_city,
+      medicalConditions: this.emergency_medical_conditions
+    };
+    this.employeeProvider.savePerson(this.currentCompanyId, person).then((result: any) => {
+      console.log(result);
+    })
+  }
 }

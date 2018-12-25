@@ -68,4 +68,20 @@ export class EmployeeProvider {
     })
   }
 
+  /**
+   * Saves persons data
+   * @param companyId
+   * @param person
+   */
+  public savePerson(companyId: any, person: any) {
+    return new Promise((resolve, reject) => {
+      let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
+      this.http.post(this.serverProvider.getServerURL() + 'hrm/cm/' + companyId + '/employees', person, {headers: headers}).subscribe((result:any) => {
+        resolve(result);
+      }, error => {
+        reject(JSON.stringify(error));
+      })
+    })
+  }
+
 }
