@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {Content, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {EmployeeProvider} from "../../providers/employee/employee";
 import {CountryProvider} from "../../providers/country/country";
 
@@ -42,6 +42,12 @@ export class PersonDetailsPage {
   public countries: any = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private employeeProvider: EmployeeProvider, private countryProvider: CountryProvider) {
+  }
+
+  @ViewChild(Content) content: Content;
+
+  scrollToTop() {
+    this.content.scrollToTop();
   }
 
   ionViewDidLoad() {
@@ -106,7 +112,23 @@ export class PersonDetailsPage {
     const obj = {...this.person, ...person};
     this.employeeProvider.savePerson(this.currentCompanyId, obj).then((result: any) => {
       console.log(result);
+      this.user_email = result.email;
+      this.home_phone = result.phone;
+      this.mobile_phone = result.mobile;
+      this.address_line_1 = result.address1;
+      this.address_line_2 = result.address2;
+      this.state_country = result.address4;
+      this.country = result.country['id'];
+
+      this.emergency_contact_name = result.emergencyContactName;
+      this.emergency_address = result.emergencyAddress1;
+      this.emergency_phone = result.emergencyContactPhone;
+      this.emergency_country = result.country['id'];
+      this.emergency_city = result.emergencyAddress4;
+      this.emergency_medical_conditions = result.medicalConditions;
     });
+
+    this.scrollToTop();
 
   }
 }
