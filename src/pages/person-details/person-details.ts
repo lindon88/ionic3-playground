@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component} from '@angular/core';
+import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {EmployeeProvider} from "../../providers/employee/employee";
 import {CountryProvider} from "../../providers/country/country";
 
@@ -19,6 +19,9 @@ export class PersonDetailsPage {
   public currentPersonId: any = localStorage.getItem('currentPersonId');
   public currentCompanyId: any = localStorage.getItem('currentCompanyId');
   public currentCorporateId: any = localStorage.getItem('currentCorporateId');
+
+  // retrieved person object
+  public person: any;
 
   // page details form
   public user_email: string;
@@ -56,8 +59,9 @@ export class PersonDetailsPage {
 
   public getEmployee() {
     this.employeeProvider.getEmployee(this.currentCompanyId, this.currentPersonId).then((result: any) => {
+      this.person = result;
       console.log(result);
-      if(result) {
+      if (result) {
         this.user_email = result.email;
         this.home_phone = result.phone;
         this.mobile_phone = result.mobile;
@@ -80,6 +84,7 @@ export class PersonDetailsPage {
 
 
   public savePerson() {
+    // todo: Nemanja add to person object rest of the data
     let person = {
       id: this.currentPersonId,
       companyId: this.currentCompanyId,
@@ -96,8 +101,12 @@ export class PersonDetailsPage {
       emergencyAddress4: this.emergency_city,
       medicalConditions: this.emergency_medical_conditions
     };
-    this.employeeProvider.savePerson(this.currentCompanyId, person).then((result: any) => {
+
+    // merge scopes values with person
+    const obj = {...this.person, ...person};
+    this.employeeProvider.savePerson(this.currentCompanyId, obj).then((result: any) => {
       console.log(result);
-    })
+    });
+
   }
 }
