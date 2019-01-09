@@ -1,15 +1,12 @@
 <ion-header class="main-header">
-  <ion-navbar hideBackButton="true" color="primary" class="main-navbar">
-    <button ion-button icon-only menuToggle>
-      <ion-icon name="menu"></ion-icon>
+  <ion-navbar color="primary" [hideBackButton]="true" class="main-navbar clearfix">
+    <button ion-button icon-only  (click)="goToMainProfile()">
+      <ion-icon name="arrow-back"></ion-icon>
     </button>
-
     <ion-title class="main-title">
       <img (click)="navCtrl.setRoot('HomePage')" src="./assets/imgs/Cover-logo-blue.png" alt="Cover">
     </ion-title>
-
   </ion-navbar>
-
 </ion-header>
 <ion-content no-bounce>
   <ion-list class="profile-item">

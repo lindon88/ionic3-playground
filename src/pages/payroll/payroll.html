@@ -1,0 +1,61 @@
+<ion-header class="main-header">
+  <ion-navbar color="primary" [hideBackButton]="true" class="main-navbar clearfix">
+    <button ion-button icon-only  (click)="goToMainProfile()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </button>
+    <ion-title class="main-title">
+      <img (click)="navCtrl.setRoot('HomePage')" src="./assets/imgs/Cover-logo-blue.png" alt="Cover">
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content no-bounce>
+  <ion-list class="payroll-item">
+    <ion-item>
+      <ion-label>A/C Name</ion-label>
+      <ion-input [(ngModel)]="ac_name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>A/C Number</ion-label>
+      <ion-input [(ngModel)]="ac_number"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Sort Number</ion-label>
+      <ion-input [(ngModel)]="sort_number"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Routing/BIC</ion-label>
+      <ion-input [(ngModel)]="routing_bic"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>IBAN</ion-label>
+      <ion-input [(ngModel)]="iban"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Bank Name</ion-label>
+      <ion-input [(ngModel)]="bank_name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Bank Street Address</ion-label>
+      <ion-input [(ngModel)]="bank_street_address"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Bank Address</ion-label>
+      <ion-input [(ngModel)]="bank_address"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Bank City</ion-label>
+      <ion-input [(ngModel)]="bank_city"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Bank Phone</ion-label>
+      <ion-input [(ngModel)]="bank_phone"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-grid>
+    <ion-row>
+      <button ion-button color="secondary" (click)="savePayroll()" block>Save</button>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+

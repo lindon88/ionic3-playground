@@ -154,4 +154,8 @@ export class PersonDetailsPage {
     this.scrollToTop();
 
   }
+
+  goToMainProfile() {
+    this.navCtrl.pop();
+  }
 }
