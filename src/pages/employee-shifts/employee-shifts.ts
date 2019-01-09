@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {IonicPage, MenuController, ModalController, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, MenuController, ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
 import {RosterProvider} from "../../providers/roster/roster";
 import {ShiftsProvider} from "../../providers/shifts/shifts";
 import {AbsenceProvider} from "../../providers/absence/absence";
@@ -67,20 +67,29 @@ export class EmployeeShiftsPage {
   public monthShift: any = [];
   public selectedDate: any;
 
-  constructor(public navCtrl: NavController, public menuCtrl: MenuController, public navParams: NavParams, public authProvider: AuthenticationProvider, public rosterProvider: RosterProvider, public shiftsProvider: ShiftsProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController, public loadingProvider: LoadingProvider) {
+  constructor(public navCtrl: NavController, public viewCtrl: ViewController, public menuCtrl: MenuController, public navParams: NavParams, public authProvider: AuthenticationProvider, public rosterProvider: RosterProvider, public shiftsProvider: ShiftsProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController, public loadingProvider: LoadingProvider) {
   }
 
   /**
    * Auth Guard
    */
-  ionViewCanEnter() {
-    const isAllowed = this.authProvider.isAuth(this.navCtrl);
-    if(isAllowed === false) {
-      setTimeout(() => {
-        this.navCtrl.setRoot('LoginPage');
-      }, 0);
-    }
-    return isAllowed;
+  ionViewCanEnter(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.authProvider.isAuth(this.navCtrl).then((response) => {
+        console.log(response);
+        if(response === false) {
+          this.viewCtrl.dismiss();
+          setTimeout(() => {
+            this.navCtrl.setRoot("LoginPage");
+          }, 0);
+        }
+        resolve(response);
+      }, error => {
+        reject(error);
+      }).catch(error => {
+        console.log(error);
+      })
+    });
   }
 
   /**

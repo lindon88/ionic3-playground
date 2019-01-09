@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {IonicPage, MenuController, ModalController, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, MenuController, ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
 import {EmployeeProvider} from "../../providers/employee/employee";
 import {AbsenceProvider} from "../../providers/absence/absence";
 import {DatePipe} from "@angular/common";
@@ -29,21 +29,31 @@ export class AbsencePage {
 
   public currentDate: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public employeeProvider: EmployeeProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController, public menuCtrl: MenuController, public loadingProvider: LoadingProvider, public authProvider: AuthenticationProvider) {
+  constructor(public navCtrl: NavController, public viewCtrl: ViewController, public navParams: NavParams, public employeeProvider: EmployeeProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController, public menuCtrl: MenuController, public loadingProvider: LoadingProvider, public authProvider: AuthenticationProvider) {
     this.currentDate = new Date();
   }
 
-  // Auth Guard
-  ionViewCanEnter() {
-    const isAllowed = this.authProvider.isAuth(this.navCtrl);
-    if(isAllowed === false) {
-      setTimeout(() => {
-        this.navCtrl.setRoot('LoginPage');
-      }, 0);
-    }
-    return isAllowed;
+  /**
+   * Auth Guard
+   */
+  ionViewCanEnter(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.authProvider.isAuth(this.navCtrl).then((response) => {
+        console.log(response);
+        if(response === false) {
+          this.viewCtrl.dismiss();
+          setTimeout(() => {
+            this.navCtrl.setRoot("LoginPage");
+          }, 0);
+        }
+        resolve(response);
+      }, error => {
+        reject(error);
+      }).catch(error => {
+        console.log(error);
+      })
+    });
   }
-
   ionViewDidLoad() {
     this.loadingProvider.showLoader();
     const datePipe = new DatePipe('en-US');

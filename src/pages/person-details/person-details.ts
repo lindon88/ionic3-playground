@@ -1,7 +1,8 @@
 import {Component, ViewChild} from '@angular/core';
-import {Content, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {Content, IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import {EmployeeProvider} from "../../providers/employee/employee";
 import {CountryProvider} from "../../providers/country/country";
+import {AuthenticationProvider} from "../../providers/authentication/authentication";
 
 /**
  * Generated class for the PersonDetailsPage page.
@@ -41,7 +42,7 @@ export class PersonDetailsPage {
   // countries
   public countries: any = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private employeeProvider: EmployeeProvider, private countryProvider: CountryProvider) {
+  constructor(public navCtrl: NavController, public viewCtrl: ViewController, public authProvider: AuthenticationProvider, public navParams: NavParams, private employeeProvider: EmployeeProvider, private countryProvider: CountryProvider) {
   }
 
   @ViewChild(Content) content: Content;
@@ -54,6 +55,28 @@ export class PersonDetailsPage {
     console.log('ionViewDidLoad PersonDetailsPage');
     this.getCountries();
     this.getEmployee();
+  }
+
+  /**
+   * Auth Guard
+   */
+  ionViewCanEnter(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.authProvider.isAuth(this.navCtrl).then((response) => {
+        console.log(response);
+        if(response === false) {
+          this.viewCtrl.dismiss();
+          setTimeout(() => {
+            this.navCtrl.setRoot("LoginPage");
+          }, 0);
+        }
+        resolve(response);
+      }, error => {
+        reject(error);
+      }).catch(error => {
+        console.log(error);
+      })
+    });
   }
 
   public getCountries() {

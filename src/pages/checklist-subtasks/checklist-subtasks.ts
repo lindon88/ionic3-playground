@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {IonicPage, ModalController, NavController, NavParams, PopoverController} from 'ionic-angular';
+import {IonicPage, ModalController, NavController, NavParams, PopoverController, ViewController} from 'ionic-angular';
 import {WorkflowProvider} from "../../providers/workflow/workflow";
 import {CompanyProvider} from "../../providers/company/company";
 import {DatePipe} from "@angular/common";
@@ -30,21 +30,30 @@ export class ChecklistSubtasksPage {
   public showAll: boolean = true;
   @ViewChild(Navbar) navBar: Navbar;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthenticationProvider, public workflowProvider: WorkflowProvider, public companyProvider: CompanyProvider, public popoverCtrl: PopoverController, public modalCtrl: ModalController, public loadingProvider: LoadingProvider) {
+  constructor(public navCtrl: NavController, public viewCtrl: ViewController, public navParams: NavParams, public authProvider: AuthenticationProvider, public workflowProvider: WorkflowProvider, public companyProvider: CompanyProvider, public popoverCtrl: PopoverController, public modalCtrl: ModalController, public loadingProvider: LoadingProvider) {
 
   }
 
   /**
    * Auth Guard
    */
-  ionViewCanEnter() {
-    const isAllowed = this.authProvider.isAuth(this.navCtrl);
-    if(isAllowed === false) {
-      setTimeout(() => {
-        this.navCtrl.setRoot('LoginPage');
-      }, 0);
-    }
-    return isAllowed;
+  ionViewCanEnter(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.authProvider.isAuth(this.navCtrl).then((response) => {
+        console.log(response);
+        if(response === false) {
+          this.viewCtrl.dismiss();
+          setTimeout(() => {
+            this.navCtrl.setRoot("LoginPage");
+          }, 0);
+        }
+        resolve(response);
+      }, error => {
+        reject(error);
+      }).catch(error => {
+        console.log(error);
+      })
+    });
   }
 
   /**

@@ -32,8 +32,10 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
       menuCtrl.swipeEnable(false, 'menu1');
+
       this.getUserInfo();
       this.getAllowedCompanies();
+
     });
     // define pages for sidemenu
     this.pages = [
@@ -65,6 +67,7 @@ export class MyApp {
     if (this.userInfo !== undefined && this.userInfo !== null) {
       this.employeeProvider.getEmployee(null, this.userInfo.userId).then((res) => {
         this.user = res;
+        console.log(this.user);
       }, (err) => {
         console.error(err);
       })

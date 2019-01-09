@@ -1,5 +1,5 @@
 import {Component, HostListener} from '@angular/core';
-import {IonicPage, MenuController, ModalController, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, MenuController, ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
 import {DatePipe} from "@angular/common";
 import {ShiftsProvider} from "../../providers/shifts/shifts";
 import {Observable} from "rxjs";
@@ -44,20 +44,29 @@ export class EmployeeOpenShiftPage {
   // screen width
   screenWidth: number = window.screen.width;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthenticationProvider, public shiftsProvider: ShiftsProvider, public modalCtrl: ModalController, private menuCtrl: MenuController, public loadingProvider: LoadingProvider) {
+  constructor(public navCtrl: NavController, public viewCtrl: ViewController, public navParams: NavParams, public authProvider: AuthenticationProvider, public shiftsProvider: ShiftsProvider, public modalCtrl: ModalController, private menuCtrl: MenuController, public loadingProvider: LoadingProvider) {
   }
 
   /**
    * Auth Guard
    */
-  ionViewCanEnter() {
-    const isAllowed = this.authProvider.isAuth(this.navCtrl);
-    if(isAllowed === false) {
-      setTimeout(() => {
-        this.navCtrl.setRoot('LoginPage');
-      }, 0);
-    }
-    return isAllowed;
+  ionViewCanEnter(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.authProvider.isAuth(this.navCtrl).then((response) => {
+        console.log(response);
+        if(response === false) {
+          this.viewCtrl.dismiss();
+          setTimeout(() => {
+            this.navCtrl.setRoot("LoginPage");
+          }, 0);
+        }
+        resolve(response);
+      }, error => {
+        reject(error);
+      }).catch(error => {
+        console.log(error);
+      })
+    });
   }
 
   /**

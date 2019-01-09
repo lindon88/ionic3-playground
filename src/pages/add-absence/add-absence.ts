@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import {AbsenceProvider} from "../../providers/absence/absence";
 import {Validators, FormBuilder, FormGroup} from "@angular/forms";
 import {LoadingProvider} from "../../providers/loading/loading";
@@ -23,7 +23,7 @@ export class AddAbsencePage {
   public selectedCompanyId: any = localStorage.getItem('currentCompanyId');
   public currentCorporateId: any = localStorage.getItem('currentCorporateId');
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthenticationProvider, private absenceProvider: AbsenceProvider, private formBuilder: FormBuilder, public loadingProvider: LoadingProvider) {
+  constructor(public navCtrl: NavController, public viewCtrl: ViewController, public navParams: NavParams, public authProvider: AuthenticationProvider, private absenceProvider: AbsenceProvider, private formBuilder: FormBuilder, public loadingProvider: LoadingProvider) {
     // form validation (only required is needed)
     this.absenceTypeForm = this.formBuilder.group({
       selectedAbsenceField: ['', Validators.required],
@@ -36,14 +36,23 @@ export class AddAbsencePage {
   /**
    * Auth Guard
    */
-  ionViewCanEnter() {
-    const isAllowed = this.authProvider.isAuth(this.navCtrl);
-    if(isAllowed === false) {
-      setTimeout(() => {
-        this.navCtrl.setRoot('LoginPage');
-      }, 0);
-    }
-    return isAllowed;
+  ionViewCanEnter(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.authProvider.isAuth(this.navCtrl).then((response) => {
+        console.log(response);
+        if(response === false) {
+          this.viewCtrl.dismiss();
+          setTimeout(() => {
+            this.navCtrl.setRoot("LoginPage");
+          }, 0);
+        }
+        resolve(response);
+      }, error => {
+        reject(error);
+      }).catch(error => {
+        console.log(error);
+      })
+    });
   }
 
   /**

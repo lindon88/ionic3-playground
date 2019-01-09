@@ -49,6 +49,7 @@ export class LandingPage {
     this.serverProvider.setDevServerUrl(serverUrl);
     this.apiProvider.setBaseUrl(this.serverProvider.getServerURL());
 
+    console.log('User token: ' + userToken);
     this.tokenProvider.checkCurrentUser(this.serverProvider.getServerURL()).then((response: any) => {
       console.log("user");
       console.log(response);

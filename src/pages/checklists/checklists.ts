@@ -5,7 +5,7 @@ import {
   MenuController,
   NavController,
   NavParams,
-  PopoverController
+  PopoverController, ViewController
 } from 'ionic-angular';
 import {WorkflowProvider} from "../../providers/workflow/workflow";
 import {DatePipe} from "@angular/common";
@@ -39,21 +39,30 @@ export class ChecklistsPage {
 
   public isValidToken: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthenticationProvider, public workflowProvider: WorkflowProvider, public popoverCtrl: PopoverController, public menuCtrl: MenuController, public loadingProvider: LoadingProvider) {
+  constructor(public navCtrl: NavController, public viewCtrl: ViewController, public navParams: NavParams, public authProvider: AuthenticationProvider, public workflowProvider: WorkflowProvider, public popoverCtrl: PopoverController, public menuCtrl: MenuController, public loadingProvider: LoadingProvider) {
     console.log("loading tasks....");
   }
 
   /**
    * Auth Guard
    */
-  ionViewCanEnter() {
-    const isAllowed = this.authProvider.isAuth(this.navCtrl);
-    if(isAllowed === false) {
-      setTimeout(() => {
-        this.navCtrl.setRoot('LoginPage');
-      }, 0);
-    }
-    return isAllowed;
+  ionViewCanEnter(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.authProvider.isAuth(this.navCtrl).then((response) => {
+        console.log(response);
+        if(response === false) {
+          this.viewCtrl.dismiss();
+          setTimeout(() => {
+            this.navCtrl.setRoot("LoginPage");
+          }, 0);
+        }
+        resolve(response);
+      }, error => {
+        reject(error);
+      }).catch(error => {
+        console.log(error);
+      })
+    });
   }
 
   /**

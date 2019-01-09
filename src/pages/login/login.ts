@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {AlertController, IonicPage, NavController} from 'ionic-angular';
+import {AlertController, IonicPage, NavController, Platform} from 'ionic-angular';
 import {ServerProvider} from "../../providers/server/server";
 import {AuthenticationProvider} from "../../providers/authentication/authentication";
 import {LoadingProvider} from "../../providers/loading/loading";
@@ -14,7 +14,7 @@ export class LoginPage {
   // vars
   public userinfo: any;
 
-  constructor(public navCtrl: NavController, private serverProvider: ServerProvider, public fingerprint:FingerprintAIO, public alertCtrl: AlertController, public authProvider: AuthenticationProvider, public loadingProvider: LoadingProvider) {
+  constructor(public navCtrl: NavController, public platform: Platform, private serverProvider: ServerProvider, public fingerprint:FingerprintAIO, public alertCtrl: AlertController, public authProvider: AuthenticationProvider, public loadingProvider: LoadingProvider) {
     let userToken = localStorage['accessToken'];
     if(userToken) {
       this.navCtrl.setRoot("HomePage");
@@ -60,7 +60,11 @@ export class LoginPage {
               this.pinSetup();
             }
           } else {
-            this.checkFingerprintAIO();
+            if(this.platform.is('cordova')) {
+              this.checkFingerprintAIO();
+            } else {
+              this.navCtrl.setRoot('HomePage');
+            }
           }
         });
         this.loadingProvider.hideLoader();

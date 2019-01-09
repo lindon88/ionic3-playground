@@ -7,7 +7,7 @@ import {NavController} from "ionic-angular";
 export class AuthenticationProvider {
   // vars
   private userInfo: any;
-  private isValidToken: boolean;
+  public isValidToken: boolean;
 
   constructor(public http: HttpClient, private serverProvider: ServerProvider) {
   }
@@ -93,17 +93,23 @@ export class AuthenticationProvider {
    * @param nav
    */
   public isAuth(nav: NavController) {
-    this.validateToken();
-    return !((localStorage.getItem('userInfo') === null || localStorage.getItem('userInfo') === undefined) && this.isValidToken === false);
+    return this.validateToken().then(isValid => {
+      console.log(isValid);
+      return isValid;
+    });
   }
 
   /**
    * Set isValidToken based on token validation
    */
   validateToken() {
-    this.isTokenValid().then((response: any) => {
-      this.isValidToken = response.valid;
-      console.log(this.isValidToken);
+    return new Promise((resolve, reject) => {
+      this.isTokenValid().then((response: any) => {
+        console.log(response.valid);
+        return resolve(response.valid);
+      }, error => {
+        reject(error);
+      })
     })
   }
 
