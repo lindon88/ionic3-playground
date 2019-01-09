@@ -33,6 +33,7 @@ import {ModalShiftPopupPageModule} from "../pages/employee-shifts/modal-shift-po
 
 import {FingerprintAIO} from '@ionic-native/fingerprint-aio';
 import { CountryProvider } from '../providers/country/country';
+import { AvailabilityProvider } from '../providers/availability/availability';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { CountryProvider } from '../providers/country/country';
     AbsenceProvider,
     RosterProvider,
     FingerprintAIO,
-    CountryProvider
+    CountryProvider,
+    AvailabilityProvider
   ]
 })
 export class AppModule {}

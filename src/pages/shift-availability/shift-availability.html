@@ -1,0 +1,45 @@
+<ion-header class="main-header">
+  <ion-navbar color="primary" [hideBackButton]="true" class="main-navbar clearfix">
+    <button ion-button icon-only  (click)="goToMainProfile()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </button>
+    <ion-title class="main-title">
+      <img (click)="navCtrl.setRoot('HomePage')" src="./assets/imgs/Cover-logo-blue.png" alt="Cover">
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-bounce>
+  <ion-list class="shift-availability-item">
+    <ion-item-group>
+      <ion-item>
+        <ion-label item-start>Effective From: </ion-label>
+        <ion-note color="primary" item-end>Mon, Jun 2</ion-note>
+      </ion-item>
+      <ion-item>
+        <ion-label>Monday</ion-label>
+        <ion-note item-end class="col badge-column">
+          <div class="badge right-badge badge-blue">Off Site</div>
+        </ion-note>
+      </ion-item>
+      <ion-item>
+        <ion-label>Tuesday</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Wednesday</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Thursday</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Friday</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Saturday</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Sunday</ion-label>
+      </ion-item>
+    </ion-item-group>
+  </ion-list>
+</ion-content>
