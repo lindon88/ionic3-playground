@@ -13,8 +13,8 @@
   <ion-list class="shift-availability-item">
     <ion-item-group>
       <ion-item>
-        <ion-label item-start>Effective From: </ion-label>
-        <ion-note color="primary" item-end>Mon, Jun 2</ion-note>
+        <ion-label >Effective From: </ion-label>
+        <ion-datetime displayFormat="DDD, MMM D"  pickerFormat="DDDD MMM D, YYYY" [min]="currentYear" max="2099" [(ngModel)]="effectiveDay"></ion-datetime>
       </ion-item>
       <ion-item>
         <ion-label>Monday</ion-label>
@@ -42,4 +42,12 @@
       </ion-item>
     </ion-item-group>
   </ion-list>
+
+  <ion-fab right bottom #fab_action>
+    <button ion-fab color="secondary"><ion-icon class="large-fab" name="add"></ion-icon></button>
+    <ion-fab-list side="top" class="thumbs">
+      <button ion-fab class="dislike" (click)="setAvailability(UNAVAILABLE)"><i class="fa fa-thumbs-o-down"></i></button>
+      <button ion-fab class="like" (click)="setAvailability(PREFERRED)"><i class="fa fa-thumbs-o-up"></i></button>
+    </ion-fab-list>
+  </ion-fab>
 </ion-content>

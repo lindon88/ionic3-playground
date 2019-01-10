@@ -37,4 +37,26 @@ export class AvailabilityProvider {
     })
   }
 
+  public updateAvailability(employeeId: any, id: any, data: any) {
+    return new Promise((resolve, reject) => {
+      let header = {'synergy-login-token': localStorage.getItem('accessToken')};
+      this.http.put(this.serverProvider.getServerURL() + 'hrm/rosterAvailability/' + employeeId + '/' + id, data, {headers: header}).subscribe((result: any) => {
+        resolve(result);
+      }, error => {
+        reject(error);
+      })
+    })
+  }
+
+  public removeAvailability(employeeId: any, id: any) {
+    return new Promise((resolve, reject) => {
+      let header = {'synergy-login-token': localStorage.getItem('accessToken')};
+      this.http.delete(this.serverProvider.getServerURL() + 'html/rosterAvailability/' + employeeId + '/' + id, {headers: header}).subscribe((result: any) => {
+        resolve(result);
+      }, error => {
+        reject(error);
+      })
+    })
+  }
+
 }

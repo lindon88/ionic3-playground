@@ -1,0 +1,36 @@
+.modal-shift-availability {
+  background: rgba(0, 0, 0, 0.5) !important;
+  //padding: 40% 10% !important;
+  .modal-wrapper {
+    width: 340px;
+    height: 408px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 150px auto auto;
+    border: 0;
+  }
+
+  ion-checkbox{
+    --height: 33px;
+    --width: 33px;
+    margin-top: 4px!important;
+    margin-bottom: 4px!important;
+    .checkbox-icon {
+      border-radius: 8px!important;
+      height: 33px;
+      width: 33px;
+      .checkbox-inner {
+        left: 10px;
+        width: 10px!important;
+        height: 20px!important;
+        border-width: 4px!important;
+        border-top-width: 0!important;
+        border-left-width: 0!important;
+        border-color: #fff!important;
+        -webkit-transform: rotate(45deg)!important;
+      }
+    }
+
+  }
+}

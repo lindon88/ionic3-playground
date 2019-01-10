@@ -5,3 +5,26 @@
     }
   }
 }
+
+button.dislike {
+  background-color: #f44336;
+  color: #FFF;
+  font-weight: 600!important;
+  i {
+    font-size: 20px!important;
+  }
+}
+
+button.like {
+  background-color: #4caf50;
+  color: #fff;
+  font-weight: 600!important;
+  i {
+    font-size: 20px!important;
+  }
+}
+
+.large-fab, .large-fab:after, .large-fab:before {
+  font-size: 32px!important;
+  font-weight: 600!important;
+}

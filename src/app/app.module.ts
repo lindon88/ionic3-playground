@@ -32,8 +32,10 @@ import { CalendarModule} from 'ionic3-calendar-en';
 import {ModalShiftPopupPageModule} from "../pages/employee-shifts/modal-shift-popup/modal-shift-popup.module";
 
 import {FingerprintAIO} from '@ionic-native/fingerprint-aio';
+import {DatePicker} from '@ionic-native/date-picker';
 import { CountryProvider } from '../providers/country/country';
 import { AvailabilityProvider } from '../providers/availability/availability';
+import {ModalShiftAvailabilityPageModule} from "../pages/shift-availability/modal-shift-availability/modal-shift-availability.module";
 
 @NgModule({
   declarations: [
@@ -41,7 +43,7 @@ import { AvailabilityProvider } from '../providers/availability/availability';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp, { swipeBackEnabled: false, backButtonText: '', mode: 'ios', menuType: 'push' }),
+    IonicModule.forRoot(MyApp, { swipeBackEnabled: false, backButtonText: '', mode: 'ios', menuType: 'push'}),
     LandingPageModule,
     HttpClientModule,
     PipesModule,
@@ -54,6 +56,7 @@ import { AvailabilityProvider } from '../providers/availability/availability';
     ModalDropAbsencePageModule,
     ModalAbsenceNotePageModule,
     ModalShiftPopupPageModule,
+    ModalShiftAvailabilityPageModule,
     CalendarModule
   ],
   bootstrap: [IonicApp],
@@ -78,6 +81,7 @@ import { AvailabilityProvider } from '../providers/availability/availability';
     AbsenceProvider,
     RosterProvider,
     FingerprintAIO,
+    DatePicker,
     CountryProvider,
     AvailabilityProvider
   ]

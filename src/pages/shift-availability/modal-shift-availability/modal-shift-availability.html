@@ -1,0 +1,33 @@
+<ion-header padding>
+    <ion-title>Shift Availability</ion-title>
+</ion-header>
+<ion-content no-bounce >
+
+  <ion-list>
+    <ion-item>
+      <ion-label>Day of Week</ion-label>
+      <ion-select>
+        <ion-option>Monday</ion-option>
+        <ion-option>Tuesday</ion-option>
+        <ion-option>Wednesday</ion-option>
+        <ion-option>Thursday</ion-option>
+        <ion-option>Friday</ion-option>
+        <ion-option>Saturday</ion-option>
+        <ion-option>Sunday</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Start Time</ion-label>
+      <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" placeholder="--:--"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>End Time</ion-label>
+      <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" placeholder="--:--"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>All Day</ion-label>
+      <ion-checkbox item-end color="secondary"></ion-checkbox>
+    </ion-item>
+  </ion-list>
+
+</ion-content>
