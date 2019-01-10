@@ -18,6 +18,8 @@ export class ShiftAvailabilityPage {
   public effectiveDay: any = new Date().toISOString();
   public currentYear: any = new Date().getFullYear();
 
+  public existingData: any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public availabilityProvider: AvailabilityProvider, private modalCtrl: ModalController) {
   }
 
@@ -29,6 +31,7 @@ export class ShiftAvailabilityPage {
   public getAvailability() {
     this.availabilityProvider.getEmployeeAvailability(this.currentPersonId).then(result => {
       console.log(result);
+      this.existingData = result;
     })
   }
 
@@ -57,6 +60,11 @@ export class ShiftAvailabilityPage {
         }
         let availability = {};
         availability[type] = {};
+        if(type === this.PREFERRED) {
+          availability[this.UNAVAILABLE] = {};
+        } else {
+          availability[this.PREFERRED] = {};
+        }
         availability[type][data.weekday] = {};
         if(data.all_day === undefined) {
           data.all_day = false;
@@ -84,25 +92,53 @@ export class ShiftAvailabilityPage {
           },
           type: type
         };
+        if(!this.isEmptyObject(this.existingData)) {
+          let obj = this.existingData[0];
+          let id = obj.id;
 
-        let newObj = {
-          availability,
-          companyId: this.currentCompanyId,
-          endDate: null,
-          notes: "",
-          personId: this.currentPersonId,
-          startDate: this.effectiveDay.slice(0, 10)
-        };
-        console.log(newObj);
-        console.log("Display 24: " + data.end_time);
-        console.log("Display 12: " + this.convertTo12String(data.end_time));
-        console.log("Display hour24: " + this.convertTo24(data.end_time));
-        console.log("Display hour12: " + this.convertTo12(data.end_time));
-        console.log("Is PM? " + this.isPM(data.end_time));
-        console.log("Orderable time: " + data.end_time);
-        this.availabilityProvider.saveEmployeeAvailability(this.currentPersonId, newObj).then((result: any) => {
-          console.log(result);
-        });
+          availability[type][data.weekday] = {
+            allDay: data.all_day,
+            end: {
+              display12: this.convertTo12String(data.end_time),
+              display24: data.end_time,
+              hour12: this.convertTo12(data.end_time),
+              hour24: this.convertTo24(data.end_time),
+              minute: this.convertToMinute(data.end_time),
+              orderableTime: this.convertTo24(data.end_time),
+              pm: this.isPM(data.end_time)
+            },
+            note: null,
+            start: {
+              display12: this.convertTo12String(data.start_time),
+              display24: data.start_time,
+              hour12: this.convertTo12(data.start_time),
+              hour24: this.convertTo24(data.start_time),
+              minute: this.convertToMinute(data.start_time),
+              orderableTime: this.convertTo24(data.start_time),
+              pm: this.isPM(data.start_time)
+            },
+            type: type
+          };
+          let dbObj = {...this.existingData[0].availability[type], ...availability[type]};
+          console.log('DB');
+          console.log(dbObj);
+          console.log(Object.assign(this.existingData[0].availability[type], dbObj));
+          console.log(this.existingData);
+        } else {
+          let newObj = {
+            availability,
+            companyId: this.currentCompanyId,
+            endDate: null,
+            notes: "",
+            personId: this.currentPersonId,
+            startDate: this.effectiveDay.slice(0, 10)
+          };
+          this.availabilityProvider.saveEmployeeAvailability(this.currentPersonId, newObj).then((result: any) => {
+            console.log(result);
+          });
+        }
+
+        console.log(this.existingData);
       }
     })
   }
