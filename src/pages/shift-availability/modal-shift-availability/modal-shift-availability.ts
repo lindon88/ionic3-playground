@@ -6,14 +6,16 @@ import { NavController, NavParams } from 'ionic-angular';
   templateUrl: 'modal-shift-availability.html',
 })
 export class ModalShiftAvailabilityPage {
-  public title: string;
+  public status: string;
+  public isAvailable: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ModalShiftAvailabilityPage');
-    this.title = this.navParams.get('popupTitle');
+    this.status = this.navParams.get('popupTitle');
+    this.isAvailable = this.status === 'PREFERRED';
   }
 
 }

@@ -11,6 +11,11 @@
     border: 0;
   }
 
+  .list-ios > .item-block, .list-ios .item-block .item-inner {
+    border-top: none;
+    border-bottom: none;
+  }
+
   ion-checkbox{
     --height: 33px;
     --width: 33px;
@@ -31,6 +36,16 @@
         -webkit-transform: rotate(45deg)!important;
       }
     }
+  }
 
+  .modal-shift-availability-title {
+    .toolbar-title {
+      color: #424242!important;
+      font-size: 20px!important;
+    }
+  }
+
+  .item .item-inner {
+    padding: 0 16px;
   }
 }
