@@ -1,32 +1,31 @@
 <ion-header padding>
     <ion-title class="modal-shift-availability-title">Shift Availability</ion-title>
 </ion-header>
-<ion-content no-bounce >
-
+<ion-content no-bounce>
   <ion-list>
     <ion-item>
       <ion-label>Day of Week</ion-label>
-      <ion-select>
-        <ion-option>Monday</ion-option>
-        <ion-option>Tuesday</ion-option>
-        <ion-option>Wednesday</ion-option>
-        <ion-option>Thursday</ion-option>
-        <ion-option>Friday</ion-option>
-        <ion-option>Saturday</ion-option>
-        <ion-option>Sunday</ion-option>
+      <ion-select [(ngModel)]="week_day">
+        <ion-option value="day1">Monday</ion-option>
+        <ion-option value="day2">Tuesday</ion-option>
+        <ion-option value="day3">Wednesday</ion-option>
+        <ion-option value="day4">Thursday</ion-option>
+        <ion-option value="day5">Friday</ion-option>
+        <ion-option value="day6">Saturday</ion-option>
+        <ion-option value="day7">Sunday</ion-option>
       </ion-select>
     </ion-item>
     <ion-item>
       <ion-label>Start Time</ion-label>
-      <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [disabled]="all_day" placeholder="--:--"></ion-datetime>
+      <ion-datetime [(ngModel)]="start_time" displayFormat="HH:mm" pickerFormat="HH:mm" [disabled]="all_day" placeholder="--:--"></ion-datetime>
     </ion-item>
     <ion-item>
       <ion-label>End Time</ion-label>
-      <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [disabled]="all_day" placeholder="--:--"></ion-datetime>
+      <ion-datetime [(ngModel)]="end_time" displayFormat="HH:mm" pickerFormat="HH:mm" [disabled]="all_day" placeholder="--:--"></ion-datetime>
     </ion-item>
     <ion-item>
       <ion-label>All Day</ion-label>
-      <ion-checkbox item-end color="secondary" [(ngModel)]="all_day"></ion-checkbox>
+      <ion-checkbox [(ngModel)]="all_day" item-end color="secondary" [(ngModel)]="all_day"></ion-checkbox>
     </ion-item>
     <ion-item>
       <ion-label>Preferred to work</ion-label>
@@ -44,7 +43,7 @@
         <button ion-button color="cancel" (click)="dismiss()" block>Cancel</button>
       </ion-col>
       <ion-col col-6>
-        <button ion-button color="secondary" block>Save</button>
+        <button ion-button color="secondary" block (click)="save()">Save</button>
       </ion-col>
     </ion-row>
   </ion-grid>

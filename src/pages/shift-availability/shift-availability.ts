@@ -2,14 +2,6 @@ import { Component } from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {AvailabilityProvider} from "../../providers/availability/availability";
 import {ModalShiftAvailabilityPage} from "./modal-shift-availability/modal-shift-availability";
-import {ModalShiftPopupPage} from "../employee-shifts/modal-shift-popup/modal-shift-popup";
-
-/**
- * Generated class for the ShiftAvailabilityPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -18,6 +10,7 @@ import {ModalShiftPopupPage} from "../employee-shifts/modal-shift-popup/modal-sh
 })
 export class ShiftAvailabilityPage {
   public currentPersonId: any = localStorage.getItem('currentPersonId');
+  public currentCompanyId: any = localStorage.getItem('currentCompanyId');
 
   public PREFERRED: string = 'PREFERRED';
   public UNAVAILABLE: string = 'UNAVAILABLE';
@@ -51,6 +44,104 @@ export class ShiftAvailabilityPage {
     let modal = this.modalCtrl.create(ModalShiftAvailabilityPage, {popupTitle: status}, {cssClass: 'modal-shift-availability'});
 
     modal.present();
+
+    modal.onDidDismiss(data => {
+      if(this.isEmptyObject(data)) {
+        console.log('modal data empty');
+      } else {
+        let type = '';
+        if(data.availability === true) {
+          type = this.PREFERRED;
+        } else {
+          type = this.UNAVAILABLE;
+        }
+        let availability = {};
+        availability[type] = {};
+        availability[type][data.weekday] = {};
+        if(data.all_day === undefined) {
+          data.all_day = false;
+        }
+        availability[type][data.weekday] = {
+          allDay: data.all_day,
+          end: {
+            display12: this.convertTo12String(data.end_time),
+            display24: data.end_time,
+            hour12: this.convertTo12(data.end_time),
+            hour24: this.convertTo24(data.end_time),
+            minute: this.convertToMinute(data.end_time),
+            orderableTime: this.convertTo24(data.end_time),
+            pm: this.isPM(data.end_time)
+          },
+          note: null,
+          start: {
+            display12: this.convertTo12String(data.start_time),
+            display24: data.start_time,
+            hour12: this.convertTo12(data.start_time),
+            hour24: this.convertTo24(data.start_time),
+            minute: this.convertToMinute(data.start_time),
+            orderableTime: this.convertTo24(data.start_time),
+            pm: this.isPM(data.start_time)
+          },
+          type: type
+        };
+
+        let newObj = {
+          availability,
+          companyId: this.currentCompanyId,
+          endDate: null,
+          notes: "",
+          personId: this.currentPersonId,
+          startDate: this.effectiveDay.slice(0, 10)
+        };
+        console.log(newObj);
+        console.log("Display 24: " + data.end_time);
+        console.log("Display 12: " + this.convertTo12String(data.end_time));
+        console.log("Display hour24: " + this.convertTo24(data.end_time));
+        console.log("Display hour12: " + this.convertTo12(data.end_time));
+        console.log("Is PM? " + this.isPM(data.end_time));
+        console.log("Orderable time: " + data.end_time);
+        this.availabilityProvider.saveEmployeeAvailability(this.currentPersonId, newObj).then((result: any) => {
+          console.log(result);
+        });
+      }
+    })
   }
+
+  isEmptyObject(obj) {
+    for(var prop in obj) {
+      if (obj.hasOwnProperty(prop)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private convertTo24(time) {
+    let arr = time.split(':');
+    return arr[0];
+  }
+
+  private convertTo12(time) {
+    let hour = this.convertTo24(time);
+    return (hour%12) || 12;
+  }
+
+  private convertTo12String(time) {
+    let H = +time.substr(0, 2);
+    let h = H % 12 || 12;
+    let am_pm = (H < 12 || H === 24) ? " AM" : " PM";
+    return  (h + time.substr(2, 3) + am_pm);
+  }
+
+  private isPM(time) {
+    let hour = this.convertTo24(time);
+    return hour > 12 === true;
+  }
+
+  private convertToMinute(time) {
+    let arr = time.split(":");
+    return arr[1];
+  }
+
 }
 
