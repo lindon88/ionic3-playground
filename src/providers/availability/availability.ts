@@ -26,4 +26,15 @@ export class AvailabilityProvider {
     })
   }
 
+  public saveEmployeeAvailability(employeeId: any, data: any) {
+    return new Promise((resolve, reject) => {
+      let header = {'synergy-login-token': localStorage.getItem('accessToken')};
+      this.http.post(this.serverProvider.getServerURL() + 'hrm/rosterAvailability/' + employeeId, data, {headers: header}).subscribe((result: any) => {
+        resolve(result);
+      }, error => {
+        reject(error);
+      })
+    })
+  }
+
 }
