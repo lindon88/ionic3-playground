@@ -113,7 +113,7 @@
           <div class="badge right-badge badge-red" *ngIf="existingData[0].availability['UNAVAILABLE']['day6'] && existingData[0].availability['UNAVAILABLE']['day6']['allDay'] === false" (click)="setAvailability(UNAVAILABLE, existingData[0].availability['UNAVAILABLE']['day6'], 'day6')">
             {{existingData[0].availability['UNAVAILABLE']['day6']['start'].display12}} - {{existingData[0].availability['UNAVAILABLE']['day6']['end'].display12}}
           </div>
-          <div class="badge right-badge badge-red all_day" *ngIf="existingData[0].availability['UNAVAILABLE']['day6'] && existingData[0].availability['UNAVAILABLE']['day6']['allDay'] === false" (click)="setAvailability(UNAVAILABLE, existingData[0].availability['UNAVAILABLE']['day6'], 'day6')">
+          <div class="badge right-badge badge-red all_day" *ngIf="existingData[0].availability['UNAVAILABLE']['day6'] && existingData[0].availability['UNAVAILABLE']['day6']['allDay'] === true" (click)="setAvailability(UNAVAILABLE, existingData[0].availability['UNAVAILABLE']['day6'], 'day6')">
             All day
           </div>
         </ion-note>
