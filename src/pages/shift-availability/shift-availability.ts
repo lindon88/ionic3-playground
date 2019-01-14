@@ -73,6 +73,12 @@ export class ShiftAvailabilityPage {
         if(data.all_day === undefined) {
           data.all_day = false;
         }
+
+        if(data.all_day === true) {
+          data.end_time = "23:59";
+          data.start_time = "00:00";
+        }
+
         availability[type][data.weekday] = {
           allDay: data.all_day,
           end: {
@@ -103,6 +109,11 @@ export class ShiftAvailabilityPage {
             availability[this.UNAVAILABLE] = {};
           } else {
             availability[this.PREFERRED] = {};
+          }
+
+          if(data.all_day === true) {
+            data.end_time = "23:59";
+            data.start_time = "00:00";
           }
 
           availability[type][data.weekday] = {

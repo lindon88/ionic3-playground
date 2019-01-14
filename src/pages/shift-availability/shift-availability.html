@@ -19,77 +19,119 @@
       <ion-item *ngIf="existingData[0].availability">
         <ion-label>Monday</ion-label>
         <ion-note item-end class="col badge-column">
-          <div class="badge right-badge badge-green" *ngIf="existingData[0].availability['PREFERRED']['day1']">
+          <div class="badge right-badge badge-green" *ngIf="existingData[0].availability['PREFERRED']['day1'] && existingData[0].availability['PREFERRED']['day1']['allDay'] === false">
             {{existingData[0].availability['PREFERRED']['day1']['start'].display12}} - {{existingData[0].availability['PREFERRED']['day1']['end'].display12}}
           </div>
-          <div class="badge right-badge badge-red" *ngIf="existingData[0].availability['UNAVAILABLE']['day1']">
+          <div class="badge right-badge badge-green all_day" *ngIf="existingData[0].availability['PREFERRED']['day1'] && existingData[0].availability['PREFERRED']['day1']['allDay'] === true">
+            All day
+          </div>
+          <div class="badge right-badge badge-red" *ngIf="existingData[0].availability['UNAVAILABLE']['day1'] && existingData[0].availability['UNAVAILABLE']['day1']['allDay'] === false">
             {{existingData[0].availability['UNAVAILABLE']['day1']['start'].display12}} - {{existingData[0].availability['UNAVAILABLE']['day1']['end'].display12}}
+          </div>
+          <div class="badge right-badge badge-red all_day" *ngIf="existingData[0].availability['UNAVAILABLE']['day1'] && existingData[0].availability['UNAVAILABLE']['day1']['allDay'] === true">
+            All day
           </div>
         </ion-note>
       </ion-item>
       <ion-item>
         <ion-label>Tuesday</ion-label>
         <ion-note item-end class="col badge-column">
-          <div class="badge right-badge badge-green" *ngIf="existingData[0].availability['PREFERRED']['day2']">
+          <div class="badge right-badge badge-green" *ngIf="existingData[0].availability['PREFERRED']['day2'] && existingData[0].availability['PREFERRED']['day2']['allDay'] === false">
             {{existingData[0].availability['PREFERRED']['day2']['start'].display12}} - {{existingData[0].availability['PREFERRED']['day2']['end'].display12}}
           </div>
-          <div class="badge right-badge badge-red" *ngIf="existingData[0].availability['UNAVAILABLE']['day2']">
+          <div class="badge right-badge badge-green all_day" *ngIf="existingData[0].availability['PREFERRED']['day2'] && existingData[0].availability['PREFERRED']['day2']['allDay'] === true">
+            All day
+          </div>
+          <div class="badge right-badge badge-red" *ngIf="existingData[0].availability['UNAVAILABLE']['day2'] && existingData[0].availability['UNAVAILABLE']['day2']['allDay'] === false">
             {{existingData[0].availability['UNAVAILABLE']['day2']['start'].display12}} - {{existingData[0].availability['UNAVAILABLE']['day2']['end'].display12}}
+          </div>
+          <div class="badge right-badge badge-red all_day" *ngIf="existingData[0].availability['UNAVAILABLE']['day2'] && existingData[0].availability['UNAVAILABLE']['day2']['allDay'] === true">
+            All day
           </div>
         </ion-note>
       </ion-item>
       <ion-item>
         <ion-label>Wednesday</ion-label>
         <ion-note item-end class="col badge-column">
-          <div class="badge right-badge badge-green" *ngIf="existingData[0].availability['PREFERRED']['day3']">
+          <div class="badge right-badge badge-green" *ngIf="existingData[0].availability['PREFERRED']['day3'] && existingData[0].availability['PREFERRED']['day3']['allDay'] === false">
             {{existingData[0].availability['PREFERRED']['day3']['start'].display12}} - {{existingData[0].availability['PREFERRED']['day3']['end'].display12}}
           </div>
-          <div class="badge right-badge badge-red" *ngIf="existingData[0].availability['UNAVAILABLE']['day3']">
+          <div class="badge right-badge badge-green all_day" *ngIf="existingData[0].availability['PREFERRED']['day3'] && existingData[0].availability['PREFERRED']['day3']['allDay'] === true">
+            All day
+          </div>
+          <div class="badge right-badge badge-red" *ngIf="existingData[0].availability['UNAVAILABLE']['day3'] && existingData[0].availability['UNAVAILABLE']['day3']['allDay'] === false">
             {{existingData[0].availability['UNAVAILABLE']['day3']['start'].display12}} - {{existingData[0].availability['UNAVAILABLE']['day3']['end'].display12}}
+          </div>
+          <div class="badge right-badge badge-red all_day" *ngIf="existingData[0].availability['UNAVAILABLE']['day3'] && existingData[0].availability['UNAVAILABLE']['day3']['allDay'] === true">
+            All day
           </div>
         </ion-note>
       </ion-item>
       <ion-item>
         <ion-label>Thursday</ion-label>
         <ion-note item-end class="col badge-column">
-          <div class="badge right-badge badge-green" *ngIf="existingData[0].availability['PREFERRED']['day4']">
+          <div class="badge right-badge badge-green" *ngIf="existingData[0].availability['PREFERRED']['day4'] && existingData[0].availability['PREFERRED']['day4']['allDay'] === false">
             {{existingData[0].availability['PREFERRED']['day4']['start'].display12}} - {{existingData[0].availability['PREFERRED']['day4']['end'].display12}}
           </div>
-          <div class="badge right-badge badge-red" *ngIf="existingData[0].availability['UNAVAILABLE']['day4']">
+          <div class="badge right-badge badge-green all_day" *ngIf="existingData[0].availability['PREFERRED']['day4'] && existingData[0].availability['PREFERRED']['day4']['allDay'] === true">
+            All day
+          </div>
+          <div class="badge right-badge badge-red" *ngIf="existingData[0].availability['UNAVAILABLE']['day4'] && existingData[0].availability['UNAVAILABLE']['day4']['allDay'] === false">
             {{existingData[0].availability['UNAVAILABLE']['day4']['start'].display12}} - {{existingData[0].availability['UNAVAILABLE']['day4']['end'].display12}}
+          </div>
+          <div class="badge right-badge badge-red all_day" *ngIf="existingData[0].availability['UNAVAILABLE']['day4'] && existingData[0].availability['UNAVAILABLE']['day4']['allDay'] === true">
+            All day
           </div>
         </ion-note>
       </ion-item>
       <ion-item>
         <ion-label>Friday</ion-label>
         <ion-note item-end class="col badge-column">
-          <div class="badge right-badge badge-green" *ngIf="existingData[0].availability['PREFERRED']['day5']">
+          <div class="badge right-badge badge-green" *ngIf="existingData[0].availability['PREFERRED']['day5'] && existingData[0].availability['PREFERRED']['day5']['allDay'] === false">
             {{existingData[0].availability['PREFERRED']['day5']['start'].display12}} - {{existingData[0].availability['PREFERRED']['day5']['end'].display12}}
           </div>
-          <div class="badge right-badge badge-red" *ngIf="existingData[0].availability['UNAVAILABLE']['day5']">
+          <div class="badge right-badge badge-green all_day" *ngIf="existingData[0].availability['PREFERRED']['day5'] && existingData[0].availability['PREFERRED']['day5']['allDay'] === true">
+            All day
+          </div>
+          <div class="badge right-badge badge-red" *ngIf="existingData[0].availability['UNAVAILABLE']['day5'] && existingData[0].availability['UNAVAILABLE']['day5']['allDay'] === false">
             {{existingData[0].availability['UNAVAILABLE']['day5']['start'].display12}} - {{existingData[0].availability['UNAVAILABLE']['day5']['end'].display12}}
+          </div>
+          <div class="badge right-badge badge-red all_day" *ngIf="existingData[0].availability['UNAVAILABLE']['day5'] && existingData[0].availability['UNAVAILABLE']['day5']['allDay'] === false">
+            All day
           </div>
         </ion-note>
       </ion-item>
       <ion-item>
         <ion-label>Saturday</ion-label>
         <ion-note item-end class="col badge-column">
-          <div class="badge right-badge badge-green" *ngIf="existingData[0].availability['PREFERRED']['day6']">
+          <div class="badge right-badge badge-green all_day" *ngIf="existingData[0].availability['PREFERRED']['day6'] && existingData[0].availability['PREFERRED']['day6']['allDay'] === true">
+            All day
+          </div>
+          <div class="badge right-badge badge-green" *ngIf="existingData[0].availability['PREFERRED']['day6'] && existingData[0].availability['PREFERRED']['day6']['allDay'] === false">
             {{existingData[0].availability['PREFERRED']['day6']['start'].display12}} - {{existingData[0].availability['PREFERRED']['day6']['end'].display12}}
           </div>
-          <div class="badge right-badge badge-red" *ngIf="existingData[0].availability['UNAVAILABLE']['day6']">
+          <div class="badge right-badge badge-red" *ngIf="existingData[0].availability['UNAVAILABLE']['day6'] && existingData[0].availability['UNAVAILABLE']['day6']['allDay'] === false">
             {{existingData[0].availability['UNAVAILABLE']['day6']['start'].display12}} - {{existingData[0].availability['UNAVAILABLE']['day6']['end'].display12}}
+          </div>
+          <div class="badge right-badge badge-red all_day" *ngIf="existingData[0].availability['UNAVAILABLE']['day6'] && existingData[0].availability['UNAVAILABLE']['day6']['allDay'] === false">
+            All day
           </div>
         </ion-note>
       </ion-item>
       <ion-item>
         <ion-label>Sunday</ion-label>
         <ion-note item-end class="col badge-column">
-          <div class="badge right-badge badge-green" *ngIf="existingData[0].availability['PREFERRED']['day7']">
+          <div class="badge right-badge badge-green" *ngIf="existingData[0].availability['PREFERRED']['day7'] && existingData[0].availability['PREFERRED']['day7']['allDay'] === false">
             {{existingData[0].availability['PREFERRED']['day7']['start'].display12}} - {{existingData[0].availability['PREFERRED']['day7']['end'].display12}}
           </div>
-          <div class="badge right-badge badge-red" *ngIf="existingData[0].availability['UNAVAILABLE']['day7']">
+          <div class="badge right-badge badge-green all_day" *ngIf="existingData[0].availability['PREFERRED']['day7'] && existingData[0].availability['PREFERRED']['day7']['allDay'] === true">
+            All day
+          </div>
+          <div class="badge right-badge badge-red" *ngIf="existingData[0].availability['UNAVAILABLE']['day7'] && existingData[0].availability['UNAVAILABLE']['day7']['allDay'] === false">
             {{existingData[0].availability['UNAVAILABLE']['day7']['start'].display12}} - {{existingData[0].availability['UNAVAILABLE']['day7']['end'].display12}}
+          </div>
+          <div class="badge right-badge badge-red all_day" *ngIf="existingData[0].availability['UNAVAILABLE']['day7'] && existingData[0].availability['UNAVAILABLE']['day7']['allDay'] === true">
+            All day
           </div>
         </ion-note>
       </ion-item>

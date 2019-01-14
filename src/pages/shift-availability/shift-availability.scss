@@ -28,3 +28,25 @@ button.like {
   font-size: 32px!important;
   font-weight: 600!important;
 }
+
+.shift-availability-item {
+  ion-item-group {
+    ion-item {
+      ion-note {
+        div.badge.right-badge {
+          width: 100%;
+          max-width: 200px;
+          text-transform: lowercase;
+        }
+        div.badge.right-badge.all_day {
+          text-transform: capitalize;
+        }
+      }
+      ion-note {
+        div.badge.right-badge.badge-green {
+          background-color: #4caf50;
+        }
+      }
+    }
+  }
+}
