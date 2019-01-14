@@ -31,12 +31,17 @@ button.like {
 
 .shift-availability-item {
   ion-item-group {
+    ion-item.item {
+      height: 64.55px!important;
+    }
     ion-item {
       ion-note {
         div.badge.right-badge {
           width: 100%;
           max-width: 200px;
           text-transform: lowercase;
+          margin-top: 3px;
+          margin-bottom: 3px;
         }
         div.badge.right-badge.all_day {
           text-transform: capitalize;
