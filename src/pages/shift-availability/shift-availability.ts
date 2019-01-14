@@ -95,6 +95,11 @@ export class ShiftAvailabilityPage {
         if(!this.isEmptyObject(this.existingData)) {
           let obj = this.existingData[0];
           let id = obj.id;
+          if(type === this.PREFERRED) {
+            availability[this.UNAVAILABLE] = {};
+          } else {
+            availability[this.PREFERRED] = {};
+          }
 
           availability[type][data.weekday] = {
             allDay: data.all_day,
@@ -122,8 +127,16 @@ export class ShiftAvailabilityPage {
           let dbObj = {...this.existingData[0].availability[type], ...availability[type]};
           console.log('DB');
           console.log(dbObj);
+          console.log("type: " + type);
+          if(this.existingData[0].availability[type] === null || this.existingData[0].availability[type] === undefined) {
+            this.existingData[0].availability[type] = {};
+          }
+          console.log(this.existingData[0].availability[type]);
           console.log(Object.assign(this.existingData[0].availability[type], dbObj));
           console.log(this.existingData);
+          this.availabilityProvider.updateAvailability(this.currentPersonId, id, this.existingData[0]).then((result: any) => {
+            console.log(result);
+          })
         } else {
           let newObj = {
             availability,
