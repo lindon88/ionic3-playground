@@ -70,7 +70,7 @@
       <ion-item>
         <ion-label>Thursday</ion-label>
         <ion-note item-end class="col badge-column">
-          <div class="badge right-badge badge-green" *ngIf="existingData[0].availability['PREFERRED']['day4'] && existingData[0].availability['PREFERRED']['day4']['allDay'] === false" (click)="setAvailability(PREFERRED, existingData[0].availability['PREFERRED']['day1'], 'day4')">
+          <div class="badge right-badge badge-green" *ngIf="existingData[0].availability['PREFERRED']['day4'] && existingData[0].availability['PREFERRED']['day4']['allDay'] === false" (click)="setAvailability(PREFERRED, existingData[0].availability['PREFERRED']['day4'], 'day4')">
             {{existingData[0].availability['PREFERRED']['day4']['start'].display12}} - {{existingData[0].availability['PREFERRED']['day4']['end'].display12}}
           </div>
           <div class="badge right-badge badge-green all_day" *ngIf="existingData[0].availability['PREFERRED']['day4'] && existingData[0].availability['PREFERRED']['day4']['allDay'] === true" (click)="setAvailability(PREFERRED, existingData[0].availability['PREFERRED']['day4'], 'day4')">
