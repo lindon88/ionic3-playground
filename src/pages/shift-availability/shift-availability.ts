@@ -148,6 +148,27 @@ export class ShiftAvailabilityPage {
             data.start_time = "00:00";
           }
 
+          console.log(data.weekday);
+          let currentType = this.PREFERRED;
+          if(this.existingData[0].availability[type] === this.PREFERRED) {
+            currentType = this.UNAVAILABLE;
+          } else {
+            currentType = this.PREFERRED;
+          }
+          console.log('current type: ' + currentType);
+          console.log(this.existingData[0].availability[type]);
+          let currentStart = this.existingData[0].availability[currentType][data.weekday].start.display24;
+          console.log(currentStart);
+          let currentEnd = this.existingData[0].availability[currentType][data.weekday].end.display24;
+          console.log(currentEnd);
+
+          console.log(this.isOverlap(currentStart, currentEnd, data.start_time, data.end_time));
+
+          if(this.isOverlap(currentStart, currentEnd, data.start_time, data.end_time) === true) {
+            console.log("OVERLAP!");
+            return;
+          }
+
           availability[type][data.weekday] = {
             allDay: data.all_day,
             end: {
@@ -253,6 +274,15 @@ export class ShiftAvailabilityPage {
     }
     let arr = time.split(":");
     return arr[1];
+  }
+
+  isOverlap(start1, end1, start2, end2) {
+    start1 = this.convertTo24(start1);
+    start2 = this.convertTo24(start2);
+    end1 = this.convertTo24(end1);
+    end2 = this.convertTo24(end2);
+
+    return (end1 >= start2 && start1 <= end2);
   }
 
 }
