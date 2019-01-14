@@ -32,7 +32,9 @@ export class ShiftAvailabilityPage {
     this.availabilityProvider.getEmployeeAvailability(this.currentPersonId).then(result => {
       console.log(result);
       this.existingData = result;
-      this.effectiveDay = this.existingData[0].startDate;
+      if(result) {
+        this.effectiveDay = this.existingData[0].startDate;
+      }
     })
   }
 
@@ -53,6 +55,7 @@ export class ShiftAvailabilityPage {
       if(this.isEmptyObject(data)) {
         console.log('modal data empty');
       } else {
+        // if there are shifts availabilities
         let type = '';
         if(data.availability === true) {
           type = this.PREFERRED;
@@ -132,6 +135,7 @@ export class ShiftAvailabilityPage {
           if(this.existingData[0].availability[type] === null || this.existingData[0].availability[type] === undefined) {
             this.existingData[0].availability[type] = {};
           }
+          this.existingData[0].startDate = this.effectiveDay;
           console.log(this.existingData[0].availability[type]);
           console.log(Object.assign(this.existingData[0].availability[type], dbObj));
           console.log(this.existingData);
