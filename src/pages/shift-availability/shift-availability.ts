@@ -32,6 +32,7 @@ export class ShiftAvailabilityPage {
     this.availabilityProvider.getEmployeeAvailability(this.currentPersonId).then(result => {
       console.log(result);
       this.existingData = result;
+      this.effectiveDay = this.existingData[0].startDate;
     })
   }
 
