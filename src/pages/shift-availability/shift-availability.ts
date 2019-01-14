@@ -61,6 +61,7 @@ export class ShiftAvailabilityPage {
         console.log('modal data empty');
       } else {
         // if there are shifts availabilities
+        let fixedAvailability = data.fixedAvailability;
         let type = '';
         if (data.availability === true) {
           type = this.PREFERRED;
@@ -152,8 +153,6 @@ export class ShiftAvailabilityPage {
             data.start_time = "00:00";
           }
 
-
-
           availability[type][data.weekday] = {
             allDay: data.all_day,
             end: {
@@ -187,10 +186,26 @@ export class ShiftAvailabilityPage {
           }
           this.existingData[0].startDate = this.effectiveDay;
           console.log(this.existingData[0].availability[type]);
+
+          if(fixedAvailability in this.existingData[0].availability){
+            if ((this.existingData[0].availability[fixedAvailability]).hasOwnProperty(data.weekday)) {
+              if (this.existingData[0].availability[fixedAvailability][data.weekday].allDay === false) {
+                let currentStart = this.existingData[0].availability[fixedAvailability][data.weekday]['start'].display24;
+                let currentEnd = this.existingData[0].availability[fixedAvailability][data.weekday]['end'].display24;
+                if (this.isOverlap(currentStart, currentEnd, data.start_time, data.end_time) === true) {
+                  console.log("OVERLAP!");
+                  return;
+                }
+              }
+            }
+          }
+
           console.log(Object.assign(this.existingData[0].availability[type], dbObj));
           console.log(this.existingData);
 
           console.log(this.existingData[0].availability[type]);
+
+
           this.availabilityProvider.updateAvailability(this.currentPersonId, id, this.existingData[0]).then((result: any) => {
             console.log(result);
           })

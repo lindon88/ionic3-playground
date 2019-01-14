@@ -53,12 +53,17 @@ export class ModalShiftAvailabilityPage {
   }
 
   save() {
+    let type = '';
+    if(this.data !== null) {
+      type = this.data.type
+    }
     let availabilityObj = {
       weekday: this.week_day,
       start_time: this.start_time,
       end_time: this.end_time,
       availability: this.isAvailable,
-      all_day: this.all_day
+      all_day: this.all_day,
+      fixedAvailability: type
     };
 
     this.viewCtrl.dismiss(availabilityObj);
