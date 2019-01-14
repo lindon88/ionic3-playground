@@ -13,6 +13,9 @@ export class ModalShiftAvailabilityPage {
   public end_time: any;
   public all_day: any;
 
+  public data: any;
+  public day: any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController) {
   }
 
@@ -20,6 +23,25 @@ export class ModalShiftAvailabilityPage {
     console.log('ionViewDidLoad ModalShiftAvailabilityPage');
     this.status = this.navParams.get('popupTitle');
     this.isAvailable = this.status === 'PREFERRED';
+    this.data = this.navParams.get('data');
+    this.day = this.navParams.get('day');
+    console.log(this.data);
+    console.log('WeekDay: ' + this.day);
+
+    if(this.data !== null && this.data !== undefined && this.day !== null && this.data !== undefined) {
+      this.week_day = this.day;
+      this.start_time = this.fixTime(this.data.start.display24);
+      this.end_time = this.fixTime(this.data.end.display24);
+      this.all_day = this.data.allDay;
+      this.isAvailable = this.data.type === 'PREFERRED';
+    }
+  }
+
+  fixTime(time) {
+    if(time.length < 5) {
+      return ('0' + time).slice(0);
+    }
+    return time;
   }
 
   dismiss() {
@@ -36,6 +58,19 @@ export class ModalShiftAvailabilityPage {
       all_day: this.all_day
     };
 
+    this.viewCtrl.dismiss(availabilityObj);
+  }
+
+  delete() {
+    let availabilityObj = {
+      weekday: this.week_day,
+      start_time: null,
+      end_time: null,
+      availability: this.isAvailable,
+      all_day: null,
+      delete: true
+    };
+    console.log(availabilityObj);
     this.viewCtrl.dismiss(availabilityObj);
   }
 

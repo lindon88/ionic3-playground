@@ -45,10 +45,11 @@ export class ShiftAvailabilityPage {
   /**
    * Sets availability to PREFERRED or UNAVAILABLE
    * @param status
+   * @param data
+   * @param day
    */
-  setAvailability(status: string) {
-    let modal = this.modalCtrl.create(ModalShiftAvailabilityPage, {popupTitle: status}, {cssClass: 'modal-shift-availability'});
-
+  setAvailability(status: string, data: any, day: any) {
+    let modal = this.modalCtrl.create(ModalShiftAvailabilityPage, {popupTitle: status, data: data, day: day}, {cssClass: 'modal-shift-availability'});
     modal.present();
 
     modal.onDidDismiss(data => {
@@ -72,6 +73,37 @@ export class ShiftAvailabilityPage {
         availability[type][data.weekday] = {};
         if(data.all_day === undefined) {
           data.all_day = false;
+        }
+
+        // DELETE
+        if(data.delete === true) {
+          console.log("DELETE");
+          availability[type][data.weekday] = undefined;
+          console.log(availability[type]);
+
+          let obj = this.existingData[0];
+          let id = obj.id;
+          if(type === this.PREFERRED) {
+            availability[this.UNAVAILABLE] = {};
+          } else {
+            availability[this.PREFERRED] = {};
+          }
+          let dbObj = {...this.existingData[0].availability[type], ...availability[type]};
+          console.log('DB');
+          console.log(dbObj);
+          console.log("type: " + type);
+          if(this.existingData[0].availability[type] === null || this.existingData[0].availability[type] === undefined) {
+            this.existingData[0].availability[type] = {};
+          }
+          this.existingData[0].startDate = this.effectiveDay;
+          console.log(this.existingData[0].availability[type]);
+          console.log(Object.assign(this.existingData[0].availability[type], dbObj));
+          console.log(this.existingData);
+          this.availabilityProvider.updateAvailability(this.currentPersonId, id, this.existingData[0]).then((result: any) => {
+            console.log(result);
+          });
+          
+          return;
         }
 
         if(data.all_day === true) {
@@ -182,16 +214,25 @@ export class ShiftAvailabilityPage {
   }
 
   private convertTo24(time) {
+    if(time === null){
+      return;
+    }
     let arr = time.split(':');
     return arr[0];
   }
 
   private convertTo12(time) {
+    if(time === null) {
+      return;
+    }
     let hour = this.convertTo24(time);
     return (hour%12) || 12;
   }
 
   private convertTo12String(time) {
+    if(time === null) {
+      return;
+    }
     let H = +time.substr(0, 2);
     let h = H % 12 || 12;
     let am_pm = (H < 12 || H === 24) ? " AM" : " PM";
@@ -199,11 +240,17 @@ export class ShiftAvailabilityPage {
   }
 
   private isPM(time) {
+    if(time === null) {
+      return;
+    }
     let hour = this.convertTo24(time);
     return hour > 12 === true;
   }
 
   private convertToMinute(time) {
+    if(time === null) {
+      return;
+    }
     let arr = time.split(":");
     return arr[1];
   }
