@@ -102,7 +102,7 @@ export class ShiftAvailabilityPage {
           this.availabilityProvider.updateAvailability(this.currentPersonId, id, this.existingData[0]).then((result: any) => {
             console.log(result);
           });
-          
+
           return;
         }
 

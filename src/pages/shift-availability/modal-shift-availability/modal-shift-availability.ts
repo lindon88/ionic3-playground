@@ -30,14 +30,17 @@ export class ModalShiftAvailabilityPage {
 
     if(this.data !== null && this.data !== undefined && this.day !== null && this.data !== undefined) {
       this.week_day = this.day;
+      if(this.data.allDay === false) {
       this.start_time = this.fixTime(this.data.start.display24);
       this.end_time = this.fixTime(this.data.end.display24);
+      }
       this.all_day = this.data.allDay;
       this.isAvailable = this.data.type === 'PREFERRED';
     }
   }
 
   fixTime(time) {
+    if(time === null) return;
     if(time.length < 5) {
       return ('0' + time).slice(0);
     }
