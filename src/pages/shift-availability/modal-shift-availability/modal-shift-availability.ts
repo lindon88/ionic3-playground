@@ -44,13 +44,14 @@ export class ModalShiftAvailabilityPage {
   onDayChange(code: any) {
     for(let day in this.data) {
       if(code === day) {
-        this.week_day = this.day;
-        if(this.data.allDay === false) {
-          this.start_time = this.fixTime(this.data.start.display24);
-          this.end_time = this.fixTime(this.data.end.display24);
+        console.log(this.data[code]);
+        this.week_day = code;
+        if(this.data[code].allDay === false) {
+          this.start_time = this.fixTime(this.data[code].start.display24);
+          this.end_time = this.fixTime(this.data[code].end.display24);
         }
-        this.all_day = this.data.allDay;
-        this.isAvailable = this.data.type === 'PREFERRED';
+        this.all_day = this.data[code].allDay;
+        this.isAvailable = this.data[code].type === 'PREFERRED';
       }
     }
   }
