@@ -1,0 +1,31 @@
+<ion-header class="main-header">
+  <ion-navbar color="primary" [hideBackButton]="true" class="main-navbar clearfix">
+    <button ion-button icon-only  (click)="goToMainProfile()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </button>
+    <ion-title class="main-title">
+      <img (click)="navCtrl.setRoot('HomePage')" src="./assets/imgs/Cover-logo-blue.png" alt="Cover">
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-bounce>
+  <ion-list>
+    <ion-item>
+      <ion-label>Keep me signed in</ion-label>
+      <ion-toggle (ionChange)="keepSignedIn()" [(ngModel)]="signedIn" color="secondary"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>User fingerprint login</ion-label>
+      <ion-toggle (ionChange)="useFingerprint()" [(ngModel)]="fingerprintToggle" color="secondary"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>Receive push notifications</ion-label>
+      <ion-toggle (ionChange)="receivePushNotifications()" [(ngModel)]="receivePush" color="secondary"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>Receive alerts on upcoming shifts</ion-label>
+      <ion-toggle (ionChange)="receiveAlertsOnUpcomingShifts()" [(ngModel)]="receiveAlerts" color="secondary"></ion-toggle>
+    </ion-item>
+  </ion-list>
+</ion-content>

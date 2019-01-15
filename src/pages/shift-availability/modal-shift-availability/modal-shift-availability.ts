@@ -86,7 +86,6 @@ export class ModalShiftAvailabilityPage {
       all_day: this.all_day,
       fixedAvailability: type
     };
-    console.log(availabilityObj);
     this.viewCtrl.dismiss(availabilityObj);
   }
 

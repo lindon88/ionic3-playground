@@ -67,7 +67,7 @@ export class ProfilePage {
       {
         header: 'App Settings',
         description: 'Manage any app settings, such as fingerprint login',
-        page: 'SettingsPage'
+        page: 'AppSettingsPage'
       }
     ]
   }
