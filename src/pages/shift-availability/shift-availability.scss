@@ -53,5 +53,10 @@ button.like {
         }
       }
     }
+    ion-item:first-child {
+      .item-inner {
+        padding-left: 10px;
+      }
+    }
   }
 }

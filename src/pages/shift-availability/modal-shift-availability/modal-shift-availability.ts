@@ -74,6 +74,10 @@ export class ModalShiftAvailabilityPage {
     if(this.data !== null) {
       type = this.data.type
     }
+    if (type === undefined) {
+      type = this.data[this.week_day].type;
+      console.log(type);
+    }
     let availabilityObj = {
       weekday: this.week_day,
       start_time: this.start_time,
@@ -82,7 +86,7 @@ export class ModalShiftAvailabilityPage {
       all_day: this.all_day,
       fixedAvailability: type
     };
-
+    console.log(availabilityObj);
     this.viewCtrl.dismiss(availabilityObj);
   }
 
@@ -95,7 +99,6 @@ export class ModalShiftAvailabilityPage {
       all_day: null,
       delete: true
     };
-    console.log(availabilityObj);
     this.viewCtrl.dismiss(availabilityObj);
   }
 

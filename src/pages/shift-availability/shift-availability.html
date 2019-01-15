@@ -13,7 +13,7 @@
   <ion-list class="shift-availability-item">
     <ion-item-group *ngIf="existingData">
       <ion-item>
-        <ion-label >Effective From: </ion-label>
+        <ion-label>Effective From: </ion-label>
         <ion-datetime displayFormat="DDD, MMM D"  pickerFormat="DDDD MMM D, YYYY" [min]="currentYear" max="2099" [(ngModel)]="effectiveDay"></ion-datetime>
       </ion-item>
       <ion-item>
