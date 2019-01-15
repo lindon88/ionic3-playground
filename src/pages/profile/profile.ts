@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
+import {IonicPage, MenuController, NavController, NavParams, ViewController} from 'ionic-angular';
 import {AuthenticationProvider} from "../../providers/authentication/authentication";
 
 /**
@@ -17,7 +17,7 @@ import {AuthenticationProvider} from "../../providers/authentication/authenticat
 export class ProfilePage {
   public profile_content: any;
 
-  constructor(public navCtrl: NavController, public viewCtrl: ViewController, public authProvider: AuthenticationProvider, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public menuCtrl: MenuController, public viewCtrl: ViewController, public authProvider: AuthenticationProvider, public navParams: NavParams) {
   }
 
   /**
@@ -45,6 +45,17 @@ export class ProfilePage {
     console.log('ionViewDidLoad ProfilePage');
     this.loadProfileContent();
   }
+
+
+  // START - Swipe back enable
+  public ionViewWillEnter(): void {
+    this.menuCtrl.swipeEnable(true, 'menu1');
+  }
+
+  public ionViewWillLeave(): void {
+    this.menuCtrl.swipeEnable(false, 'menu1');
+  }
+  // END - Swipe back enable
 
   /**
    * Content for main profile page
