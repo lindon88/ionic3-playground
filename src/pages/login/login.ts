@@ -108,11 +108,21 @@ export class LoginPage {
           ]
         });
         alert.present();
+      } else {
+        if(this.userinfo.userPIN !== null && this.userinfo.userPIN !== undefined) {
+          this.navCtrl.setRoot('HomePage');
+        } else {
+          this.pinSetup();
+        }
       }
       // alert(result);
     }).catch(error => {
       console.log(error);
-      alert(error);
+      if(this.userinfo.userPIN !== null && this.userinfo.userPIN !== undefined) {
+        this.navCtrl.setRoot('HomePage');
+      } else {
+        this.pinSetup();
+      }
     })
   }
 

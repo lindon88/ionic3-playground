@@ -46,12 +46,25 @@ export class AppSettingsPage {
     console.log('keepSignedIn: ' + localStorage.getItem('keepSignedIn'));
     console.log('receive push: ' + localStorage.getItem('receivePush'));
     console.log('receive alerts: ' + localStorage.getItem('receiveAlerts'));
-
-    this.fingerprintAvailable = this.canUseFingerprint();
+    this.canUseFingerprint();
   }
 
   canUseFingerprint() {
-    return this.platform.is('cordova') ? !!this.fingerprint.isAvailable() : false;
+    if (this.platform.is('cordova')) {
+      this.fingerprint.isAvailable().then(result => {
+        if (result === 'finger') {
+          this.fingerprintAvailable = true;
+        } else {
+          this.fingerprintAvailable = false;
+        }
+        console.log(this.fingerprintAvailable);
+      }).catch(error => {
+        console.log(error);
+      });
+    } else {
+      this.fingerprintAvailable = false;
+      console.log(this.fingerprintAvailable);
+    }
   }
 
   goToMainProfile() {
