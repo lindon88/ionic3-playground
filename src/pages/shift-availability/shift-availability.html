@@ -141,8 +141,8 @@
   <ion-fab right bottom #fab_action>
     <button ion-fab color="secondary"><ion-icon class="large-fab" name="add"></ion-icon></button>
     <ion-fab-list side="top" class="thumbs">
-      <button ion-fab class="dislike" (click)="setAvailability(UNAVAILABLE, null, null)"><i class="fa fa-thumbs-o-down"></i></button>
-      <button ion-fab class="like" (click)="setAvailability(PREFERRED, null, null)"><i class="fa fa-thumbs-o-up"></i></button>
+      <button ion-fab class="dislike" (click)="setAvailability(UNAVAILABLE, existingData[0].availability[UNAVAILABLE], null)"><i class="fa fa-thumbs-o-down"></i></button>
+      <button ion-fab class="like" (click)="setAvailability(PREFERRED, existingData[0].availability[PREFERRED], null)"><i class="fa fa-thumbs-o-up"></i></button>
     </ion-fab-list>
   </ion-fab>
 </ion-content>

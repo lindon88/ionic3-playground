@@ -16,6 +16,8 @@ export class ModalShiftAvailabilityPage {
   public data: any;
   public day: any;
 
+  public days:any = [];
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController) {
   }
 
@@ -26,7 +28,7 @@ export class ModalShiftAvailabilityPage {
     this.data = this.navParams.get('data');
     this.day = this.navParams.get('day');
     console.log(this.data);
-    console.log('WeekDay: ' + this.day);
+    console.log(this.days);
 
     if(this.data !== null && this.data !== undefined && this.day !== null && this.data !== undefined) {
       this.week_day = this.day;
@@ -36,6 +38,20 @@ export class ModalShiftAvailabilityPage {
       }
       this.all_day = this.data.allDay;
       this.isAvailable = this.data.type === 'PREFERRED';
+    }
+  }
+
+  onDayChange(code: any) {
+    for(let day in this.data) {
+      if(code === day) {
+        this.week_day = this.day;
+        if(this.data.allDay === false) {
+          this.start_time = this.fixTime(this.data.start.display24);
+          this.end_time = this.fixTime(this.data.end.display24);
+        }
+        this.all_day = this.data.allDay;
+        this.isAvailable = this.data.type === 'PREFERRED';
+      }
     }
   }
 

@@ -5,7 +5,7 @@
   <ion-list>
     <ion-item>
       <ion-label>Day of Week</ion-label>
-      <ion-select [(ngModel)]="week_day">
+      <ion-select [(ngModel)]="week_day" (ionChange)="onDayChange(week_day)">
         <ion-option value="day1">Monday</ion-option>
         <ion-option value="day2">Tuesday</ion-option>
         <ion-option value="day3">Wednesday</ion-option>
