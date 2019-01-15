@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {AvailabilityProvider} from "../../providers/availability/availability";
 import {ModalShiftAvailabilityPage} from "./modal-shift-availability/modal-shift-availability";
+import {AuthenticationProvider} from "../../providers/authentication/authentication";
 
 @IonicPage()
 @Component({
@@ -20,12 +21,33 @@ export class ShiftAvailabilityPage {
 
   public existingData: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public availabilityProvider: AvailabilityProvider, private modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, public authProvider: AuthenticationProvider, public navParams: NavParams, public availabilityProvider: AvailabilityProvider, private modalCtrl: ModalController) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ShiftAvailabilityPage');
     this.getAvailability();
+  }
+
+  /**
+   * Auth Guard
+   */
+  async ionViewCanEnter() {
+    let canEnter = await this.canEnter();
+    if(canEnter === false) {
+      this.navCtrl.setRoot('LoginPage');
+      return;
+    }
+  }
+
+  canEnter() {
+    return new Promise((resolve, reject) => {
+      return this.authProvider.isAuth(this.navCtrl).then((response) => {
+        resolve(response);
+      }, error => {
+        reject(error);
+      })
+    })
   }
 
   public getAvailability() {

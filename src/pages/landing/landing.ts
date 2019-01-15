@@ -27,7 +27,7 @@ export class LandingPage {
   }
 
   // On init, wait 5s to call redirect method
-  ngOnInit() {
+  ionViewDidLoad() {
     // timeout for calling redirect function
     Observable.interval(5000).take(1).subscribe(() => this.redirect());
   }

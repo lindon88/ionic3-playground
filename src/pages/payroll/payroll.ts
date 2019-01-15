@@ -1,6 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {Content, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {EmployeeProvider} from "../../providers/employee/employee";
+import {AuthenticationProvider} from "../../providers/authentication/authentication";
 
 /**
  * Generated class for the PayrollPage page.
@@ -36,12 +37,33 @@ export class PayrollPage {
 
   @ViewChild(Content) content: Content;
 
-  constructor(public navCtrl: NavController, public employeeProvider: EmployeeProvider, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public authProvider: AuthenticationProvider, public employeeProvider: EmployeeProvider, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PayrollPage');
     this.getEmployee();
+  }
+
+  /**
+   * Auth Guard
+   */
+  async ionViewCanEnter() {
+    let canEnter = await this.canEnter();
+    if(canEnter === false) {
+      this.navCtrl.setRoot('LoginPage');
+      return;
+    }
+  }
+
+  canEnter() {
+    return new Promise((resolve, reject) => {
+      return this.authProvider.isAuth(this.navCtrl).then((response) => {
+        resolve(response);
+      }, error => {
+        reject(error);
+      })
+    })
   }
 
   public getEmployee() {

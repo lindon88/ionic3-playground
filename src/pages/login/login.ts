@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {AlertController, IonicPage, NavController, Platform} from 'ionic-angular';
 import {ServerProvider} from "../../providers/server/server";
 import {AuthenticationProvider} from "../../providers/authentication/authentication";

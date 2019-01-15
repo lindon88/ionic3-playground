@@ -60,23 +60,22 @@ export class PersonDetailsPage {
   /**
    * Auth Guard
    */
-  ionViewCanEnter(): Promise<any> {
+  async ionViewCanEnter() {
+    let canEnter = await this.canEnter();
+    if(canEnter === false) {
+      this.navCtrl.setRoot('LoginPage');
+      return;
+    }
+  }
+
+  canEnter() {
     return new Promise((resolve, reject) => {
-      this.authProvider.isAuth(this.navCtrl).then((response) => {
-        console.log(response);
-        if(response === false) {
-          this.viewCtrl.dismiss();
-          setTimeout(() => {
-            this.navCtrl.setRoot("LoginPage");
-          }, 0);
-        }
+      return this.authProvider.isAuth(this.navCtrl).then((response) => {
         resolve(response);
       }, error => {
         reject(error);
-      }).catch(error => {
-        console.log(error);
       })
-    });
+    })
   }
 
   public getCountries() {

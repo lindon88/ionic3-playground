@@ -79,6 +79,7 @@
     <allow-navigation href="http://192.168.1.34:8100" />
     <engine name="android" spec="^6.2.3" />
     <engine name="ios" spec="^4.4.0" />
+    <plugin name="cordova-plugin-datepicker" spec="^0.9.3" />
     <plugin name="cordova-plugin-device" spec="^1.1.4" />
     <plugin name="cordova-plugin-fingerprint-aio" spec="^1.5.0">
         <variable name="FACEID_USAGE_DESCRIPTION" value=" " />
@@ -87,5 +88,4 @@
     <plugin name="cordova-plugin-splashscreen" spec="^4.0.3" />
     <plugin name="cordova-plugin-whitelist" spec="^1.3.1" />
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
-    <plugin name="cordova-plugin-datepicker" spec="^0.9.3" />
 </widget>

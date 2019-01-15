@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {AuthenticationProvider} from "../../providers/authentication/authentication";
 
 @IonicPage()
 @Component({
@@ -12,7 +13,28 @@ export class AppSettingsPage {
   public receivePush: any = localStorage.getItem('receivePush');
   public receiveAlerts: any = localStorage.getItem('receiveAlerts');
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public authProvider: AuthenticationProvider, public navParams: NavParams) {
+  }
+
+  /**
+   * Auth Guard
+   */
+  async ionViewCanEnter() {
+    let canEnter = await this.canEnter();
+    if(canEnter === false) {
+      this.navCtrl.setRoot('LoginPage');
+      return;
+    }
+  }
+
+  canEnter() {
+    return new Promise((resolve, reject) => {
+      return this.authProvider.isAuth(this.navCtrl).then((response) => {
+        resolve(response);
+      }, error => {
+        reject(error);
+      })
+    })
   }
 
   ionViewDidLoad() {

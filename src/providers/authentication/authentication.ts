@@ -95,6 +95,9 @@ export class AuthenticationProvider {
   public isAuth(nav: NavController) {
     return this.validateToken().then(isValid => {
       console.log(isValid);
+      if(isValid === false) {
+        localStorage.removeItem('accessToken');
+      }
       return isValid;
     });
   }
