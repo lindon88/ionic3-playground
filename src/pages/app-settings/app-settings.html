@@ -19,11 +19,11 @@
       <ion-label>User fingerprint login</ion-label>
       <ion-toggle (ionChange)="useFingerprint()" [(ngModel)]="fingerprintToggle" color="secondary"></ion-toggle>
     </ion-item>
-    <ion-item>
+    <ion-item hidden>
       <ion-label>Receive push notifications</ion-label>
       <ion-toggle (ionChange)="receivePushNotifications()" [(ngModel)]="receivePush" color="secondary"></ion-toggle>
     </ion-item>
-    <ion-item>
+    <ion-item hidden>
       <ion-label>Receive alerts on upcoming shifts</ion-label>
       <ion-toggle (ionChange)="receiveAlertsOnUpcomingShifts()" [(ngModel)]="receiveAlerts" color="secondary"></ion-toggle>
     </ion-item>
