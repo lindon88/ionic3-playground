@@ -66,6 +66,9 @@ export class PayrollPage {
     })
   }
 
+  /**
+   * Get current employee
+   */
   public getEmployee() {
     this.employeeProvider.getEmployee(this.currentCompanyId, this.currentPersonId).then((result: any) => {
       this.person = result;
@@ -87,6 +90,9 @@ export class PayrollPage {
     })
   }
 
+  /**
+   * Save payroll details for current employee
+   */
   public savePayroll() {
     let payroll = {
       id: this.currentPersonId,
@@ -122,10 +128,16 @@ export class PayrollPage {
     this.scrollToTop();
   }
 
+  /**
+   * Scroll to top
+   */
   scrollToTop() {
     this.content.scrollToTop();
   }
 
+  /**
+   * Go to main page
+   */
   goToMainProfile() {
     this.navCtrl.pop();
   }

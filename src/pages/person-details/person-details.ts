@@ -47,6 +47,9 @@ export class PersonDetailsPage {
 
   @ViewChild(Content) content: Content;
 
+  /**
+   * Scroll to top
+   */
   scrollToTop() {
     this.content.scrollToTop();
   }
@@ -85,6 +88,9 @@ export class PersonDetailsPage {
     })
   }
 
+  /**
+   * Get current employee
+   */
   public getEmployee() {
     this.employeeProvider.getEmployee(this.currentCompanyId, this.currentPersonId).then((result: any) => {
       this.person = result;
@@ -110,9 +116,10 @@ export class PersonDetailsPage {
     })
   }
 
-
+  /**
+   * Save employee data
+   */
   public savePerson() {
-    // todo: Nemanja add to person object rest of the data
     let person = {
       id: this.currentPersonId,
       companyId: this.currentCompanyId,
@@ -154,6 +161,9 @@ export class PersonDetailsPage {
 
   }
 
+  /**
+   * Go to main page for user profile
+   */
   goToMainProfile() {
     this.navCtrl.pop();
   }

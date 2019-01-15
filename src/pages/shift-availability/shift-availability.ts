@@ -50,6 +50,9 @@ export class ShiftAvailabilityPage {
     })
   }
 
+  /**
+   * Get current employee availabilities for shifts
+   */
   public getAvailability() {
     this.availabilityProvider.getEmployeeAvailability(this.currentPersonId).then(result => {
       console.log(result);
@@ -60,6 +63,9 @@ export class ShiftAvailabilityPage {
     })
   }
 
+  /**
+   * Go to main profile page
+   */
   goToMainProfile() {
     this.navCtrl.pop();
   }
@@ -79,10 +85,13 @@ export class ShiftAvailabilityPage {
     modal.present();
 
     modal.onDidDismiss(data => {
+      // check if object is empty
+      // happens when on modal cancel
       if (this.isEmptyObject(data)) {
         console.log('modal data empty');
       } else {
         // if there are shifts availabilities
+        // fixed availability is used to check for overlaps in shifts availabilities
         let fixedAvailability = data.fixedAvailability;
         let type = '';
         if (data.availability === true) {
@@ -103,6 +112,7 @@ export class ShiftAvailabilityPage {
         }
 
         // DELETE
+        // check if in returned objects, there is parameter delete, set to true
         if (data.delete === true) {
           console.log("DELETE");
           availability[type][data.weekday] = undefined;
@@ -130,14 +140,17 @@ export class ShiftAvailabilityPage {
             console.log(result);
           });
 
+          // do not go any further
           return;
         }
 
+        // if allDay is selected, add start and end time for checking overlaps
         if (data.all_day === true) {
           data.end_time = "23:59";
           data.start_time = "00:00";
         }
 
+        // availability object
         availability[type][data.weekday] = {
           allDay: data.all_day,
           end: {
@@ -161,6 +174,8 @@ export class ShiftAvailabilityPage {
           },
           type: type
         };
+        // if returned object is not empty, update shifts availability
+        // else save as new
         if (!this.isEmptyObject(this.existingData)) {
           let obj = this.existingData[0];
           let id = obj.id;
@@ -260,8 +275,12 @@ export class ShiftAvailabilityPage {
     })
   }
 
+  /**
+   * Check if object is empty
+   * @param obj
+   */
   isEmptyObject(obj) {
-    for (var prop in obj) {
+    for (let prop in obj) {
       if (obj.hasOwnProperty(prop)) {
         return false;
       }
@@ -269,6 +288,10 @@ export class ShiftAvailabilityPage {
     return true;
   }
 
+  /**
+   * converts hours to 24 hour format
+   * @param time
+   */
   private convertTo24(time) {
     if (time === null) {
       return;
@@ -277,6 +300,10 @@ export class ShiftAvailabilityPage {
     return arr[0];
   }
 
+  /**
+   * Converts hours to 12 hour format
+   * @param time
+   */
   private convertTo12(time) {
     if (time === null) {
       return;
@@ -285,6 +312,10 @@ export class ShiftAvailabilityPage {
     return (hour % 12) || 12;
   }
 
+  /**
+   * Converts time to 12 hour format
+   * @param time
+   */
   private convertTo12String(time) {
     if (time === null) {
       return;
@@ -295,6 +326,10 @@ export class ShiftAvailabilityPage {
     return (h + time.substr(2, 3) + am_pm);
   }
 
+  /**
+   * Is time pm or am
+   * @param time
+   */
   private isPM(time) {
     if (time === null) {
       return;
@@ -303,6 +338,10 @@ export class ShiftAvailabilityPage {
     return hour > 12 === true;
   }
 
+  /**
+   * Gets minutes from time string
+   * @param time
+   */
   private convertToMinute(time) {
     if (time === null) {
       return;
@@ -311,6 +350,13 @@ export class ShiftAvailabilityPage {
     return arr[1];
   }
 
+  /**
+   * Check for time overlap
+   * @param start1
+   * @param end1
+   * @param start2
+   * @param end2
+   */
   isOverlap(start1, end1, start2, end2) {
     start1 = this.convertTo24(start1);
     start2 = this.convertTo24(start2);

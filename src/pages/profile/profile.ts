@@ -46,6 +46,9 @@ export class ProfilePage {
     this.loadProfileContent();
   }
 
+  /**
+   * Content for main profile page
+   */
   public loadProfileContent() {
     this.profile_content = [
       {
@@ -71,6 +74,10 @@ export class ProfilePage {
     ]
   }
 
+  /**
+   * Manage profile content to go to specific page
+   * @param page
+   */
   public profileGoTo(page: string) {
     this.navCtrl.push(page);
   }
