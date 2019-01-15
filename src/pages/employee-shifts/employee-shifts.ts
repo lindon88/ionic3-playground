@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, HostListener} from '@angular/core';
 import {IonicPage, MenuController, ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
 import {RosterProvider} from "../../providers/roster/roster";
 import {ShiftsProvider} from "../../providers/shifts/shifts";
@@ -68,6 +68,22 @@ export class EmployeeShiftsPage {
   public selectedDate: any;
 
   constructor(public navCtrl: NavController, public viewCtrl: ViewController, public menuCtrl: MenuController, public navParams: NavParams, public authProvider: AuthenticationProvider, public rosterProvider: RosterProvider, public shiftsProvider: ShiftsProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController, public loadingProvider: LoadingProvider) {
+  }
+
+  @HostListener('window:resize', ['$event'])
+  public onResize(event) {
+    // event.target.innerWidth != this.platform.width()
+    this.setMonthDayFormat();
+    console.log(event.target.innerWidth);
+    if (event.target.innerWidth < 510) {
+      this.monthTextFormat = 'short';
+      this.dayTextFormat = 'short';
+
+      console.log(this.monthTextFormat);
+    } else {
+      this.monthTextFormat = 'long';
+      this.dayTextFormat = 'long';
+    }
   }
 
   /**
@@ -148,7 +164,7 @@ export class EmployeeShiftsPage {
    * Setting month and day format for different screen sizes
    */
   public setMonthDayFormat() {
-    if (window.screen.width < 380) {
+    if (window.screen.width < 510) {
       this.monthTextFormat = 'short';
       this.dayTextFormat = 'short';
     } else {
