@@ -39,8 +39,15 @@ export class LandingPage {
     let userToken = localStorage['accessToken'];
     let serverUrl = localStorage['serverUrl'];
     let pin = localStorage['PIN'];
+    let keepLoggedIn = localStorage['keepSignedIn'];
+
 
     if (userToken === undefined || userToken === null || serverUrl === undefined || serverUrl === null || pin === undefined || pin === null) {
+      this.navCtrl.setRoot("LoginPage");
+      return;
+    }
+
+    if (keepLoggedIn === false) {
       this.navCtrl.setRoot("LoginPage");
       return;
     }
