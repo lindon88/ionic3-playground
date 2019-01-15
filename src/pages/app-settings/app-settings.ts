@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {IonicPage, NavController, NavParams, Platform} from 'ionic-angular';
 import {AuthenticationProvider} from "../../providers/authentication/authentication";
+import {FingerprintAIO} from "@ionic-native/fingerprint-aio";
 
 @IonicPage()
 @Component({
@@ -13,7 +14,9 @@ export class AppSettingsPage {
   public receivePush: any = localStorage.getItem('receivePush');
   public receiveAlerts: any = localStorage.getItem('receiveAlerts');
 
-  constructor(public navCtrl: NavController, public authProvider: AuthenticationProvider, public navParams: NavParams) {
+  public fingerprintAvailable: boolean;
+
+  constructor(public navCtrl: NavController, public authProvider: AuthenticationProvider, public platform: Platform, public navParams: NavParams, public fingerprint:FingerprintAIO) {
   }
 
   /**
@@ -43,6 +46,12 @@ export class AppSettingsPage {
     console.log('keepSignedIn: ' + localStorage.getItem('keepSignedIn'));
     console.log('receive push: ' + localStorage.getItem('receivePush'));
     console.log('receive alerts: ' + localStorage.getItem('receiveAlerts'));
+
+    this.fingerprintAvailable = this.canUseFingerprint();
+  }
+
+  canUseFingerprint() {
+    return this.platform.is('cordova') ? !!this.fingerprint.isAvailable() : false;
   }
 
   goToMainProfile() {
