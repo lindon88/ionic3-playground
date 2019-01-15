@@ -55,7 +55,7 @@ export class LoginPage {
           console.log(this.userinfo);
           if(localStorage.getItem('useFingerprint') !== undefined && localStorage.getItem('useFingerprint') !== null && localStorage.getItem('useFingerprint').length > 0) {
             if(localStorage.getItem('useFingerprint') === 'true' && this.platform.is('cordova')) {
-              this.navCtrl.setRoot('FingerprintAuthPage');
+              this.checkFingerprintAIO();
             } else {
               this.pinSetup();
             }
