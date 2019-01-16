@@ -13,6 +13,7 @@ import {FingerprintAIO} from '@ionic-native/fingerprint-aio';
 export class LoginPage {
   // vars
   public userinfo: any;
+  public loginError: boolean;
 
   constructor(public navCtrl: NavController, public platform: Platform, private serverProvider: ServerProvider, public fingerprint:FingerprintAIO, public alertCtrl: AlertController, public authProvider: AuthenticationProvider, public loadingProvider: LoadingProvider) {
     let userToken = localStorage['accessToken'];
@@ -52,6 +53,7 @@ export class LoginPage {
           this.userinfo = result;
           if(this.userinfo)
             this.loadingProvider.hideLoader();
+          this.loginError = false;
           console.log(this.userinfo.userRoles);
           console.log(this.userinfo);
           if(localStorage.getItem('useFingerprint') !== undefined && localStorage.getItem('useFingerprint') !== null && localStorage.getItem('useFingerprint').length > 0) {
@@ -71,6 +73,7 @@ export class LoginPage {
           console.log(error);
           if(error) {
             this.loadingProvider.hideLoader();
+            this.loginError = true;
           }
         });
         if(this.userinfo) {

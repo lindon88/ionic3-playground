@@ -18,6 +18,7 @@
         <span class="input-group-addon"><i class="fa fa-lock fa-lg"></i></span>
         <input type="password" placeholder="Password" name="password" [ngModel]="password" class="form-control">
       </div>
+      <p *ngIf="loginError" class="loginError">Email or password is incorrect!</p>
       <div class="login-button">
         <button ion-button color="secondary" type="submit" block margin-bottom margin-top>Login</button>
       </div>
