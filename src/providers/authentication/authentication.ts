@@ -48,6 +48,8 @@ export class AuthenticationProvider {
         localStorage.setItem('serverUrl', this.serverProvider.getServerURL());
 
         resolve(this.userInfo);
+      }, error => {
+        reject(error);
       })
     })
   }

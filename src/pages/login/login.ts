@@ -47,10 +47,11 @@ export class LoginPage {
       } else {
         console.log('Username ' + username);
         console.log('Password ' + password);
-
         this.loadingProvider.showLoader();
         this.authProvider.login(username, password).then((result) => {
           this.userinfo = result;
+          if(this.userinfo)
+            this.loadingProvider.hideLoader();
           console.log(this.userinfo.userRoles);
           console.log(this.userinfo);
           if(localStorage.getItem('useFingerprint') !== undefined && localStorage.getItem('useFingerprint') !== null && localStorage.getItem('useFingerprint').length > 0) {
@@ -66,8 +67,15 @@ export class LoginPage {
               this.navCtrl.setRoot('HomePage');
             }
           }
+        }).catch(error => {
+          console.log(error);
+          if(error) {
+            this.loadingProvider.hideLoader();
+          }
         });
-        this.loadingProvider.hideLoader();
+        if(this.userinfo) {
+          this.loadingProvider.hideLoader();
+        }
       }
     })
   }
