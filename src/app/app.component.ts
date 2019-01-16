@@ -42,8 +42,9 @@ export class MyApp {
       {icon: 'fa fa-tachometer', title: 'Dashboard', component: 'HomePage', click: null},
       {icon: 'fa fa-calendar', title: 'My Schedule', component: "EmployeeShiftsPage", click: null},
       {icon: 'fa fa-calendar-o', title: 'Open Shifts', component: "EmployeeOpenShiftPage", click: null},
-      {icon: 'fa fa-check-square-o', title: 'Checklists', component: "ChecklistsPage", click: null},
       {icon: 'fa fa-sun-o', title: 'Absence Requests', component: "AbsencePage", click: null},
+      {icon: 'fa fa-user', title: 'Personal Profile', component: 'ProfilePage', click: null},
+      {icon: 'fa fa-check-square-o', title: 'Checklists', component: "ChecklistsPage", click: null},
       {icon: 'fa fa-sign-out', title: 'Log out', component: null, click: 'logout'}
     ];
   }
