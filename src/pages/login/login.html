@@ -11,7 +11,7 @@
     <form name="loginform" id="login-form" (ngSubmit)="login(loginForm.value)" #loginForm="ngForm" role="form" autocomplete="off">
       <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-user fa-lg"></i></span>
-        <input type="text" placeholder="Email" [ngModel]="email" name="email" class="form-control">
+        <input type="text" placeholder="Email" autocomplete="off" autocorrect="off" spellcheck="false" [ngModel]="email" name="email" class="form-control">
       </div>
       <br>
       <div class="input-group">
