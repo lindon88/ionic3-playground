@@ -4,6 +4,7 @@ import {ServerProvider} from "../../providers/server/server";
 import {AuthenticationProvider} from "../../providers/authentication/authentication";
 import {LoadingProvider} from "../../providers/loading/loading";
 import {FingerprintAIO} from '@ionic-native/fingerprint-aio';
+import {Events} from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -15,7 +16,7 @@ export class LoginPage {
   public userinfo: any;
   public loginError: boolean;
 
-  constructor(public navCtrl: NavController, public platform: Platform, private serverProvider: ServerProvider, public fingerprint:FingerprintAIO, public alertCtrl: AlertController, public authProvider: AuthenticationProvider, public loadingProvider: LoadingProvider) {
+  constructor(public navCtrl: NavController, public platform: Platform, private serverProvider: ServerProvider, public fingerprint:FingerprintAIO, public alertCtrl: AlertController, public authProvider: AuthenticationProvider, public loadingProvider: LoadingProvider, public events: Events) {
   }
 
   ionAfterViewInit() {
@@ -47,24 +48,22 @@ export class LoginPage {
         this.loadingProvider.showLoader();
         this.authProvider.login(username, password).then((result) => {
           this.userinfo = result;
-          if(this.userinfo)
+          if(this.userinfo) {
+            this.events.publish('user:logged', this.userinfo);
             this.loadingProvider.hideLoader();
-          this.loginError = false;
-          console.log(this.userinfo.userRoles);
-          console.log(this.userinfo);
-          if(localStorage.getItem('useFingerprint') !== undefined && localStorage.getItem('useFingerprint') !== null && localStorage.getItem('useFingerprint').length > 0) {
-            if(localStorage.getItem('useFingerprint') === 'true' && this.platform.is('cordova')) {
-              this.checkFingerprintAIO();
-            } else {
-              this.pinSetup();
-            }
-          } else {
-            if(this.platform.is('cordova')) {
-              this.checkFingerprintAIO();
-            } else {
-              this.navCtrl.setRoot('HomePage');
-            }
           }
+          this.loginError = false;
+          const useFingerprint = localStorage.getItem('useFingerprint');
+
+          if(useFingerprint === '' && useFingerprint === undefined && useFingerprint === null && this.platform.is('cordova')) {
+            this.checkFingerprintAIO();
+          }
+          if(this.userinfo.userPIN === undefined || this.userinfo.userPIN === null || this.userinfo.userPIN === '') {
+            this.navCtrl.setRoot('PinCreatePage')
+          }
+
+          this.navCtrl.setRoot('HomePage');
+
         }).catch(error => {
           console.log(error);
           if(error) {

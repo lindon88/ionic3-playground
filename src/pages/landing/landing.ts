@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import {NavController, Platform} from 'ionic-angular';
 import {Observable} from "rxjs";
 import {ServerProvider} from "../../providers/server/server";
 import {ApiProvider} from "../../providers/api/api";
@@ -22,7 +22,7 @@ export class LandingPage {
     path: './assets/animations/data.json'
   };
 
-  constructor(public navCtrl: NavController, private serverProvider: ServerProvider, private apiProvider: ApiProvider, private tokenProvider: TokenProvider) {
+  constructor(public navCtrl: NavController, private serverProvider: ServerProvider, private apiProvider: ApiProvider, private tokenProvider: TokenProvider, public platform: Platform) {
 
   }
 
@@ -63,7 +63,7 @@ export class LandingPage {
       if (response === null || response === undefined || response.userId === undefined) {
         this.navCtrl.setRoot("LoginPage");
       }
-      if (localStorage.getItem('useFingerprint') === 'true') {
+      if (localStorage.getItem('useFingerprint') === 'true' && this.platform.is('cordova')) {
         this.navCtrl.setRoot('FingerprintAuthPage');
       } else if(pin === null || pin === undefined || pin === '') {
         this.navCtrl.setRoot('PinCreatePage');

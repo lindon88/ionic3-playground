@@ -16,8 +16,7 @@ export class MyApp {
   // root page should be landing page
   rootPage: any = LandingPage;
   public user: any;
-  public company;
-  any;
+  public company: any;
   pages: Array<{ icon: string, title: string, component: any, click: any }>;
   public userInfo: any = JSON.parse(localStorage.getItem('userInfo'));
   public companyId: any = localStorage.getItem('currentCompanyId');
@@ -32,6 +31,20 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
       menuCtrl.swipeEnable(false, 'menu1');
+      this.events.subscribe('user:logged', (userinfo) => {
+        console.log(userinfo);
+      });
+      if(this.userInfo === null || this.userInfo === undefined) {
+        this.events.subscribe('user:logged', (userInfo) => {
+          this.userInfo = userInfo;
+          console.log(this.userInfo);
+          this.getUserInfo();
+          this.getAllowedCompanies();
+        });
+      } else {
+        this.getUserInfo();
+        this.getAllowedCompanies();
+      }
     });
     // define pages for sidemenu
     this.pages = [
@@ -43,11 +56,10 @@ export class MyApp {
       {icon: 'fa fa-check-square-o', title: 'Checklists', component: "ChecklistsPage", click: null},
       {icon: 'fa fa-sign-out', title: 'Log out', component: null, click: 'logout'}
     ];
+
   }
 
   ngOnInit() {
-    this.getUserInfo();
-    this.getAllowedCompanies();
   }
 
   /**
@@ -72,6 +84,16 @@ export class MyApp {
         console.log(this.user);
       }, (err) => {
         console.error(err);
+      })
+    } else {
+      this.events.subscribe('user:logged', (userInfo) => {
+        this.userInfo = userInfo;
+        this.employeeProvider.getEmployee(null, this.userInfo.userId).then((res) => {
+          this.user = res;
+          console.log(this.user);
+        }, (err) => {
+          console.error(err);
+        })
       })
     }
   }
@@ -123,6 +145,21 @@ export class MyApp {
         }
       }, (err) => {
         console.error(err);
+      })
+    } else {
+      this.events.subscribe('user:logged', (userInfo) => {
+        this.userInfo = userInfo;
+        this.companyProvider.getAllAllowedCompanies(this.userInfo.userId).then((res) => {
+          this.companies = res;
+          for (let i = 0; i < this.companies.length; i++) {
+            if (this.companies[i].id === this.companyId) {
+              this.company = this.companies[i];
+              console.log(this.company);
+            }
+          }
+        }, (err) => {
+          console.error(err);
+        })
       })
     }
   }
