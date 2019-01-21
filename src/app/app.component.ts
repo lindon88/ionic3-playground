@@ -32,10 +32,6 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
       menuCtrl.swipeEnable(false, 'menu1');
-
-      this.getUserInfo();
-      this.getAllowedCompanies();
-
     });
     // define pages for sidemenu
     this.pages = [
@@ -47,6 +43,11 @@ export class MyApp {
       {icon: 'fa fa-check-square-o', title: 'Checklists', component: "ChecklistsPage", click: null},
       {icon: 'fa fa-sign-out', title: 'Log out', component: null, click: 'logout'}
     ];
+  }
+
+  ngOnInit() {
+    this.getUserInfo();
+    this.getAllowedCompanies();
   }
 
   /**
