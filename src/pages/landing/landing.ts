@@ -70,8 +70,6 @@ export class LandingPage {
         this.navCtrl.setRoot('FingerprintAuthPage');
       } else if (usePin === 'true') {
         this.navCtrl.setRoot('PinConfirmPage');
-      } else {
-        this.navCtrl.setRoot('LoginPage');
       }
     }).catch((err) => {
       console.log(err);
