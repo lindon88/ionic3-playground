@@ -63,13 +63,12 @@ export class LandingPage {
       if (response === null || response === undefined || response.userId === undefined) {
         this.navCtrl.setRoot("LoginPage");
       }
-      const useFingerprint = localStorage.getItem('useFingerprint');
-      const usePin = localStorage.getItem('usePIN');
-
-      if(useFingerprint === 'true') {
+      if (localStorage.getItem('useFingerprint') === 'true') {
         this.navCtrl.setRoot('FingerprintAuthPage');
-      } else if (usePin === 'true') {
-        this.navCtrl.setRoot('PinConfirmPage');
+      } else if(pin === null || pin === undefined || pin === '') {
+        this.navCtrl.setRoot('PinCreatePage');
+      } else {
+        this.navCtrl.setRoot("PinConfirmPage");
       }
     }).catch((err) => {
       console.log(err);

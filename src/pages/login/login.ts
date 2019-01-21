@@ -16,10 +16,6 @@ export class LoginPage {
   public loginError: boolean;
 
   constructor(public navCtrl: NavController, public platform: Platform, private serverProvider: ServerProvider, public fingerprint:FingerprintAIO, public alertCtrl: AlertController, public authProvider: AuthenticationProvider, public loadingProvider: LoadingProvider) {
-    let userToken = localStorage['accessToken'];
-    if(userToken) {
-      this.navCtrl.setRoot("HomePage");
-    }
   }
 
   ionAfterViewInit() {
@@ -142,31 +138,11 @@ export class LoginPage {
    */
   private pinSetup() {
     if (this.userinfo.userPIN === null || this.userinfo.userPIN === undefined) {
-      // ask a user if he wants to add a pin
-      let alert = this.alertCtrl.create({
-        title: "You don't have a PIN",
-        subTitle: "Do You want to setup one?",
-        buttons: [
-          {
-            text: 'Agree',
-            handler: () => {
-              // go to create pin view
-              localStorage.setItem('usePIN', 'true');
-              this.navCtrl.setRoot("PinCreatePage");
-            }
-          },
-          {
-            text: 'Disagree',
-            handler: () => {
-              localStorage.setItem('usePIN', 'false');
-              this.navCtrl.setRoot('HomePage');
-            }
-          }
-        ]
-      });
-      alert.present();
-    } else {
+      this.navCtrl.setRoot("PinCreatePage");
+    } else if(localStorage.getItem('PIN')) {
       this.navCtrl.setRoot('HomePage');
+    } else {
+      this.navCtrl.setRoot('PinConfirmPage');
     }
   }
 }
