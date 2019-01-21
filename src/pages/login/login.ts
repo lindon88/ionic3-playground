@@ -151,12 +151,14 @@ export class LoginPage {
             text: 'Agree',
             handler: () => {
               // go to create pin view
+              localStorage.setItem('usePIN', 'true');
               this.navCtrl.setRoot("PinCreatePage");
             }
           },
           {
             text: 'Disagree',
             handler: () => {
+              localStorage.setItem('usePIN', 'false');
               this.navCtrl.setRoot('HomePage');
             }
           }

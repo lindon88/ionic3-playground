@@ -63,7 +63,16 @@ export class LandingPage {
       if (response === null || response === undefined || response.userId === undefined) {
         this.navCtrl.setRoot("LoginPage");
       }
-      this.navCtrl.setRoot("PinConfirmPage");
+      const useFingerprint = localStorage.getItem('useFingerprint');
+      const usePin = localStorage.getItem('usePIN');
+
+      if(useFingerprint === 'true') {
+        this.navCtrl.setRoot('FingerprintAuthPage');
+      } else if (usePin === 'true') {
+        this.navCtrl.setRoot('PinConfirmPage');
+      } else {
+        this.navCtrl.setRoot('LoginPage');
+      }
     }).catch((err) => {
       console.log(err);
       this.navCtrl.setRoot("LoginPage")
