@@ -24,6 +24,7 @@ export class EmployeeShiftsPage {
   public currentPersonId: any = localStorage.getItem('currentPersonId');
   public currentCompanyId: any = localStorage.getItem('currentCompanyId');
   public currentCorporateId: any = localStorage.getItem('currentCorporateId');
+  public currentCompanyName: string;
 
   // set selected view
   public selectedView: any = {
@@ -110,6 +111,7 @@ export class EmployeeShiftsPage {
    * If page loaded, load week rosters and employee month shifts
    */
   ionViewDidLoad() {
+    this.defineCurrentCompanyName();
     // load week
     this.loadingProvider.showLoader();
     this.loadWeekRosters(this.currentCompanyId);
@@ -123,6 +125,19 @@ export class EmployeeShiftsPage {
     this.loadEmployeeMonthShifts(this.convertDateToLocale(monthStartDate, 'yyyy-MM-dd'), this.convertDateToLocale(monthEndDate, 'yyyy-MM-dd'));
     if(this.shifts) {
       this.loadingProvider.hideLoader();
+    }
+  }
+
+  private defineCurrentCompanyName() {
+    // define currentCompanyName
+    let userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    if(userInfo && userInfo.allowedCompanies !== undefined && userInfo.allowedCompanies !== null) {
+      for (let i = 0; i < userInfo.allowedCompanies.length; i++) {
+        let company = userInfo.allowedCompanies[i];
+        if(company.id == this.currentCompanyId) {
+          this.currentCompanyName = company.companyName;
+        }
+      }
     }
   }
 
@@ -256,6 +271,8 @@ export class EmployeeShiftsPage {
     Observable.forkJoin(observableBatch).subscribe(response => {
       if (!response) return;
       this.shiftsObservableResponse = response[0];
+      console.log('SHIFTS');
+      console.log(this.shiftsObservableResponse);
       this.openShiftsObservableResponse = response[1];
       this.daysObservableResponse = response[2];
       this.absenceTypesObservableResponse = response[3];
@@ -265,6 +282,7 @@ export class EmployeeShiftsPage {
       this.absenceTypes = this.absenceTypesObservableResponse;
 
       this.defineShifts(this.shiftsObservableResponse, this.openShiftsObservableResponse, this.daysObservableResponse, this.absenceTypesObservableResponse);
+      this.defineLoanedShifts(this.shiftsObservableResponse);
       this.defineAbsences(this.shiftsObservableResponse, this.openShiftsObservableResponse, this.daysObservableResponse, this.absenceTypes);
       this.defineOpenShifts(this.shiftsObservableResponse, this.openShiftsObservableResponse, this.daysObservableResponse, this.absenceTypesObservableResponse);
       this.fillFullWeekWithData(this.shiftsObservableResponse, this.openShiftsObservableResponse, this.daysObservableResponse, this.absenceTypesObservableResponse);
@@ -470,6 +488,8 @@ export class EmployeeShiftsPage {
               // define shift title
               if (shift.offsiteDisplay && shift.offsiteDisplay !== null && shift.offsiteDisplay !== '') {
                 shift.title = shift.offsiteDisplay;
+              } else if(this.currentCompanyName){
+                shift.title = this.currentCompanyName;
               }
 
               // append shift that does not have delete status
@@ -488,6 +508,49 @@ export class EmployeeShiftsPage {
 
                 this.shifts.push(shift);
               }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  public defineLoanedShifts(shifts) {
+    console.log(shifts);
+    let loanedShifts = shifts.employees[0].loanedShifts;
+    console.log(loanedShifts);
+    for(let i in this.weekDays) {
+      if(this.weekDays.hasOwnProperty(i)) {
+        let weekDay = this.weekDays[i];
+        if(this.employee.loanedShifts[weekDay.date] !== undefined) {
+          console.log('Loaned shifts for date: ' + weekDay.date);
+          let loaned = this.employee.loanedShifts[weekDay.date];
+          console.log(loaned);
+          for(let key in loaned) {
+            if(loaned.hasOwnProperty(key)){
+              console.log(loaned[key]);
+              this.weekDays[i].has = true;
+              let date = new Date(weekDay.date);
+              this.shifts.push({
+                title: loaned[key].outlet.name,
+                job: {
+                  id: loaned[key].job.id,
+                  name: loaned[key].job.name
+                },
+                section: {
+                  id: loaned[key].section.id,
+                  name: loaned[key].section.name,
+                },
+                shiftText: {
+                  time24Hr: loaned[key].shiftText.time24Hr,
+                  time12Hr: loaned[key].shiftText.time12Hr,
+                },
+                shiftDate: weekDay.date,
+                monthText: date.toLocaleString('en-US', {month: this.monthTextFormat}),
+                dayText: date.toLocaleString('en-US', {weekday: this.dayTextFormat}),
+                dayNumber: date.getDate(),
+                loan: true
+              });
             }
           }
         }

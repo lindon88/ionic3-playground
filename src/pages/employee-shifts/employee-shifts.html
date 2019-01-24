@@ -79,6 +79,9 @@
             <ion-col col-3 *ngIf="shift.hasWarning" class="col badge-column">
               <div class="badge right-badge badge-red">Overlap Warning</div>
             </ion-col>
+            <ion-col col-3 *ngIf="shift.loan" class="col badge-column">
+              <div class="badge right-badge badge-blue">Loan</div>
+            </ion-col>
           </ion-row>
         </div>
       </ion-grid>
