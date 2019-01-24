@@ -1,5 +1,14 @@
 .landing-page {
   background-color: $primaryColor;
+
+  .animation-wrapper{
+    height: 95%;
+    lottie-animation-view{
+      div{
+        height: 100%;
+      }
+    }
+  }
 }
 
 body {

@@ -22,7 +22,7 @@ export class LoadingProvider {
       this.loader = this.loadingCtrl.create({
         spinner: 'hide',
         content: `<div class="custom-spinner-container">
-          <div class="custom-spinner-box"><img src="assets/imgs/Gear_Set.svg" alt=""></div>
+          <div class="custom-spinner-box"><img src="assets/imgs/Gear_Set.svg" width="70px" height="70px" alt=""></div>
           </div>`,
       });
       this.loader.present();
@@ -30,7 +30,7 @@ export class LoadingProvider {
       this.loader.data.content = this.loadingCtrl.create({
         spinner: 'hide',
         content: `<div class="custom-spinner-container">
-          <div class="custom-spinner-box"><img src="assets/imgs/Gear_Set.svg" alt=""></div>
+          <div class="custom-spinner-box"><img src="assets/imgs/Gear_Set.svg" width="70px" height="70px" alt=""></div>
           </div>`,
       });
     }
