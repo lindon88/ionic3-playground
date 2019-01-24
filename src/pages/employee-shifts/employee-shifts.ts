@@ -274,6 +274,7 @@ export class EmployeeShiftsPage {
       console.log('SHIFTS');
       console.log(this.shiftsObservableResponse);
       this.openShiftsObservableResponse = response[1];
+      console.log(this.openShiftsObservableResponse);
       this.daysObservableResponse = response[2];
       this.absenceTypesObservableResponse = response[3];
 
@@ -282,7 +283,7 @@ export class EmployeeShiftsPage {
       this.absenceTypes = this.absenceTypesObservableResponse;
 
       this.defineShifts(this.shiftsObservableResponse, this.openShiftsObservableResponse, this.daysObservableResponse, this.absenceTypesObservableResponse);
-      this.defineLoanedShifts(this.shiftsObservableResponse);
+      this.defineLoanedShifts();
       this.defineAbsences(this.shiftsObservableResponse, this.openShiftsObservableResponse, this.daysObservableResponse, this.absenceTypes);
       this.defineOpenShifts(this.shiftsObservableResponse, this.openShiftsObservableResponse, this.daysObservableResponse, this.absenceTypesObservableResponse);
       this.fillFullWeekWithData(this.shiftsObservableResponse, this.openShiftsObservableResponse, this.daysObservableResponse, this.absenceTypesObservableResponse);
@@ -367,7 +368,48 @@ export class EmployeeShiftsPage {
         }
       }
     });
-    this.defineMonthAbsences(employee)
+    this.defineMonthAbsences(employee);
+    this.defineMonthLoaned(employee);
+  }
+
+  public defineMonthLoaned(employee) {
+    console.log(employee.loanedShifts);
+    if (employee.loanedShifts !== undefined) {
+      let loanedShifts = employee.loanedShifts;
+      for(let i in loanedShifts) {
+        let count = 0;
+        if (loanedShifts.hasOwnProperty(i)) {
+          let newDate = new Date(i);
+          if (typeof loanedShifts[i] === 'object') {
+            count = 1;
+          } else {
+            // if there is an event for that day, remove it's count so a new count could be set
+            for (let ev in this.currentEvents) {
+              if(this.currentEvents.hasOwnProperty(ev)) {
+                let currentEvent = this.currentEvents[ev];
+                if(currentEvent.year === newDate.getFullYear() && currentEvent.month === newDate.getMonth() && currentEvent.date === newDate.getDate()) {
+                  if(currentEvent.color === 'purple') {
+                    count = currentEvent.count + loanedShifts[i].length;
+                    currentEvent--;
+                  } else {
+                    currentEvent--;
+                    count = loanedShifts[i].length;
+                  }
+                }
+              }
+            }
+          }
+          let dateObj = {
+            year: newDate.getFullYear(),
+            month: newDate.getMonth(),
+            date: newDate.getDate(),
+            color: 'purple',
+            count: count
+          };
+          this.currentEvents.push(dateObj);
+        }
+      }
+    }
   }
 
   /**
@@ -468,6 +510,9 @@ export class EmployeeShiftsPage {
    */
   public defineShifts(shifts, openShifts, days, absences) {
     this.employee = shifts.employees[0];
+    if(shifts.employees) {
+      localStorage.setItem('currentEmployee', JSON.stringify(shifts.employees[0]));
+    }
     this.shifts = [];
     if (this.employee.shifts !== undefined) {
       for (let i in this.employee.shifts) {
@@ -515,9 +560,9 @@ export class EmployeeShiftsPage {
     }
   }
 
-  public defineLoanedShifts(shifts) {
-    console.log(shifts);
-    let loanedShifts = shifts.employees[0].loanedShifts;
+  public defineLoanedShifts() {
+    this.employee = JSON.parse(localStorage.getItem('currentEmployee'));
+    let loanedShifts = this.employee.loanedShifts;
     console.log(loanedShifts);
     for(let i in this.weekDays) {
       if(this.weekDays.hasOwnProperty(i)) {
@@ -532,6 +577,7 @@ export class EmployeeShiftsPage {
               this.weekDays[i].has = true;
               let date = new Date(weekDay.date);
               this.shifts.push({
+                id: loaned[key].shiftId,
                 title: loaned[key].outlet.name,
                 job: {
                   id: loaned[key].job.id,
@@ -556,8 +602,8 @@ export class EmployeeShiftsPage {
         }
       }
     }
-  }
 
+  }
   /**
    * Define absences
    * @param shifts
@@ -600,8 +646,6 @@ export class EmployeeShiftsPage {
    * @param absences
    */
   public defineOpenShifts(shifts, openShifts, days, absences) {
-    console.log(openShifts);
-    console.log(this.weekDays);
     for (let i in this.weekDays) {
       if (this.weekDays.hasOwnProperty(i)) {
         let weekDay = this.weekDays[i];
@@ -640,7 +684,6 @@ export class EmployeeShiftsPage {
     for (let i in this.weekDays) {
       if (this.weekDays.hasOwnProperty(i)) {
         let item = this.weekDays[i];
-
         if (!item.has) {
           let date = new Date(item.date);
           this.shifts.push({
@@ -661,12 +704,14 @@ export class EmployeeShiftsPage {
    */
   public loadEmployeeShiftsForSelectedDate(date) {
     let formattedDate = this.convertDateToLocale(date, 'yyyy-MM-dd');
+    console.log(formattedDate);
     this.loadEmployeeShifts(formattedDate, undefined, undefined);
+    console.log(this.shifts);
     if (this.shifts.length > 0) {
       for (let i in this.shifts) {
         if (this.shifts.hasOwnProperty(i)) {
           let shift = this.shifts[i];
-          if (shift.id) {
+          if (shift.id || shift.shiftId) {
             this.monthShift.push(shift);
           }
         }
@@ -706,6 +751,8 @@ export class EmployeeShiftsPage {
     this.monthShift = [];
     this.weekDays = [];
 
+    console.log(event);
+
     let date = new Date(event.year, event.month, event.date);
 
     this.selectedDate = this.convertDateToLocale(date, 'yyyy-MM-dd');
@@ -740,6 +787,7 @@ export class EmployeeShiftsPage {
    */
   private getShifts(date, startDate, endDate, options) {
     return this.rosterProvider.getLoggedEmployeeShifts(date, startDate, endDate, options).then(result => {
+      console.log(result);
       return result;
     })
   }
