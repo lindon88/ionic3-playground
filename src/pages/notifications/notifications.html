@@ -8,16 +8,26 @@
     <ion-title class="main-title">
       <img (click)="navCtrl.setRoot('HomePage')" src="./assets/imgs/Cover-logo-blue.png" alt="Cover">
     </ion-title>
+    <ion-buttons right>
+      <button ion-button class="add-button-nav" (click)="toggleSearch()">
+        <ion-icon name="search" [ngClass]="{'search_selected': showSearch}"></ion-icon>
+      </button>
+      <button ion-button class="add-button-nav" (click)="refresh()">
+        <ion-icon name="refresh"></ion-icon>
+      </button>
+    </ion-buttons>
 
   </ion-navbar>
+  <ion-searchbar *ngIf="showSearch" (ionInput)="searchItems($event)"></ion-searchbar>
 
 </ion-header>
 
-<ion-content no-bounce>
 
-  <ion-list>
-    <ion-item-sliding  *ngFor="let message of messages | order: '-id'">
-      <ion-item>
+
+<ion-content no-bounce>
+  <ion-list [ngClass]="{'searchBarPosition': showSearch === true}">
+    <ion-item-sliding  *ngFor="let message of messages | order: '-sendDate'">
+      <ion-item (click)="readNotification(message.id)" *ngIf="!message.deleted">
         <ion-grid>
           <ion-row>
             <ion-col col-2>
@@ -39,8 +49,8 @@
         </ion-grid>
       </ion-item>
       <ion-item-options side="right">
-        <button ion-button color="danger">
-          <i class="fa fa-trash"></i>
+        <button ion-button color="danger" (click)="deleteNotification(message)" class="delete-button-absence">
+          <i class="fa fa-trash fa-2x"></i>
         </button>
       </ion-item-options>
     </ion-item-sliding>

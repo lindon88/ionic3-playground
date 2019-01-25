@@ -1,0 +1,18 @@
+<ion-header class="main-header">
+  <ion-navbar color="primary" [hideBackButton]="true" class="main-navbar clearfix">
+    <ion-title class="main-title">
+      <img (click)="navCtrl.setRoot('HomePage')" src="./assets/imgs/Cover-logo-blue.png" alt="Cover">
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-card class="message-info" *ngIf="message">
+    <img src="./assets/imgs/default-avatar.png" alt="default-avatar" />
+    <h3 class="linewrap">{{message.subject}}</h3>
+    <p class="linewrap">{{message.fromPersonName}} | {{message.sendDate}}</p>
+  </ion-card>
+  <ion-card class="message-notification">
+    <div [innerHtml]="messageContent | noSanitize"></div>
+  </ion-card>
+</ion-content>
