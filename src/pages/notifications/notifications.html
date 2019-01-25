@@ -15,4 +15,35 @@
 
 <ion-content no-bounce>
 
+  <ion-list>
+    <ion-item-sliding  *ngFor="let message of messages | order: '-id'">
+      <ion-item>
+        <ion-grid>
+          <ion-row>
+            <ion-col col-2>
+              <div class="calendar-card">
+                <div class="calendar-heading month">
+                  {{convertToMonthText(message.sendDate)}}
+                </div>
+                <div class="calendar-content">
+                  <p class="weekdate">{{convertToDateNumber(message.sendDate)}}</p>
+                  <p class="weekday">{{convertToDayText(message.sendDate)}}</p>
+                </div>
+              </div>
+            </ion-col>
+            <ion-col col-10>
+              <h2 class="message-header" [ngClass]="{'not-read': !message.messageRead}">{{message.subject}}</h2>
+              <p>From: {{message.fromPersonName}}</p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      <ion-item-options side="right">
+        <button ion-button color="danger">
+          <i class="fa fa-trash"></i>
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
 </ion-content>

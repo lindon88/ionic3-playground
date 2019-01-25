@@ -1,3 +1,51 @@
 page-notifications {
+  ion-label > div.date-holder {
+    height: 100%;
+    float: left;
+  }
+
+  .message-header {
+    white-space: pre-line;
+    margin-bottom: 6px;
+    padding-bottom: 3px;
+    color: #000;
+    font-size: 14px;
+  }
+
+  .calendar-card {
+    text-align: center;
+    color: #fff;
+    margin-right: 6px;
+    border-radius: 4px;
+    position: relative;
+    width: 100%;
+    max-width: 80px;
+    max-height: 70px;
+    display: inline-block;
+    .month {
+      font-size: 13px;
+      font-weight: 400;
+      color: #f8f8f8;
+      background-color: #58595b;
+      padding: 0.2rem 1rem;
+      text-align: center;
+    }
+    .calendar-heading {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    }
+    .calendar-content {
+      padding: 7px 5px 9px 5px;
+      line-height: 0.8em;
+      background-color: #fafafa;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      color: #58595b;
+    }
+  }
+
+  .not-read {
+    font-weight: bold;
+  }
+
 
 }

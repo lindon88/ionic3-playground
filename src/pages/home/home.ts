@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {Events, IonicPage, MenuController, NavController, ViewController} from 'ionic-angular';
 import {AuthenticationProvider} from "../../providers/authentication/authentication";
 import {MessagesProvider} from "../../providers/messages/messages";
+import {NotificationsCounterProvider} from "../../providers/notifications-counter/notifications-counter";
 
 @IonicPage()
 @Component({
@@ -11,10 +12,17 @@ import {MessagesProvider} from "../../providers/messages/messages";
 export class HomePage {
   public notificationsBadge: any;
 
-  constructor(public navCtrl: NavController, public viewCtrl: ViewController, public menuCtrl: MenuController, public authProvider: AuthenticationProvider, public events: Events, public messagesProvider: MessagesProvider) {
+  constructor(public navCtrl: NavController, public viewCtrl: ViewController, public menuCtrl: MenuController, public notificationsCounter: NotificationsCounterProvider, public authProvider: AuthenticationProvider, public events: Events, public messagesProvider: MessagesProvider) {
   }
 
   public ionViewDidLoad() {
+    this.getNotificationsCount();
+  }
+
+  public getNotificationsCount() {
+    this.notificationsCounter.getNotificationsCount().then((response:any) => {
+      this.notificationsBadge = response;
+    })
   }
 
   /**
