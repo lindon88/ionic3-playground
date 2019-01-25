@@ -83,9 +83,6 @@ $black: #000;
   border-top: 0.55px solid #dbdbdf;
   -webkit-overflow-scrolling: touch;
 }
-//.item-ios.item-block .item-inner {
-//  border-bottom: none;
-//}
 
 .select-text {
   overflow: visible;
@@ -246,4 +243,26 @@ ion-menu.show-menu + ion-nav {
 // Alerts
 .alert-button, .picker-button {
   color: $secondaryColor!important;
+}
+
+
+
+.notificationBadgeMenu, .notificationBadgeSubMenu {
+  position: absolute;
+  font-size: 10px;
+  padding: 3px 6px;
+}
+
+.notificationBadgeSubMenu {
+  left: 25px;
+  top: 20px;
+}
+
+.notificationBadgeMenu {
+  left: 20px;
+  top: 15px;
+}
+
+.page-title {
+  margin-left: 20px;
 }

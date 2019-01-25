@@ -7,6 +7,7 @@ import {LandingPage} from "../pages/landing/landing";
 import {EmployeeProvider} from "../providers/employee/employee";
 import {CompanyProvider} from "../providers/company/company";
 import {AuthenticationProvider} from "../providers/authentication/authentication";
+import {MessagesProvider} from "../providers/messages/messages";
 
 @Component({
   templateUrl: 'app.html'
@@ -24,7 +25,9 @@ export class MyApp {
   public userName: string = '';
   public companies: any;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, menuCtrl: MenuController, public events: Events, public employeeProvider: EmployeeProvider, public companyProvider: CompanyProvider, public authenticationProvider: AuthenticationProvider) {
+  public notificationsBadge: string;
+
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, menuCtrl: MenuController, public events: Events, public employeeProvider: EmployeeProvider, public companyProvider: CompanyProvider, public authenticationProvider: AuthenticationProvider, public messagesProvider: MessagesProvider) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -40,10 +43,12 @@ export class MyApp {
           console.log(this.userInfo);
           this.getUserInfo();
           this.getAllowedCompanies();
+          this.getMessages();
         });
       } else {
         this.getUserInfo();
         this.getAllowedCompanies();
+        this.getMessages();
       }
     });
     // define pages for sidemenu
@@ -54,6 +59,7 @@ export class MyApp {
       {icon: 'fa fa-sun-o', title: 'Absence Requests', component: "AbsencePage", click: null},
       {icon: 'fa fa-user', title: 'Personal Profile', component: 'ProfilePage', click: null},
       {icon: 'fa fa-check-square-o', title: 'Checklists', component: "ChecklistsPage", click: null},
+      {icon: 'fa fa-envelope', title: 'Notifications', component: "NotificationsPage", click: null},
       {icon: 'fa fa-sign-out', title: 'Log out', component: null, click: 'logout'}
     ];
 
@@ -128,6 +134,48 @@ export class MyApp {
     this.userInfo = null;
 
     this.navCtrl.setRoot("LoginPage");
+  }
+
+  public getMessages() {
+    if(this.userInfo !== undefined && this.userInfo !== null) {
+      let userId = this.userInfo.userId;
+      this.messagesProvider.getMessages(userId).then((result) => {
+        console.log(result);
+        this.notificationsBadge = this.countNotifications(result);
+        this.events.publish('notifications:received', this.notificationsBadge);
+        console.log(this.notificationsBadge);
+      }).catch(error => {
+        console.log(error);
+      });
+    } else {
+      this.events.subscribe('user:logged', (userInfo) => {
+        this.userInfo = userInfo;
+        let userId = this.userInfo.userId;
+        this.messagesProvider.getMessages(userId).then((result) => {
+          console.log(result);
+          this.notificationsBadge = this.countNotifications(result);
+          this.events.publish('notifications:received', this.notificationsBadge);
+          console.log(this.notificationsBadge);
+        }).catch(error => {
+          console.log(error);
+        });
+      })
+    }
+  }
+
+  public countNotifications(data) {
+    let count: any = 0;
+    if (data !== null && data.items !== undefined && data.items.length !== 0) {
+      for (let i = 0; i < data.items.length; i++) {
+        if (data.items[i].messageRead === false) {
+          count++;
+        }
+      }
+    }
+    if (count > 99) {
+      count = '99+';
+    }
+    return count;
   }
 
   /**

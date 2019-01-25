@@ -36,6 +36,8 @@ import {DatePicker} from '@ionic-native/date-picker';
 import { CountryProvider } from '../providers/country/country';
 import { AvailabilityProvider } from '../providers/availability/availability';
 import {ModalShiftAvailabilityPageModule} from "../pages/shift-availability/modal-shift-availability/modal-shift-availability.module";
+import { MessagesProvider } from '../providers/messages/messages';
+import { NotificationsCounterProvider } from '../providers/notifications-counter/notifications-counter';
 
 @NgModule({
   declarations: [
@@ -83,7 +85,9 @@ import {ModalShiftAvailabilityPageModule} from "../pages/shift-availability/moda
     FingerprintAIO,
     DatePicker,
     CountryProvider,
-    AvailabilityProvider
+    AvailabilityProvider,
+    MessagesProvider,
+    NotificationsCounterProvider
   ]
 })
 export class AppModule {}

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import {IonicPage, MenuController, NavController, ViewController} from 'ionic-angular';
+import {Events, IonicPage, MenuController, NavController, ViewController} from 'ionic-angular';
 import {AuthenticationProvider} from "../../providers/authentication/authentication";
+import {MessagesProvider} from "../../providers/messages/messages";
 
 @IonicPage()
 @Component({
@@ -8,8 +9,12 @@ import {AuthenticationProvider} from "../../providers/authentication/authenticat
   templateUrl: 'home.html'
 })
 export class HomePage {
+  public notificationsBadge: any;
 
-  constructor(public navCtrl: NavController, public viewCtrl: ViewController, public menuCtrl: MenuController, public authProvider: AuthenticationProvider) {
+  constructor(public navCtrl: NavController, public viewCtrl: ViewController, public menuCtrl: MenuController, public authProvider: AuthenticationProvider, public events: Events, public messagesProvider: MessagesProvider) {
+  }
+
+  public ionViewDidLoad() {
   }
 
   /**
@@ -42,4 +47,6 @@ export class HomePage {
     this.menuCtrl.swipeEnable(false, 'menu1');
   }
   // END - Swipe back enable
+
+
 }

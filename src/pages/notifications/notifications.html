@@ -1,0 +1,18 @@
+<ion-header class="main-header">
+  <ion-navbar hideBackButton="true" color="primary" class="main-navbar">
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="menu"></ion-icon>
+      <ion-badge *ngIf="notificationsBadge" color="danger" class="notificationBadgeMenu">{{notificationsBadge}}</ion-badge>
+    </button>
+
+    <ion-title class="main-title">
+      <img (click)="navCtrl.setRoot('HomePage')" src="./assets/imgs/Cover-logo-blue.png" alt="Cover">
+    </ion-title>
+
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content no-bounce>
+
+</ion-content>
