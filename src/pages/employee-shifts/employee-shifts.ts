@@ -9,6 +9,7 @@ import {ModalShiftPopupPage} from "./modal-shift-popup/modal-shift-popup";
 import {LoadingProvider} from "../../providers/loading/loading";
 import {AuthenticationProvider} from "../../providers/authentication/authentication";
 import {NotificationsCounterProvider} from "../../providers/notifications-counter/notifications-counter";
+import {LocaleProvider} from "../../providers/locale/locale";
 
 @IonicPage()
 @Component({
@@ -71,7 +72,7 @@ export class EmployeeShiftsPage {
 
   public notificationsBadge: any;
 
-  constructor(public navCtrl: NavController, public notificationsCounter: NotificationsCounterProvider, public viewCtrl: ViewController, public menuCtrl: MenuController, public navParams: NavParams, public authProvider: AuthenticationProvider, public rosterProvider: RosterProvider, public shiftsProvider: ShiftsProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController, public loadingProvider: LoadingProvider) {
+  constructor(public navCtrl: NavController, public localeProvider: LocaleProvider, public notificationsCounter: NotificationsCounterProvider, public viewCtrl: ViewController, public menuCtrl: MenuController, public navParams: NavParams, public authProvider: AuthenticationProvider, public rosterProvider: RosterProvider, public shiftsProvider: ShiftsProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController, public loadingProvider: LoadingProvider) {
   }
 
   @HostListener('window:resize', ['$event'])
@@ -133,7 +134,7 @@ export class EmployeeShiftsPage {
     // load month
     let monthStartDate = new Date(date.getFullYear(), date.getMonth(), 1);
     let monthEndDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-    this.loadEmployeeMonthShifts(this.convertDateToLocale(monthStartDate, 'yyyy-MM-dd'), this.convertDateToLocale(monthEndDate, 'yyyy-MM-dd'));
+    this.loadEmployeeMonthShifts(this.convertDateToLocale(monthStartDate, 'YYYY-MM-DD'), this.convertDateToLocale(monthEndDate, 'YYYY-MM-DD'));
     if(this.shifts) {
       this.loadingProvider.hideLoader();
     }
@@ -170,7 +171,7 @@ export class EmployeeShiftsPage {
     this.monthShift = [];
     this.weekDays = [];
     let date = new Date();
-    this.selectedDate = this.convertDateToLocale(date, 'yyyy-MM-dd');
+    this.selectedDate = this.convertDateToLocale(date, 'YYYY-MM-DD');
     if(this.viewType === this.VIEW_MONTH) {
       this.loadingProvider.showLoader();
       this.loadEmployeeShiftsForSelectedDate(this.selectedDate);
@@ -225,7 +226,7 @@ export class EmployeeShiftsPage {
         let item = response[i];
         item.formatedEndDate = item.endDate;
         let formatedEndDate = new Date(item.formatedEndDate);
-        let formatedMonth = formatedEndDate.toLocaleString('en-US', {month: 'short'});
+        let formatedMonth = formatedEndDate.toLocaleString(this.localeProvider.getDeviceLocale(), {month: 'short'});
         let formatedYear = formatedEndDate.getFullYear();
         let formatedDate = formatedEndDate.getDate();
         if (item.formatedEndDate) {
@@ -558,8 +559,8 @@ export class EmployeeShiftsPage {
                   }
                 }
                 // this.weekDays[shift.shiftDate] = {has: true};
-                shift.monthText = date.toLocaleString('en-US', {month: this.monthTextFormat});
-                shift.dayText = date.toLocaleString('en-US', {weekday: this.dayTextFormat});
+                shift.monthText = date.toLocaleString(this.localeProvider.getDeviceLocale(), {month: this.monthTextFormat});
+                shift.dayText = date.toLocaleString(this.localeProvider.getDeviceLocale(), {weekday: this.dayTextFormat});
                 shift.dayNumber = date.getDate();
 
                 this.shifts.push(shift);
@@ -603,8 +604,8 @@ export class EmployeeShiftsPage {
                   time12Hr: loaned[key].shiftText.time12Hr,
                 },
                 shiftDate: weekDay.date,
-                monthText: date.toLocaleString('en-US', {month: this.monthTextFormat}),
-                dayText: date.toLocaleString('en-US', {weekday: this.dayTextFormat}),
+                monthText: date.toLocaleString(this.localeProvider.getDeviceLocale(), {month: this.monthTextFormat}),
+                dayText: date.toLocaleString(this.localeProvider.getDeviceLocale(), {weekday: this.dayTextFormat}),
                 dayNumber: date.getDate(),
                 loan: true
               });
@@ -637,8 +638,8 @@ export class EmployeeShiftsPage {
                 this.shifts.push({
                   title: absenceType.description,
                   shiftDate: weekDay.date,
-                  monthText: date.toLocaleString('en-US', {month: this.monthTextFormat}),
-                  dayText: date.toLocaleString('en-US', {weekday: this.dayTextFormat}),
+                  monthText: date.toLocaleString(this.localeProvider.getDeviceLocale(), {month: this.monthTextFormat}),
+                  dayText: date.toLocaleString(this.localeProvider.getDeviceLocale(), {weekday: this.dayTextFormat}),
                   dayNumber: date.getDate()
                 });
               }
@@ -672,8 +673,8 @@ export class EmployeeShiftsPage {
                 title: 'Request pending',
                 openShift: true,
                 shiftDate: weekDay.date,
-                monthText: date.toLocaleString('en-US', {month: this.monthTextFormat}),
-                dayText: date.toLocaleString('en-US', {weekday: this.dayTextFormat}),
+                monthText: date.toLocaleString(this.localeProvider.getDeviceLocale(), {month: this.monthTextFormat}),
+                dayText: date.toLocaleString(this.localeProvider.getDeviceLocale(), {weekday: this.dayTextFormat}),
                 dayNumber: date.getDate()
               })
             }
@@ -700,8 +701,8 @@ export class EmployeeShiftsPage {
           this.shifts.push({
             title: 'Day Off',
             shiftDate: item.date,
-            monthText: date.toLocaleString('en-US', {month: this.monthTextFormat}),
-            dayText: date.toLocaleString('en-US', {weekday: this.dayTextFormat}),
+            monthText: date.toLocaleString(this.localeProvider.getDeviceLocale(), {month: this.monthTextFormat}),
+            dayText: date.toLocaleString(this.localeProvider.getDeviceLocale(), {weekday: this.dayTextFormat}),
             dayNumber: date.getDate()
           })
         }
@@ -714,7 +715,9 @@ export class EmployeeShiftsPage {
    * @param date
    */
   public loadEmployeeShiftsForSelectedDate(date) {
-    let formattedDate = this.convertDateToLocale(date, 'yyyy-MM-dd');
+    console.log("DATE!!!!::::");
+    console.log(date);
+    let formattedDate = this.convertDateToLocale(date, 'YYYY-MM-DD');
     console.log(formattedDate);
     this.loadEmployeeShifts(formattedDate, undefined, undefined);
     console.log(this.shifts);
@@ -738,10 +741,12 @@ export class EmployeeShiftsPage {
    */
   public convertDateToLocale(date, format) {
     // const locale = window.navigator.language;
-    const locale = 'en-GB';
-    date = new Date(date);
-    const datePipe = new DatePipe(locale);
-    return datePipe.transform(date, format);
+    //
+    // const locale = 'en-GB';
+    // date = new Date(date);
+    // const datePipe = new DatePipe(locale);
+    // return datePipe.transform(date, format);
+    return this.localeProvider.convert(date, format);
   }
 
   /**
@@ -766,7 +771,7 @@ export class EmployeeShiftsPage {
 
     let date = new Date(event.year, event.month, event.date);
 
-    this.selectedDate = this.convertDateToLocale(date, 'yyyy-MM-dd');
+    this.selectedDate = this.convertDateToLocale(date, 'YYYY-MM-DD');
     this.shifts = [];
     this.loadingProvider.showLoader();
     this.loadEmployeeShiftsForSelectedDate(date);
@@ -784,7 +789,7 @@ export class EmployeeShiftsPage {
     let monthStartDate = new Date(event.year, event.month, 1);
     let monthEndDate = new Date(event.year, event.month + 1, 0);
     this.loadingProvider.showLoader();
-    this.loadEmployeeMonthShifts(this.convertDateToLocale(monthStartDate, 'yyyy-MM-dd'), this.convertDateToLocale(monthEndDate, 'yyyy-MM-dd'));
+    this.loadEmployeeMonthShifts(this.convertDateToLocale(monthStartDate, 'YYYY-MM-DD'), this.convertDateToLocale(monthEndDate, 'YYYY-MM-DD'));
     this.loadingProvider.hideLoader();
   }
 
@@ -947,7 +952,7 @@ export class EmployeeShiftsPage {
         // reload
         if(this.viewType === this.VIEW_MONTH) {
           let date = new Date(shift.shiftDate);
-          this.selectedDate = this.convertDateToLocale(date, 'yyyy-MM-dd');
+          this.selectedDate = this.convertDateToLocale(date, 'YYYY-MM-DD');
           this.loadingProvider.showLoader();
           this.loadEmployeeShiftsForSelectedDate(this.selectedDate);
           this.loadingProvider.hideLoader();
