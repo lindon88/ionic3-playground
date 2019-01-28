@@ -9,6 +9,7 @@ import {ModalEosSuccessPage} from "./modal-eos-success/modal-eos-success";
 import {ModalEosErrorPage} from "./modal-eos-error/modal-eos-error";
 import {LoadingProvider} from "../../providers/loading/loading";
 import {AuthenticationProvider} from "../../providers/authentication/authentication";
+import {NotificationsCounterProvider} from "../../providers/notifications-counter/notifications-counter";
 
 @IonicPage()
 @Component({
@@ -43,8 +44,9 @@ export class EmployeeOpenShiftPage {
 
   // screen width
   screenWidth: number = window.screen.width;
+  public notificationsBadge: any;
 
-  constructor(public navCtrl: NavController, public viewCtrl: ViewController, public navParams: NavParams, public authProvider: AuthenticationProvider, public shiftsProvider: ShiftsProvider, public modalCtrl: ModalController, private menuCtrl: MenuController, public loadingProvider: LoadingProvider) {
+  constructor(public navCtrl: NavController, public notificationsCounter: NotificationsCounterProvider, public viewCtrl: ViewController, public navParams: NavParams, public authProvider: AuthenticationProvider, public shiftsProvider: ShiftsProvider, public modalCtrl: ModalController, private menuCtrl: MenuController, public loadingProvider: LoadingProvider) {
   }
 
   /**
@@ -72,11 +74,18 @@ export class EmployeeOpenShiftPage {
    * If page loaded, load open shifts
    */
   ionViewDidLoad() {
+    this.getNotificationsCount();
     this.currentPersonId = localStorage.getItem('currentPersonId');
     this.currentCompanyId = localStorage.getItem('currentCompanyId');
     this.currentCorporateId = localStorage.getItem('currentCorporateId');
 
     this.loadOpenShifts();
+  }
+
+  public getNotificationsCount() {
+    this.notificationsCounter.getNotificationsCount().then((response: any) => {
+      this.notificationsBadge = response;
+    })
   }
 
   // START - Swipe back enable

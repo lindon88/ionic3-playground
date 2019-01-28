@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {IonicPage, NavController, NavParams, Platform} from 'ionic-angular';
 import {AuthenticationProvider} from "../../providers/authentication/authentication";
 import {FingerprintAIO} from "@ionic-native/fingerprint-aio";
+import {NotificationsCounterProvider} from "../../providers/notifications-counter/notifications-counter";
 
 @IonicPage()
 @Component({
@@ -13,10 +14,11 @@ export class AppSettingsPage {
   public signedIn: any = localStorage.getItem('keepSignedIn');
   public receivePush: any = localStorage.getItem('receivePush');
   public receiveAlerts: any = localStorage.getItem('receiveAlerts');
+  public notificationsBadge: any;
 
   public fingerprintAvailable: boolean;
 
-  constructor(public navCtrl: NavController, public authProvider: AuthenticationProvider, public platform: Platform, public navParams: NavParams, public fingerprint:FingerprintAIO) {
+  constructor(public navCtrl: NavController, public notificationsCounter: NotificationsCounterProvider, public authProvider: AuthenticationProvider, public platform: Platform, public navParams: NavParams, public fingerprint:FingerprintAIO) {
   }
 
   /**
@@ -41,12 +43,19 @@ export class AppSettingsPage {
   }
 
   ionViewDidLoad() {
+    this.getNotificationsCount();
     console.log('ionViewDidLoad AppSettingsPage');
     console.log('Use fingerprint: ' + localStorage.getItem('useFingerprint'));
     console.log('keepSignedIn: ' + localStorage.getItem('keepSignedIn'));
     console.log('receive push: ' + localStorage.getItem('receivePush'));
     console.log('receive alerts: ' + localStorage.getItem('receiveAlerts'));
     this.canUseFingerprint();
+  }
+
+  public getNotificationsCount() {
+    this.notificationsCounter.getNotificationsCount().then((response: any) => {
+      this.notificationsBadge = response;
+    })
   }
 
   canUseFingerprint() {

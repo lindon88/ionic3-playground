@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {IonicPage, MenuController, NavController, NavParams, ViewController} from 'ionic-angular';
 import {AuthenticationProvider} from "../../providers/authentication/authentication";
+import {NotificationsCounterProvider} from "../../providers/notifications-counter/notifications-counter";
 
 /**
  * Generated class for the ProfilePage page.
@@ -16,8 +17,9 @@ import {AuthenticationProvider} from "../../providers/authentication/authenticat
 })
 export class ProfilePage {
   public profile_content: any;
+  public notificationsBadge: any;
 
-  constructor(public navCtrl: NavController, public menuCtrl: MenuController, public viewCtrl: ViewController, public authProvider: AuthenticationProvider, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public notificationsCounter: NotificationsCounterProvider, public menuCtrl: MenuController, public viewCtrl: ViewController, public authProvider: AuthenticationProvider, public navParams: NavParams) {
   }
 
   /**
@@ -42,8 +44,15 @@ export class ProfilePage {
   }
 
   ionViewDidLoad() {
+    this.getNotificationsCount();
     console.log('ionViewDidLoad ProfilePage');
     this.loadProfileContent();
+  }
+
+  public getNotificationsCount() {
+    this.notificationsCounter.getNotificationsCount().then((response: any) => {
+      this.notificationsBadge = response;
+    })
   }
 
 

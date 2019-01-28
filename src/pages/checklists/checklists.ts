@@ -12,6 +12,7 @@ import {DatePipe} from "@angular/common";
 import {ChecklistFilterPopoverPage} from "../checklist-filter-popover/checklist-filter-popover";
 import {LoadingProvider} from "../../providers/loading/loading";
 import {AuthenticationProvider} from "../../providers/authentication/authentication";
+import {NotificationsCounterProvider} from "../../providers/notifications-counter/notifications-counter";
 
 @IonicPage()
 @Component({
@@ -39,7 +40,9 @@ export class ChecklistsPage {
 
   public isValidToken: boolean;
 
-  constructor(public navCtrl: NavController, public viewCtrl: ViewController, public navParams: NavParams, public authProvider: AuthenticationProvider, public workflowProvider: WorkflowProvider, public popoverCtrl: PopoverController, public menuCtrl: MenuController, public loadingProvider: LoadingProvider) {
+  public notificationsBadge: any;
+
+  constructor(public navCtrl: NavController, public notificationsCounter: NotificationsCounterProvider, public viewCtrl: ViewController, public navParams: NavParams, public authProvider: AuthenticationProvider, public workflowProvider: WorkflowProvider, public popoverCtrl: PopoverController, public menuCtrl: MenuController, public loadingProvider: LoadingProvider) {
     console.log("loading tasks....");
   }
 
@@ -68,8 +71,15 @@ export class ChecklistsPage {
    * If page is loaded, load tasks
    */
   ionViewDidLoad() {
+    this.getNotificationsCount();
     this.allowedOutlets = this.userInfo.allowedCompanies;
     this.loadTasks();
+  }
+
+  public getNotificationsCount() {
+    this.notificationsCounter.getNotificationsCount().then((response: any) => {
+      this.notificationsBadge = response;
+    })
   }
 
   // START - Swipe back enable

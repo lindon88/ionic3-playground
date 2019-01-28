@@ -8,6 +8,7 @@ import {DatePipe} from "@angular/common";
 import {ModalShiftPopupPage} from "./modal-shift-popup/modal-shift-popup";
 import {LoadingProvider} from "../../providers/loading/loading";
 import {AuthenticationProvider} from "../../providers/authentication/authentication";
+import {NotificationsCounterProvider} from "../../providers/notifications-counter/notifications-counter";
 
 @IonicPage()
 @Component({
@@ -68,7 +69,9 @@ export class EmployeeShiftsPage {
   public monthShift: any = [];
   public selectedDate: any;
 
-  constructor(public navCtrl: NavController, public viewCtrl: ViewController, public menuCtrl: MenuController, public navParams: NavParams, public authProvider: AuthenticationProvider, public rosterProvider: RosterProvider, public shiftsProvider: ShiftsProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController, public loadingProvider: LoadingProvider) {
+  public notificationsBadge: any;
+
+  constructor(public navCtrl: NavController, public notificationsCounter: NotificationsCounterProvider, public viewCtrl: ViewController, public menuCtrl: MenuController, public navParams: NavParams, public authProvider: AuthenticationProvider, public rosterProvider: RosterProvider, public shiftsProvider: ShiftsProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController, public loadingProvider: LoadingProvider) {
   }
 
   @HostListener('window:resize', ['$event'])
@@ -107,10 +110,18 @@ export class EmployeeShiftsPage {
       })
     })
   }
+
+  public getNotificationsCount() {
+    this.notificationsCounter.getNotificationsCount().then((response: any) => {
+      this.notificationsBadge = response;
+    })
+  }
+
   /**
    * If page loaded, load week rosters and employee month shifts
    */
   ionViewDidLoad() {
+    this.getNotificationsCount();
     this.defineCurrentCompanyName();
     // load week
     this.loadingProvider.showLoader();

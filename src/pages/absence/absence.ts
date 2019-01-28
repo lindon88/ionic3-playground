@@ -7,6 +7,7 @@ import {ModalDropAbsencePage} from "./modal-drop-absence/modal-drop-absence";
 import {ModalAbsenceNotePage} from "./modal-absence-note/modal-absence-note";
 import {LoadingProvider} from "../../providers/loading/loading";
 import {AuthenticationProvider} from "../../providers/authentication/authentication";
+import {NotificationsCounterProvider} from "../../providers/notifications-counter/notifications-counter";
 
 @IonicPage()
 @Component({
@@ -26,10 +27,11 @@ export class AbsencePage {
   public myAbsenceRequests: any = [];
   public toggleCurrent: boolean = false;
   public togglePast: boolean = false;
+  public notificationsBadge: any;
 
   public currentDate: any;
 
-  constructor(public navCtrl: NavController, public viewCtrl: ViewController, public navParams: NavParams, public employeeProvider: EmployeeProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController, public menuCtrl: MenuController, public loadingProvider: LoadingProvider, public authProvider: AuthenticationProvider) {
+  constructor(public navCtrl: NavController, public notificationsCounter: NotificationsCounterProvider, public viewCtrl: ViewController, public navParams: NavParams, public employeeProvider: EmployeeProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController, public menuCtrl: MenuController, public loadingProvider: LoadingProvider, public authProvider: AuthenticationProvider) {
     this.currentDate = new Date();
   }
 
@@ -54,6 +56,7 @@ export class AbsencePage {
     })
   }
   ionViewDidLoad() {
+    this.getNotificationsCount();
     this.loadingProvider.showLoader();
     const datePipe = new DatePipe('en-US');
     this.currentDate = datePipe.transform(this.currentDate, 'yyyy-MM-dd');
@@ -61,6 +64,12 @@ export class AbsencePage {
     this.getAbsenceTypes();
     this.getMyRequests();
     this.loadingProvider.hideLoader();
+  }
+
+  public getNotificationsCount() {
+    this.notificationsCounter.getNotificationsCount().then((response: any) => {
+      this.notificationsBadge = response;
+    })
   }
 
   // START: methods for enabling swipe back on this page

@@ -2,6 +2,7 @@
   <ion-navbar hideBackButton="true" color="primary" swipeBackEnabled="true" class="main-navbar clearfix">
     <button ion-button icon-only menuToggle>
       <ion-icon name="menu"></ion-icon>
+      <ion-badge *ngIf="notificationsBadge" color="danger" class="notificationBadgeMenu">{{notificationsBadge}}</ion-badge>
     </button>
 
     <ion-title class="main-title">
