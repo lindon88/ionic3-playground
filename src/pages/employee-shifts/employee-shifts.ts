@@ -231,7 +231,7 @@ export class EmployeeShiftsPage {
         let formatedDate = formatedEndDate.getDate();
         if (item.formatedEndDate) {
           // format week rosters title
-          item.description = 'Week Ending ' + formatedMonth + ',' + formatedDate + ' ' + formatedYear;
+          item.description = 'Week Ending ' + formatedMonth + ', ' + formatedDate + ' ' + formatedYear;
         }
 
         if (item.published !== undefined && item.published) {
