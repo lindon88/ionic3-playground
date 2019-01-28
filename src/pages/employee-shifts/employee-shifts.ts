@@ -4,7 +4,7 @@ import {RosterProvider} from "../../providers/roster/roster";
 import {ShiftsProvider} from "../../providers/shifts/shifts";
 import {AbsenceProvider} from "../../providers/absence/absence";
 import {Observable} from "rxjs";
-import {DatePipe} from "@angular/common";
+// import {DatePipe} from "@angular/common";
 import {ModalShiftPopupPage} from "./modal-shift-popup/modal-shift-popup";
 import {LoadingProvider} from "../../providers/loading/loading";
 import {AuthenticationProvider} from "../../providers/authentication/authentication";
