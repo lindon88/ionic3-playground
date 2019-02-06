@@ -12,7 +12,7 @@
 <ion-content no-bounce>
   <tabs>
     <tab [tabTitle]="'Pickup Request'">
-      <div *ngFor="let shift of availableShifts">
+      <div *ngFor="let shift of availableShifts | order: 'dayNumber'">
         <ion-grid (click)="onShiftClick(shift)" *ngIf="shift.tab === 1">
           <div class="card">
             <ion-row class="item row employee-shift-item">
@@ -21,7 +21,7 @@
                   <div class="month" *ngIf="screenWidth > 460">{{shift.monthText}}</div>
                   <div class="month" *ngIf="screenWidth <= 460">{{shift.monthText | slice: 0:3}}</div>
                   <div class="dayDate">
-                    <div class="date" *ngIf="shift.dayNumber">{{shift.dayNumber}}</div>
+                        <div class="date" *ngIf="shift.dayNumber">{{shift.dayNumber}}</div>
                     <div class="day" *ngIf="screenWidth > 460">{{shift.dayText}}</div>
                     <div class="day" *ngIf="screenWidth <= 460">{{shift.dayText | slice: 0:3}}</div>
                   </div>
@@ -36,7 +36,7 @@
                   <span *ngIf="shift.job">|</span>
                   <span *ngIf="shift.job && shift.job.description">{{shift.job.description}}</span>
                 </div>
-                <div class="time">{{shift.shiftText.time12Hr}}</div>
+                <div class="time" *ngIf="shift.shiftText">{{shift.shiftText.time12Hr}}</div>
               </ion-col>
               <ion-col col-3 *ngIf="shift.badgeClass !=''" class="col badge-column">
                 <div class="badge right-badge" [ngClass]="shift.badgeClass">{{shift.badgeText}}</div>

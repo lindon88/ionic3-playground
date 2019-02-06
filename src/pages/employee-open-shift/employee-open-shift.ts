@@ -1,6 +1,5 @@
 import {Component, HostListener} from '@angular/core';
 import {IonicPage, MenuController, ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
-import {DatePipe} from "@angular/common";
 import {ShiftsProvider} from "../../providers/shifts/shifts";
 import {Observable} from "rxjs";
 import {ModalEosCancelPage} from "./modal-eos-cancel/modal-eos-cancel";
@@ -10,6 +9,7 @@ import {ModalEosErrorPage} from "./modal-eos-error/modal-eos-error";
 import {LoadingProvider} from "../../providers/loading/loading";
 import {AuthenticationProvider} from "../../providers/authentication/authentication";
 import {NotificationsCounterProvider} from "../../providers/notifications-counter/notifications-counter";
+import {LocaleProvider} from "../../providers/locale/locale";
 
 @IonicPage()
 @Component({
@@ -46,7 +46,7 @@ export class EmployeeOpenShiftPage {
   screenWidth: number = window.screen.width;
   public notificationsBadge: any;
 
-  constructor(public navCtrl: NavController, public notificationsCounter: NotificationsCounterProvider, public viewCtrl: ViewController, public navParams: NavParams, public authProvider: AuthenticationProvider, public shiftsProvider: ShiftsProvider, public modalCtrl: ModalController, private menuCtrl: MenuController, public loadingProvider: LoadingProvider) {
+  constructor(public navCtrl: NavController, public localeProvider: LocaleProvider, public notificationsCounter: NotificationsCounterProvider, public viewCtrl: ViewController, public navParams: NavParams, public authProvider: AuthenticationProvider, public shiftsProvider: ShiftsProvider, public modalCtrl: ModalController, private menuCtrl: MenuController, public loadingProvider: LoadingProvider) {
   }
 
   /**
@@ -112,17 +112,15 @@ export class EmployeeOpenShiftPage {
    */
   public loadOpenShifts() {
     this.availableShifts = [];
-    const datePipe = new DatePipe('en-US');
 
     const startDate = new Date();
     const endDate = new Date();
     endDate.setDate(endDate.getDate() + 7);
-    const d = datePipe.transform(endDate, 'yyyy-MM-dd');
-    console.log(d);
 
     this.loadingProvider.showLoader();
-    Observable.forkJoin(this.getMyAvailableShifts(datePipe.transform(startDate, 'yyyy-MM-dd'), datePipe.transform(endDate, 'yyyy-MM-dd')), this.getMyRequests(datePipe.transform(startDate, 'yyyy-MM-dd'), datePipe.transform(endDate, 'yyyy-MM-dd')))
+    Observable.forkJoin(this.getMyAvailableShifts(this.localeProvider.convert(startDate, 'YYYY-MM-DD'), this.localeProvider.convert(endDate, 'YYYY-MM-DD')), this.getMyRequests(this.localeProvider.convert(startDate, 'YYYY-MM-DD'), this.localeProvider.convert(endDate, 'YYYY-MM-DD')))
       .subscribe(results => {
+        console.log(results);
         const [availableShifts, requests] = results;
         // format shifts
         for(let i = 0; i < (<any>availableShifts).length; i++) {
@@ -157,6 +155,7 @@ export class EmployeeOpenShiftPage {
         }
       });
     this.loadingProvider.hideLoader();
+    console.log(this.availableShifts);
   }
 
   /**
@@ -232,9 +231,13 @@ export class EmployeeOpenShiftPage {
    * @param shift
    */
   private formatShift(shift) {
+    if(!shift.shiftDate) {
+      shift.shiftDate = shift.date;
+    }
     const date = new Date(shift.shiftDate);
-    let locale = "en-us";
-    let day_num = date.getDay();
+    // let locale = "en-us";
+    let locale = this.localeProvider.getDeviceLocale();
+    let day_num = date.getDate();
     shift.dayNumber = day_num;
 
     if(window.screen.width <= 460) {
@@ -297,11 +300,28 @@ export class EmployeeOpenShiftPage {
    */
   private fillRequestWithData(request) {
     return this.shiftsProvider.getShiftDetails(request.shiftType, request.shiftId).then(result => {
-      const newRequest = Object.assign(request, result);
+      // const newRequest = Object.assign(request, result);
+      const newRequest = {...request, ...result};
       newRequest.requestId = request.id;
       return newRequest;
     }, error => {
       console.log(error);
     })
+  }
+
+  /**
+   * Convert date to specified format
+   * ex. this.convertDateToLocale(new Date(), 'yyyy-MM-dd')
+   * @param date
+   * @param format
+   */
+  public convertDateToLocale(date, format) {
+    // const locale = window.navigator.language;
+    //
+    // const locale = 'en-GB';
+    // date = new Date(date);
+    // const datePipe = new DatePipe(locale);
+    // return datePipe.transform(date, format);
+    return this.localeProvider.convert(date, format);
   }
 }
