@@ -13,6 +13,8 @@ export class ModalShiftPopupPage {
   public title: any;
   public shift: any;
 
+  public showWarning: any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public shiftProvider: ShiftsProvider, public alertCtrl: AlertController) {
   }
 
@@ -23,6 +25,8 @@ export class ModalShiftPopupPage {
     this.title = this.navParams.get('popupTitle');
     this.request = this.navParams.get('request');
     this.shift = this.navParams.get('shift');
+
+    this.showWarning = this.navParams.get('warning');
   }
 
   /**

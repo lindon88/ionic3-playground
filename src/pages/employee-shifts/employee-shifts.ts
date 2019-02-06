@@ -916,6 +916,7 @@ export class EmployeeShiftsPage {
     let today = new Date();
 
     if(shiftDate <= today) {
+      this.showWarning();
       return;
     }
 
@@ -963,6 +964,11 @@ export class EmployeeShiftsPage {
         }
       }
     });
+    modal.present();
+  }
+
+  showWarning() {
+    let modal = this.modalCtrl.create(ModalShiftPopupPage, {warning: true}, {cssClass: 'modal-shift-popup'});
     modal.present();
   }
 }

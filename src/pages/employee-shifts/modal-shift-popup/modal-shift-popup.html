@@ -1,5 +1,4 @@
-
-<ion-content class="cancel-eos" *ngIf="shift" no-bounce>
+<ion-content class="cancel-eos" *ngIf="shift && !showWarning" no-bounce>
   <div style="text-align: center; margin-top: 10px;">
     <div style="font-weight: bold;">
       {{persistLongWeekDay(shift.shiftDate)}}, {{persistLongMonth(shift.shiftDate)}} {{shift.dayNumber}} - {{shift.shiftText.time12Hr}}
@@ -14,7 +13,7 @@
     </div>
   </div>
 </ion-content>
-<ion-footer>
+<ion-footer *ngIf="shift && !showWarning">
   <div class="modal-footer">
     <ion-grid>
       <ion-row>
@@ -30,3 +29,12 @@
     </ion-grid>
   </div>
 </ion-footer>
+
+<ion-content class="cancel-eos" *ngIf="showWarning" no-bounce>
+  <div style="text-align: center; margin-top: 10px;">
+    <div style="font-weight: bold;">
+      Warning
+    </div>
+    <p>Cannot make drop request on shift in past!</p>
+  </div>
+</ion-content>
