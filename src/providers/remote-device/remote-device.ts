@@ -17,7 +17,7 @@ export class RemoteDeviceProvider {
   constructor(public http: HttpClient, public device: Device, public mobileDeviceProvider: MobileDeviceProvider) {
   }
 
-  private init() {
+  public init() {
     if(window.cordova !== undefined && this.device !== undefined && this.device.uuid !== undefined) {
       this.IS_SUPPORTED_REMOTE_DEVICE = true;
       localStorage.setItem('mobile-device-uuid', this.device.uuid);

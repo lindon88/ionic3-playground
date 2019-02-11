@@ -42,6 +42,7 @@ import { LocaleProvider } from '../providers/locale/locale';
 import { RemoteDeviceProvider } from '../providers/remote-device/remote-device';
 import { MobileDeviceProvider } from '../providers/mobile-device/mobile-device';
 import { ApplicationVersionProvider } from '../providers/application-version/application-version';
+import { PushNotificationsProvider } from '../providers/push-notifications/push-notifications';
 
 @NgModule({
   declarations: [
@@ -96,6 +97,7 @@ import { ApplicationVersionProvider } from '../providers/application-version/app
     RemoteDeviceProvider,
     MobileDeviceProvider,
     ApplicationVersionProvider,
+    PushNotificationsProvider,
   ]
 })
 export class AppModule {}
