@@ -63,6 +63,7 @@ export class MyApp {
       {icon: 'fa fa-sign-out', title: 'Log out', component: null, click: 'logout'}
     ];
 
+
   }
 
   ngOnInit() {

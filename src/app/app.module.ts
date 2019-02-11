@@ -39,6 +39,8 @@ import {ModalShiftAvailabilityPageModule} from "../pages/shift-availability/moda
 import { MessagesProvider } from '../providers/messages/messages';
 import { NotificationsCounterProvider } from '../providers/notifications-counter/notifications-counter';
 import { LocaleProvider } from '../providers/locale/locale';
+import { RemoteDeviceProvider } from '../providers/remote-device/remote-device';
+import { MobileDeviceProvider } from '../providers/mobile-device/mobile-device';
 
 @NgModule({
   declarations: [
@@ -90,6 +92,8 @@ import { LocaleProvider } from '../providers/locale/locale';
     MessagesProvider,
     NotificationsCounterProvider,
     LocaleProvider,
+    RemoteDeviceProvider,
+    MobileDeviceProvider,
   ]
 })
 export class AppModule {}
