@@ -1,6 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Device} from "@ionic-native/device/ngx";
+import {MobileDeviceProvider} from "../mobile-device/mobile-device";
 
 /**
  * Should be used to handle mobile device registration
@@ -13,7 +14,7 @@ export class RemoteDeviceProvider {
   public IS_SUPPORTED_REMOTE_DEVICE: boolean = false;
   public APPLICATION_NAME: string = "COVER";
 
-  constructor(public http: HttpClient, public device: Device) {
+  constructor(public http: HttpClient, public device: Device, public mobileDeviceProvider: MobileDeviceProvider) {
   }
 
   private init() {
@@ -58,8 +59,44 @@ export class RemoteDeviceProvider {
       }
 
       // check if exists on backend
+      this.mobileDeviceProvider.getMobileDeviceByUUID(mobileDeviceUUID, this.APPLICATION_NAME).then((response: any) => {
+        if(response !== undefined && response !== null && response.id !== undefined) {
+          localStorage.setItem('mobile-device-obj', JSON.stringify(response));
+
+          // update remote device
+        }
+      })
     })
   }
 
+  private updateRemoteDevice(device: any) {
+    if(device.userId === undefined || device.deviceToken === undefined) {
+      return;
+    }
 
+    let needUpdateDevice = false;
+    let currentCompanyId = localStorage.getItem('currentCompanyId');
+    let currentCorporateId = localStorage.getItem('currentCorporateId');
+    let userId = localStorage.getItem('currentPersonId');
+
+    if(device.deviceToken !== null && device.deviceToken === this.PUSH_NOTIFICATION_TOKEN && device.snsEndpoint !== undefined && device.snsEndpoint !== null && device.snsEndpoint !== '') {
+      needUpdateDevice = false;
+    }
+
+    if(currentCompanyId !== device.companyId) {
+      needUpdateDevice = true;
+    }
+
+    if(userId !== device.userId) {
+      needUpdateDevice = true;
+    }
+
+    if(currentCorporateId !== device.corporateId) {
+      needUpdateDevice = true;
+    }
+
+    if(!needUpdateDevice) {
+      return;
+    }
+  }
 }

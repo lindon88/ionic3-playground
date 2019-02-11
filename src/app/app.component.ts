@@ -8,6 +8,7 @@ import {EmployeeProvider} from "../providers/employee/employee";
 import {CompanyProvider} from "../providers/company/company";
 import {AuthenticationProvider} from "../providers/authentication/authentication";
 import {MessagesProvider} from "../providers/messages/messages";
+import {ApplicationVersionProvider} from "../providers/application-version/application-version";
 
 @Component({
   templateUrl: 'app.html'
@@ -27,7 +28,7 @@ export class MyApp {
 
   public notificationsBadge: string;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, menuCtrl: MenuController, public events: Events, public employeeProvider: EmployeeProvider, public companyProvider: CompanyProvider, public authenticationProvider: AuthenticationProvider, public messagesProvider: MessagesProvider) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, menuCtrl: MenuController, public appVersion: ApplicationVersionProvider, public events: Events, public employeeProvider: EmployeeProvider, public companyProvider: CompanyProvider, public authenticationProvider: AuthenticationProvider, public messagesProvider: MessagesProvider) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -62,6 +63,10 @@ export class MyApp {
       {icon: 'fa fa-envelope', title: 'Notifications', component: "NotificationsPage", click: null},
       {icon: 'fa fa-sign-out', title: 'Log out', component: null, click: 'logout'}
     ];
+
+    if(this.appVersion.getVersion() === undefined || this.appVersion.getVersion() === null) {
+      this.appVersion.setDefault();
+    }
 
 
   }
