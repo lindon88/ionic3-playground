@@ -1,5 +1,13 @@
 import {Component, HostListener} from '@angular/core';
-import {IonicPage, MenuController, ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
+import {
+  AlertController,
+  IonicPage,
+  MenuController,
+  ModalController,
+  NavController,
+  NavParams,
+  ViewController
+} from 'ionic-angular';
 import {RosterProvider} from "../../providers/roster/roster";
 import {ShiftsProvider} from "../../providers/shifts/shifts";
 import {AbsenceProvider} from "../../providers/absence/absence";
@@ -72,7 +80,7 @@ export class EmployeeShiftsPage {
 
   public notificationsBadge: any;
 
-  constructor(public navCtrl: NavController, public localeProvider: LocaleProvider, public notificationsCounter: NotificationsCounterProvider, public viewCtrl: ViewController, public menuCtrl: MenuController, public navParams: NavParams, public authProvider: AuthenticationProvider, public rosterProvider: RosterProvider, public shiftsProvider: ShiftsProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController, public loadingProvider: LoadingProvider) {
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController, public localeProvider: LocaleProvider, public notificationsCounter: NotificationsCounterProvider, public viewCtrl: ViewController, public menuCtrl: MenuController, public navParams: NavParams, public authProvider: AuthenticationProvider, public rosterProvider: RosterProvider, public shiftsProvider: ShiftsProvider, public absenceProvider: AbsenceProvider, public modalCtrl: ModalController, public loadingProvider: LoadingProvider) {
   }
 
   @HostListener('window:resize', ['$event'])
@@ -295,7 +303,7 @@ export class EmployeeShiftsPage {
       this.absenceTypes = this.absenceTypesObservableResponse;
 
       this.defineShifts(this.shiftsObservableResponse, this.openShiftsObservableResponse, this.daysObservableResponse, this.absenceTypesObservableResponse);
-      this.defineLoanedShifts();
+      this.defineLoanedShifts(this.shiftsObservableResponse, this.openShiftsObservableResponse);
       this.defineAbsences(this.shiftsObservableResponse, this.openShiftsObservableResponse, this.daysObservableResponse, this.absenceTypes);
       this.defineOpenShifts(this.shiftsObservableResponse, this.openShiftsObservableResponse, this.daysObservableResponse, this.absenceTypesObservableResponse);
       this.fillFullWeekWithData(this.shiftsObservableResponse, this.openShiftsObservableResponse, this.daysObservableResponse, this.absenceTypesObservableResponse);
@@ -572,7 +580,7 @@ export class EmployeeShiftsPage {
     }
   }
 
-  public defineLoanedShifts() {
+  public defineLoanedShifts(shifts, openShifts) {
     this.employee = JSON.parse(localStorage.getItem('currentEmployee'));
     let loanedShifts = this.employee.loanedShifts;
     console.log(loanedShifts);
@@ -585,6 +593,12 @@ export class EmployeeShiftsPage {
           console.log(loaned);
           for(let key in loaned) {
             if(loaned.hasOwnProperty(key)){
+              loaned[key] = this.defineShiftDropCancelStatus(loaned[key], openShifts);
+              let drop = undefined;
+              if(loaned[key].drop) {
+                drop = loaned[key].drop;
+              }
+              console.log("LOANED: ");
               console.log(loaned[key]);
               this.weekDays[i].has = true;
               let date = new Date(weekDay.date);
@@ -595,6 +609,7 @@ export class EmployeeShiftsPage {
                   id: loaned[key].job.id,
                   name: loaned[key].job.name
                 },
+                drop: drop,
                 section: {
                   id: loaned[key].section.id,
                   name: loaned[key].section.name,
@@ -853,6 +868,9 @@ export class EmployeeShiftsPage {
     if (shift === undefined || openShifts === undefined) {
       return;
     }
+    if ((shift.id === undefined || shift.id === null) && shift.shiftId) {
+      shift.id = shift.shiftId;
+    }
 
     for (let i = 0; i < openShifts.length; i++) {
       let openShift = openShifts[i];
@@ -912,11 +930,19 @@ export class EmployeeShiftsPage {
    * @param shift
    */
   public onShiftClick(shift) {
+    console.log(shift);
     let shiftDate = new Date(shift.shiftDate);
     let today = new Date();
 
     if(shiftDate <= today) {
-      this.showWarning();
+      let alert = this.alertCtrl.create({
+        title: 'Error',
+        message: 'Can\'t make drop request on shift in past',
+        buttons: [{text: 'OK', cssClass: 'save-button-eos', handler: () => {
+            console.log('Ok');
+          }}]
+      });
+      alert.present();
       return;
     }
 
