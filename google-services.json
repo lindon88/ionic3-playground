@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "77585183865",
+    "firebase_url": "https://synergysuiteionic1app.firebaseio.com",
+    "project_id": "synergysuiteionic1app",
+    "storage_bucket": "synergysuiteionic1app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77585183865:android:2105311d2a3ae9d3",
+        "android_client_info": {
+          "package_name": "com.synergysuite.cover"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "77585183865-ni2q5i07jn72v8p9lracfr5vjtljgu96.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPa4NkWQS-fwlBhMEObTGMcV1VjfU1tyY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

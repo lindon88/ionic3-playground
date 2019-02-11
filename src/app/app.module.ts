@@ -89,7 +89,7 @@ import { LocaleProvider } from '../providers/locale/locale';
     AvailabilityProvider,
     MessagesProvider,
     NotificationsCounterProvider,
-    LocaleProvider
+    LocaleProvider,
   ]
 })
 export class AppModule {}
