@@ -64,7 +64,21 @@ export class RemoteDeviceProvider {
           localStorage.setItem('mobile-device-obj', JSON.stringify(response));
 
           // update remote device
+          this.updateRemoteDevice(response);
+          resolve(response);
         }
+
+        // register new device
+        this.registerNewDevice(mobileDeviceUUID).then((res) => {
+          if(res) {
+            localStorage.setItem('mobile-device-obj', JSON.stringify(res));
+            resolve(res);
+          }
+        }, error => {
+          reject(error);
+        })
+      }, error => {
+        reject(error);
       })
     })
   }
@@ -78,6 +92,7 @@ export class RemoteDeviceProvider {
     let currentCompanyId = localStorage.getItem('currentCompanyId');
     let currentCorporateId = localStorage.getItem('currentCorporateId');
     let userId = localStorage.getItem('currentPersonId');
+    let appVersion = localStorage.getItem('version');
 
     if(device.deviceToken !== null && device.deviceToken === this.PUSH_NOTIFICATION_TOKEN && device.snsEndpoint !== undefined && device.snsEndpoint !== null && device.snsEndpoint !== '') {
       needUpdateDevice = false;
@@ -95,8 +110,81 @@ export class RemoteDeviceProvider {
       needUpdateDevice = true;
     }
 
+    if(appVersion !== device.synergyAppVersion) {
+      needUpdateDevice = true;
+    }
+
     if(!needUpdateDevice) {
       return;
     }
+
+    device.userId = userId;
+    device.deviceToken = this.PUSH_NOTIFICATION_TOKEN;
+    device.companyId = currentCompanyId;
+    device.corporateId = currentCorporateId;
+    device.lastAccessTime = new Date();
+    device.synergyAppVersion = appVersion;
+
+    this.mobileDeviceProvider.updateMobileDevice(device.id, device).then((response: any) => {
+      localStorage.setItem('mobile-device-obj', JSON.stringify(response));
+    }, error => {
+      console.log(error);
+    })
+  }
+
+  private registerNewDevice(deviceId: any) {
+    return new Promise((resolve, reject) => {
+      let device = {
+        deviceIdentifier: deviceId,
+        synergyApp: this.APPLICATION_NAME,
+        createTime: new Date(),
+        corporateId: localStorage.getItem('currentCorporateId'),
+        companyId: localStorage.getItem('currentCompanyId'),
+        userId: localStorage.getItem('currentPersonId'),
+        synergyAppVersion: localStorage.getItem('version'),
+        devicePlatform: this.device.platform,
+        deviceModel: this.device.model,
+        deviceToken: this.PUSH_NOTIFICATION_TOKEN,
+        snsEndpoint: null,
+        lastAccessTime: new Date(),
+        blacklisted: null
+      };
+
+      this.mobileDeviceProvider.createNewMobileDevice(device).then((response: any) => {
+        resolve(response);
+      }, error => {
+        reject(error);
+      })
+    })
+  }
+
+  public isRegistered() {
+    if(!this.isSupported()) {
+      return false;
+    }
+
+    const deviceUUID = this.getCurrentDeviceUUID();
+    if(!deviceUUID) {
+      return false;
+    }
+
+    let mobileDeviceObj = JSON.parse(localStorage.getItem('mobile-device-obj'));
+    return !(!mobileDeviceObj || mobileDeviceObj.id === undefined || mobileDeviceObj.deviceIdentifier === undefined || mobileDeviceObj.deviceIdentifier !== deviceUUID);
+  }
+
+  public getDeviceObject() {
+    const device = JSON.parse(localStorage.getItem('mobile-device-obj'));
+    if(!device || device.id === undefined) {
+      return null;
+    }
+    return device;
+  }
+
+  public setPushNotificationToken(token: any) {
+    if(!token) {
+      return;
+    }
+    this.PUSH_NOTIFICATION_TOKEN = token;
+    localStorage.setItem('pushToken', token);
   }
 }
