@@ -1,11 +1,12 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Device} from "@ionic-native/device/ngx";
 import {MobileDeviceProvider} from "../mobile-device/mobile-device";
+import {Device} from "@ionic-native/device";
 
 /**
  * Should be used to handle mobile device registration
  */
+declare let window: any;
 
 @Injectable()
 export class RemoteDeviceProvider {
@@ -18,6 +19,7 @@ export class RemoteDeviceProvider {
   }
 
   public init() {
+    console.log('Device UUID: ' + this.device.platform);
     if(window.cordova !== undefined && this.device !== undefined && this.device.uuid !== undefined) {
       this.IS_SUPPORTED_REMOTE_DEVICE = true;
       localStorage.setItem('mobile-device-uuid', this.device.uuid);

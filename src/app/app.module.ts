@@ -44,6 +44,10 @@ import { MobileDeviceProvider } from '../providers/mobile-device/mobile-device';
 import { ApplicationVersionProvider } from '../providers/application-version/application-version';
 import { PushNotificationsProvider } from '../providers/push-notifications/push-notifications';
 
+import {Device} from "@ionic-native/device";
+import {FCM} from "@ionic-native/fcm";
+import {File} from "@ionic-native/file";
+
 @NgModule({
   declarations: [
     MyApp,
@@ -98,6 +102,9 @@ import { PushNotificationsProvider } from '../providers/push-notifications/push-
     MobileDeviceProvider,
     ApplicationVersionProvider,
     PushNotificationsProvider,
+    Device,
+    FCM,
+    File
   ]
 })
 export class AppModule {}

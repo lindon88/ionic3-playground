@@ -5,6 +5,8 @@ import {AuthenticationProvider} from "../../providers/authentication/authenticat
 import {LoadingProvider} from "../../providers/loading/loading";
 import {FingerprintAIO} from '@ionic-native/fingerprint-aio';
 import {Events} from 'ionic-angular';
+import {PushNotificationsProvider} from "../../providers/push-notifications/push-notifications";
+import {RemoteDeviceProvider} from "../../providers/remote-device/remote-device";
 
 @IonicPage()
 @Component({
@@ -16,11 +18,18 @@ export class LoginPage {
   public userinfo: any;
   public loginError: boolean;
 
-  constructor(public navCtrl: NavController, public platform: Platform, private serverProvider: ServerProvider, public fingerprint:FingerprintAIO, public alertCtrl: AlertController, public authProvider: AuthenticationProvider, public loadingProvider: LoadingProvider, public events: Events) {
+  constructor(public navCtrl: NavController, public platform: Platform, private serverProvider: ServerProvider, public fingerprint:FingerprintAIO, public alertCtrl: AlertController, public authProvider: AuthenticationProvider, public loadingProvider: LoadingProvider, public events: Events, public pushNotificationProvider: PushNotificationsProvider, public remoteDeviceProvider: RemoteDeviceProvider) {
   }
 
   ionAfterViewInit() {
     this.navCtrl.setRoot("LoginPage");
+
+    // initialize push notifications
+    this.pushNotificationProvider.init();
+
+    // init remote device provider
+    this.remoteDeviceProvider.init();
+
   }
 
   /**
@@ -49,7 +58,7 @@ export class LoginPage {
         this.authProvider.login(username, password).then((result) => {
           this.userinfo = result;
           if(this.userinfo) {
-            this.events.publish('user:logged', this.userinfo);
+            this.events.publish('user:logged', result);
             this.loadingProvider.hideLoader();
           }
           this.loginError = false;
@@ -59,10 +68,22 @@ export class LoginPage {
             this.checkFingerprintAIO();
           }
           if(this.userinfo.userPIN === undefined || this.userinfo.userPIN === null || this.userinfo.userPIN === '') {
-            this.navCtrl.setRoot('PinCreatePage')
+            this.navCtrl.setRoot('PinCreatePage');
+          } else {
+            try {
+              let notification = this.pushNotificationProvider.getBackgroundNotification();
+              // let currentCorporateId = localStorage.getItem('currentCorporateId');
+              this.deviceRegister();
+              if(!notification) {
+                this.navCtrl.setRoot('HomePage');
+              }
+              this.pushNotificationProvider.goToMessage(notification);
+            } catch (ex) {
+              console.log('Error processing: Corporate requested redirect to LOCK screen');
+              this.deviceRegister();
+              this.navCtrl.setRoot('HomePage');
+            }
           }
-
-          this.navCtrl.setRoot('HomePage');
 
         }).catch(error => {
           console.log(error);
@@ -143,5 +164,13 @@ export class LoginPage {
     } else {
       this.navCtrl.setRoot('PinConfirmPage');
     }
+  }
+
+  public deviceRegister() {
+    this.remoteDeviceProvider.verifyRegisterRemoteDevice().then((res) => {
+      console.log(res);
+    }, error => {
+      console.log(error);
+    })
   }
 }

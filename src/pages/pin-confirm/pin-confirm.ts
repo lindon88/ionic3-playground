@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {PinProvider} from "../../providers/pin/pin";
+import {PushNotificationsProvider} from "../../providers/push-notifications/push-notifications";
+import {RemoteDeviceProvider} from "../../providers/remote-device/remote-device";
 
 @IonicPage()
 @Component({
@@ -13,7 +15,15 @@ export class PinConfirmPage {
   public newPin: string = localStorage.getItem('newPin');
   public userInfo: any = JSON.parse(localStorage.getItem('userInfo'));
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public pinProvider: PinProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public pinProvider: PinProvider, public pushNotificationProvider: PushNotificationsProvider, public remoteDeviceProvider: RemoteDeviceProvider) {
+  }
+
+  public ionViewDidLoad() {
+    // init push notifications
+    this.pushNotificationProvider.init();
+
+    // init remote notifications
+    this.remoteDeviceProvider.init();
   }
 
   /**
@@ -80,7 +90,13 @@ export class PinConfirmPage {
       if(result['result'] === 'SUCCESS') {
         localStorage.setItem('currentPersonId', userId);
         // goto HOME
-        this.navCtrl.setRoot("HomePage");
+        this.deviceRegister();
+        let notification = this.pushNotificationProvider.getBackgroundNotification();
+        if(!notification) {
+          this.navCtrl.setRoot("HomePage");
+        }
+        this.pushNotificationProvider.goToMessage(notification);
+        // this.navCtrl.setRoot("HomePage");
       } else if (result['result'] === 'ERROR') {
         let alert = this.alertCtrl.create({
           title: "Login Error",
@@ -123,6 +139,14 @@ export class PinConfirmPage {
     this.userInfo = null;
 
     this.navCtrl.setRoot("LoginPage");
+  }
+
+  public deviceRegister() {
+    this.remoteDeviceProvider.verifyRegisterRemoteDevice().then((res) => {
+      console.log(res);
+    }, error => {
+      console.log(error);
+    })
   }
 
 

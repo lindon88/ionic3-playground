@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {Events, MenuController, Nav, Platform} from 'ionic-angular';
+import {Events, MenuController, Nav, Platform, ViewController} from 'ionic-angular';
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 
@@ -9,12 +9,14 @@ import {CompanyProvider} from "../providers/company/company";
 import {AuthenticationProvider} from "../providers/authentication/authentication";
 import {MessagesProvider} from "../providers/messages/messages";
 import {ApplicationVersionProvider} from "../providers/application-version/application-version";
+import {PushNotificationsProvider} from "../providers/push-notifications/push-notifications";
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
   @ViewChild(Nav) navCtrl: Nav;
+  @ViewChild(ViewController) viewCtrl: ViewController;
   // root page should be landing page
   rootPage: any = LandingPage;
   public user: any;
@@ -28,7 +30,7 @@ export class MyApp {
 
   public notificationsBadge: string;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, menuCtrl: MenuController, public appVersion: ApplicationVersionProvider, public events: Events, public employeeProvider: EmployeeProvider, public companyProvider: CompanyProvider, public authenticationProvider: AuthenticationProvider, public messagesProvider: MessagesProvider) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, menuCtrl: MenuController, public appVersion: ApplicationVersionProvider, public events: Events, public employeeProvider: EmployeeProvider, public companyProvider: CompanyProvider, public authenticationProvider: AuthenticationProvider, public messagesProvider: MessagesProvider, public pushNotificationProvider: PushNotificationsProvider) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -68,6 +70,13 @@ export class MyApp {
       this.appVersion.setDefault();
     }
 
+    this.pushNotificationProvider.init();
+
+    // if(this.viewCtrl.name === 'LandingPage' || this.viewCtrl.name === 'LoginPage' || this.viewCtrl.name === 'PinConfirmPage') {
+    //   this.pushNotificationProvider.setAuthenticationRequired(true);
+    // } else {
+    //   this.pushNotificationProvider.setAuthenticationRequired(false);
+    // }
 
   }
 

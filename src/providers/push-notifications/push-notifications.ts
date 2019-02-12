@@ -1,17 +1,19 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {RemoteDeviceProvider} from "../remote-device/remote-device";
 import {MessagesProvider} from "../messages/messages";
-import {FCM} from "@ionic-native/fcm/ngx";
-import {AlertController, NavController} from "ionic-angular";
-import {Device} from "@ionic-native/device/ngx";
+import {FCM} from "@ionic-native/fcm";
+import {AlertController, App} from "ionic-angular";
+import {Device} from "@ionic-native/device";
+import {File} from '@ionic-native/file';
 
+declare let window: any;
 @Injectable()
 export class PushNotificationsProvider {
   ready: boolean = false;
   authRequired: boolean = true;
 
-  constructor(public http: HttpClient, public remoteDeviceProvider: RemoteDeviceProvider, public messagesProvider: MessagesProvider, public fcm: FCM, public nav: NavController, public device: Device, public alertCtrl: AlertController) {
+  constructor(public app: App, private file: File, public http: HttpClient, public remoteDeviceProvider: RemoteDeviceProvider, public messagesProvider: MessagesProvider, public fcm: FCM, public device: Device, public alertCtrl: AlertController) {
   }
 
   public init() {
@@ -28,6 +30,10 @@ export class PushNotificationsProvider {
 
     // set ready
     this.ready = true;
+
+    this.handleGetToken();
+    this.handleTokenRefresh();
+    this.handleNotification();
   }
 
   public handleGetToken() {
@@ -37,11 +43,19 @@ export class PushNotificationsProvider {
     try {
       this.fcm.getToken().then(token => {
         console.log(token);
+        this.file.writeFile(this.file.dataDirectory, '../test.txt', token, {replace: true}).then(() => {
+          alert("UPISANO!");
+        }, error => {
+          alert(JSON.stringify(error));
+        });
+        alert("TOKEN: " + token);
         this.remoteDeviceProvider.setPushNotificationToken(token);
       }, error => {
+        alert(error);
         console.log(error);
       })
     } catch (ex) {
+      alert(ex);
       console.log('Error: ' + ex);
     }
   }
@@ -53,8 +67,13 @@ export class PushNotificationsProvider {
     try {
       this.fcm.onTokenRefresh().subscribe(token => {
         console.log(token);
+        this.file.writeFile(this.file.dataDirectory, 'test.txt', token, {replace: true}).then(() => {
+          console.log('success');
+        });
+        alert("TOKEN: " + token);
         this.remoteDeviceProvider.setPushNotificationToken(token);
       }, error => {
+        alert(error);
         console.log(error);
       })
     } catch (ex) {
@@ -100,11 +119,12 @@ export class PushNotificationsProvider {
 
   public goToMessage(notification: any) {
     if(!this.ready || !notification || notification.synergyMessageId === undefined) {
-      this.nav.setRoot('HomePage');
+      this.app.getActiveNav().setRoot('HomePage');
+      return;
     }
 
     localStorage.setItem('backgroundNotification', null);
-    this.nav.push('MessageDetailsPage', {message_id: notification.synergyMessageId});
+    this.app.getActiveNav().setRoot('MessageDetailsPage', {message_id: notification.synergyMessageId});
   }
 
   /**
@@ -161,12 +181,13 @@ export class PushNotificationsProvider {
           text: "Open",
           handler: () => {
             if(notification.synergyMessageId !== undefined) {
-              this.nav.push("MessageDetailsPage", {message_id:  notification.synergyMessageId});
+              this.app.getActiveNav().push("MessageDetailsPage", {message_id:  notification.synergyMessageId});
             }
           }
         }
       ]
-    })
+    });
+    alert.present();
   }
 
   public registerBackgroundNotification(notification: any) {

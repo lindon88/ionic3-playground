@@ -166,6 +166,4 @@ export class MobileDeviceProvider {
     })
   }
 
-
-
 }
