@@ -23,7 +23,7 @@ export class NotificationsCounterProvider {
     let count: any = 0;
     if (data !== null && data.items !== undefined && data.items.length !== 0) {
       for (let i = 0; i < data.items.length; i++) {
-        if (data.items[i].messageRead === false) {
+        if (data.items[i].messageRead === false && data.items[i].deleted === false) {
           count++;
         }
       }
