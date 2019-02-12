@@ -138,7 +138,7 @@ export class MobileDeviceProvider {
 
       let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
 
-      this.http.put(this.serverProvider.getServerURL() + 'mobile-device/' + id, {device}, {headers: headers}).subscribe((response) => {
+      this.http.put(this.serverProvider.getServerURL() + 'mobile-device/' + id, device, {headers: headers}).subscribe((response) => {
         resolve(response);
       }, error => {
         reject(error);

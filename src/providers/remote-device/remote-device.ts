@@ -64,12 +64,16 @@ export class RemoteDeviceProvider {
       this.mobileDeviceProvider.getMobileDeviceByUUID(mobileDeviceUUID, this.APPLICATION_NAME).then((response: any) => {
         console.log("GET_MOBILE_DEVICE_BY_UUID: " + ' - ' + mobileDeviceUUID + ' - ' + this.APPLICATION_NAME);
         console.log(response);
+        response = JSON.parse(response);
         if(response !== undefined && response !== null && response.id !== undefined) {
-          localStorage.setItem('mobile-device-obj', JSON.stringify(response));
+          console.log("SHOULD UPDATE");
+          localStorage.setItem('mobile-device-obj', '');
 
           // update remote device
+          console.log(response);
           this.updateRemoteDevice(response);
           resolve(response);
+          return;
         }
 
         // register new device
@@ -98,27 +102,27 @@ export class RemoteDeviceProvider {
     let userId = localStorage.getItem('currentPersonId');
     let appVersion = localStorage.getItem('version');
 
-    if(device.deviceToken !== null && device.deviceToken === this.PUSH_NOTIFICATION_TOKEN && device.snsEndpoint !== undefined && device.snsEndpoint !== null && device.snsEndpoint !== '') {
+    if(device.deviceToken != null && device.deviceToken == this.PUSH_NOTIFICATION_TOKEN && device.snsEndpoint != undefined && device.snsEndpoint != null && device.snsEndpoint != '') {
       needUpdateDevice = false;
     }
 
-    if(currentCompanyId !== device.companyId) {
+    if(currentCompanyId != device.companyId) {
       needUpdateDevice = true;
     }
 
-    if(userId !== device.userId) {
+    if(userId != device.userId) {
       needUpdateDevice = true;
     }
 
-    if(currentCorporateId !== device.corporateId) {
+    if(currentCorporateId != device.corporateId) {
       needUpdateDevice = true;
     }
 
-    if(appVersion !== device.synergyAppVersion) {
+    if(appVersion != device.synergyAppVersion) {
       needUpdateDevice = true;
     }
 
-    if(!needUpdateDevice) {
+    if(needUpdateDevice == false) {
       return;
     }
 
@@ -130,6 +134,9 @@ export class RemoteDeviceProvider {
     device.synergyAppVersion = appVersion;
 
     this.mobileDeviceProvider.updateMobileDevice(device.id, device).then((response: any) => {
+      console.log("**************UPDATED!");
+      console.log(response);
+
       localStorage.setItem('mobile-device-obj', JSON.stringify(response));
     }, error => {
       console.log(error);

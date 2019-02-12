@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import {RemoteDeviceProvider} from "../remote-device/remote-device";
 import {MessagesProvider} from "../messages/messages";
 import {FCM} from "@ionic-native/fcm";
-import {AlertController, App} from "ionic-angular";
+import {AlertController, App, Events} from "ionic-angular";
 import {Device} from "@ionic-native/device";
 
 declare let window: any;
@@ -12,7 +12,7 @@ export class PushNotificationsProvider {
   ready: boolean = false;
   authRequired: boolean = true;
 
-  constructor(public app: App, public http: HttpClient, public remoteDeviceProvider: RemoteDeviceProvider, public messagesProvider: MessagesProvider, public fcm: FCM, public device: Device, public alertCtrl: AlertController) {
+  constructor(public app: App, public http: HttpClient, public remoteDeviceProvider: RemoteDeviceProvider, public events: Events, public messagesProvider: MessagesProvider, public fcm: FCM, public device: Device, public alertCtrl: AlertController) {
   }
 
   public init() {
@@ -86,6 +86,7 @@ export class PushNotificationsProvider {
         if(notification.wasTapped == false) {
           // show ionic popup
           this.showMobileNotification(notification);
+          this.events.publish('notification:add', notification);
           return;
         }
 

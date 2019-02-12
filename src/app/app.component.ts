@@ -72,6 +72,10 @@ export class MyApp {
 
     this.pushNotificationProvider.init();
 
+    this.events.subscribe('notification:add', (notification) => {
+      this.getMessages();
+    })
+
     // if(this.viewCtrl.name === 'LandingPage' || this.viewCtrl.name === 'LoginPage' || this.viewCtrl.name === 'PinConfirmPage') {
     //   this.pushNotificationProvider.setAuthenticationRequired(true);
     // } else {
