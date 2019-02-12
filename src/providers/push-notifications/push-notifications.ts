@@ -5,7 +5,6 @@ import {MessagesProvider} from "../messages/messages";
 import {FCM} from "@ionic-native/fcm";
 import {AlertController, App} from "ionic-angular";
 import {Device} from "@ionic-native/device";
-import {File} from '@ionic-native/file';
 
 declare let window: any;
 @Injectable()
@@ -13,7 +12,7 @@ export class PushNotificationsProvider {
   ready: boolean = false;
   authRequired: boolean = true;
 
-  constructor(public app: App, private file: File, public http: HttpClient, public remoteDeviceProvider: RemoteDeviceProvider, public messagesProvider: MessagesProvider, public fcm: FCM, public device: Device, public alertCtrl: AlertController) {
+  constructor(public app: App, public http: HttpClient, public remoteDeviceProvider: RemoteDeviceProvider, public messagesProvider: MessagesProvider, public fcm: FCM, public device: Device, public alertCtrl: AlertController) {
   }
 
   public init() {
@@ -43,12 +42,6 @@ export class PushNotificationsProvider {
     try {
       this.fcm.getToken().then(token => {
         console.log(token);
-        this.file.writeFile(this.file.dataDirectory, '../test.txt', token, {replace: true}).then(() => {
-          alert("UPISANO!");
-        }, error => {
-          alert(JSON.stringify(error));
-        });
-        alert("TOKEN: " + token);
         this.remoteDeviceProvider.setPushNotificationToken(token);
       }, error => {
         alert(error);
@@ -67,10 +60,6 @@ export class PushNotificationsProvider {
     try {
       this.fcm.onTokenRefresh().subscribe(token => {
         console.log(token);
-        this.file.writeFile(this.file.dataDirectory, 'test.txt', token, {replace: true}).then(() => {
-          console.log('success');
-        });
-        alert("TOKEN: " + token);
         this.remoteDeviceProvider.setPushNotificationToken(token);
       }, error => {
         alert(error);
@@ -84,10 +73,17 @@ export class PushNotificationsProvider {
   public handleNotification() {
     try {
       this.fcm.onNotification().subscribe((notification: any) => {
-        if(!notification || notification === null || notification.tap === undefined || notification.synergyMessageId === undefined) {
+        console.log('============Notification');
+        console.log(notification);
+        // console.log(JSON.parse(notification.default));
+        // let message = JSON.parse(notification.default);
+        // console.log(message.GCM);
+        // let notify = JSON.parse(message.GCM);
+        // console.log(notify);
+        if(!notification || notification === null || notification.wasTapped === undefined || notification.synergyMessageId === undefined) {
           return;
         }
-        if(notification.tap == false) {
+        if(notification.wasTapped == false) {
           // show ionic popup
           this.showMobileNotification(notification);
           return;
@@ -118,6 +114,7 @@ export class PushNotificationsProvider {
   }
 
   public goToMessage(notification: any) {
+    console.log(notification);
     if(!this.ready || !notification || notification.synergyMessageId === undefined) {
       this.app.getActiveNav().setRoot('HomePage');
       return;
@@ -149,9 +146,9 @@ export class PushNotificationsProvider {
     }
 
     // check if authentication is required
-    if(this.authRequired) {
-      return;
-    }
+    // if(this.authRequired) {
+    //   return;
+    // }
 
     let title = '';
     let body = '';
@@ -163,7 +160,7 @@ export class PushNotificationsProvider {
       }
     } else {
       title = notification.title;
-      body = notification.body;
+      body = notification.text;
     }
 
     const alert = this.alertCtrl.create({

@@ -95,7 +95,7 @@ export class MobileDeviceProvider {
         application: application
       };
 
-      this.http.get(this.serverProvider.getServerURL() + 'mobile-device/uuid/' + uuid, {headers: headers, params: params}).subscribe((response) => {
+      this.http.get(this.serverProvider.getServerURL() + 'mobile-device/uuid/' + uuid, {headers: headers, params: params, responseType: 'text'}).subscribe((response) => {
         resolve(response);
       }, error => {
         reject(error);
@@ -113,7 +113,7 @@ export class MobileDeviceProvider {
         reject('Device object is not defined');
       }
       let headers = {'synergy-login-token': localStorage.getItem('accessToken')};
-      this.http.post(this.serverProvider.getServerURL() + 'mobile-device/', {device}, {headers: headers}).subscribe((response) => {
+      this.http.post(this.serverProvider.getServerURL() + 'mobile-device/', device, {headers: headers}).subscribe((response) => {
         resolve(response);
       }, error => {
         reject(error);

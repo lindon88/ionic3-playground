@@ -19,7 +19,7 @@ export class RemoteDeviceProvider {
   }
 
   public init() {
-    console.log('Device UUID: ' + this.device.platform);
+    console.log('Device UUID: ' + this.device.uuid);
     if(window.cordova !== undefined && this.device !== undefined && this.device.uuid !== undefined) {
       this.IS_SUPPORTED_REMOTE_DEVICE = true;
       localStorage.setItem('mobile-device-uuid', this.device.uuid);
@@ -62,6 +62,8 @@ export class RemoteDeviceProvider {
 
       // check if exists on backend
       this.mobileDeviceProvider.getMobileDeviceByUUID(mobileDeviceUUID, this.APPLICATION_NAME).then((response: any) => {
+        console.log("GET_MOBILE_DEVICE_BY_UUID: " + ' - ' + mobileDeviceUUID + ' - ' + this.APPLICATION_NAME);
+        console.log(response);
         if(response !== undefined && response !== null && response.id !== undefined) {
           localStorage.setItem('mobile-device-obj', JSON.stringify(response));
 
@@ -151,7 +153,6 @@ export class RemoteDeviceProvider {
         lastAccessTime: new Date(),
         blacklisted: null
       };
-
       this.mobileDeviceProvider.createNewMobileDevice(device).then((response: any) => {
         resolve(response);
       }, error => {
