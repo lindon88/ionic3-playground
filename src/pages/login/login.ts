@@ -76,6 +76,7 @@ export class LoginPage {
               this.deviceRegister();
               if(!notification) {
                 this.navCtrl.setRoot('HomePage');
+                return;
               }
               this.pushNotificationProvider.goToMessage(notification);
             } catch (ex) {

@@ -10,6 +10,7 @@ import {AuthenticationProvider} from "../providers/authentication/authentication
 import {MessagesProvider} from "../providers/messages/messages";
 import {ApplicationVersionProvider} from "../providers/application-version/application-version";
 import {PushNotificationsProvider} from "../providers/push-notifications/push-notifications";
+import {FCM} from "@ionic-native/fcm";
 
 @Component({
   templateUrl: 'app.html'
@@ -30,13 +31,17 @@ export class MyApp {
 
   public notificationsBadge: string;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, menuCtrl: MenuController, public appVersion: ApplicationVersionProvider, public events: Events, public employeeProvider: EmployeeProvider, public companyProvider: CompanyProvider, public authenticationProvider: AuthenticationProvider, public messagesProvider: MessagesProvider, public pushNotificationProvider: PushNotificationsProvider) {
+  constructor(platform: Platform, statusBar: StatusBar, public fcm: FCM, splashScreen: SplashScreen, menuCtrl: MenuController, public appVersion: ApplicationVersionProvider, public events: Events, public employeeProvider: EmployeeProvider, public companyProvider: CompanyProvider, public authenticationProvider: AuthenticationProvider, public messagesProvider: MessagesProvider, public pushNotificationProvider: PushNotificationsProvider) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
       menuCtrl.swipeEnable(false, 'menu1');
+
+      this.shouldAuthorize();
+      this.pushNotificationProvider.init();
+
       this.events.subscribe('user:logged', (userinfo) => {
         console.log(userinfo);
       });
@@ -70,18 +75,21 @@ export class MyApp {
       this.appVersion.setDefault();
     }
 
-    this.pushNotificationProvider.init();
-
     this.events.subscribe('notification:add', (notification) => {
       this.getMessages();
     })
 
-    // if(this.viewCtrl.name === 'LandingPage' || this.viewCtrl.name === 'LoginPage' || this.viewCtrl.name === 'PinConfirmPage') {
-    //   this.pushNotificationProvider.setAuthenticationRequired(true);
-    // } else {
-    //   this.pushNotificationProvider.setAuthenticationRequired(false);
-    // }
+  }
 
+  public shouldAuthorize() {
+    let accessToken = localStorage.getItem('accessToken');
+    let userInfo = localStorage.getItem('userInfo');
+
+    if(accessToken === undefined || accessToken === null || userInfo === undefined || userInfo === null) {
+      this.pushNotificationProvider.setAuthenticationRequired(true);
+    } else {
+      this.pushNotificationProvider.setAuthenticationRequired(false);
+    }
   }
 
   ngOnInit() {

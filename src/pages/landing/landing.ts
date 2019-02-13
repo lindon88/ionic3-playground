@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {ServerProvider} from "../../providers/server/server";
 import {ApiProvider} from "../../providers/api/api";
 import {TokenProvider} from "../../providers/token/token";
+import {PushNotificationsProvider} from "../../providers/push-notifications/push-notifications";
 
 @Component({
   selector: 'landing-page',
@@ -22,7 +23,7 @@ export class LandingPage {
     path: './assets/animations/data.json'
   };
 
-  constructor(public navCtrl: NavController, private serverProvider: ServerProvider, private apiProvider: ApiProvider, private tokenProvider: TokenProvider, public platform: Platform) {
+  constructor(public navCtrl: NavController, private serverProvider: ServerProvider, private apiProvider: ApiProvider, private tokenProvider: TokenProvider, public platform: Platform, public pushNotificationsProvider: PushNotificationsProvider) {
 
   }
 

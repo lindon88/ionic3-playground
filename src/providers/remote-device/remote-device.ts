@@ -67,7 +67,7 @@ export class RemoteDeviceProvider {
         response = JSON.parse(response);
         if(response !== undefined && response !== null && response.id !== undefined) {
           console.log("SHOULD UPDATE");
-          localStorage.setItem('mobile-device-obj', '');
+          localStorage.setItem('mobile-device-obj', JSON.stringify(response));
 
           // update remote device
           console.log(response);

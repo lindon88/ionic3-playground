@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {RemoteDeviceProvider} from "../remote-device/remote-device";
 import {MessagesProvider} from "../messages/messages";
@@ -7,6 +7,7 @@ import {AlertController, App, Events} from "ionic-angular";
 import {Device} from "@ionic-native/device";
 
 declare let window: any;
+
 @Injectable()
 export class PushNotificationsProvider {
   ready: boolean = false;
@@ -16,14 +17,14 @@ export class PushNotificationsProvider {
   }
 
   public init() {
-    if(window.cordova === undefined) {
+    if (window.cordova === undefined) {
       return;
     }
     // initialize remote device
     this.remoteDeviceProvider.init();
 
     // already defined push notifications
-    if(this.ready) {
+    if (this.ready) {
       return;
     }
 
@@ -36,7 +37,7 @@ export class PushNotificationsProvider {
   }
 
   public handleGetToken() {
-    if(!this.ready) {
+    if (!this.ready) {
       return;
     }
     try {
@@ -54,7 +55,7 @@ export class PushNotificationsProvider {
   }
 
   public handleTokenRefresh() {
-    if(!this.ready) {
+    if (!this.ready) {
       return;
     }
     try {
@@ -71,39 +72,27 @@ export class PushNotificationsProvider {
   }
 
   public handleNotification() {
-    try {
-      this.fcm.onNotification().subscribe((notification: any) => {
-        console.log('============Notification');
-        console.log(notification);
-        // console.log(JSON.parse(notification.default));
-        // let message = JSON.parse(notification.default);
-        // console.log(message.GCM);
-        // let notify = JSON.parse(message.GCM);
-        // console.log(notify);
-        if(!notification || notification === null || notification.wasTapped === undefined || notification.synergyMessageId === undefined) {
-          return;
-        }
-        if(notification.wasTapped == false) {
-          // show ionic popup
-          this.showMobileNotification(notification);
-          this.events.publish('notification:add', notification);
-          return;
-        }
 
-        if(!this.authRequired) {
-          // goto message
-          this.goToMessage(notification);
-          return;
-        }
+    this.fcm.onNotification().subscribe((notification: any) => {
+      // if(!this.ready || !notification || notification.synergyMessageId === undefined) {
+      //   return;
+      // }
+      if (!notification.wasTapped) {
+        // show ionic popup
+        this.showMobileNotification(notification);
+        this.events.publish('notification:add', notification);
+        return;
+      }
 
-        // register background notification
-        this.registerBackgroundNotification(notification);
-      }, error => {
-        console.log(error);
-      })
-    } catch (ex) {
-      console.log('Error: ' + ex);
-    }
+      if(!this.authRequired) {
+        this.goToMessage(notification);
+      }
+
+      // register background notification
+      this.registerBackgroundNotification(notification);
+    }, error => {
+      console.log(error);
+    })
   }
 
   /**
@@ -111,30 +100,25 @@ export class PushNotificationsProvider {
    * @param status
    */
   public setAuthenticationRequired(status: any) {
+    console.log("SET AUTH STATUS: " + status);
     this.authRequired = status;
   }
 
   public goToMessage(notification: any) {
-    console.log(notification);
-    if(!this.ready || !notification || notification.synergyMessageId === undefined) {
-      this.app.getActiveNav().setRoot('HomePage');
-      return;
-    }
-
     localStorage.setItem('backgroundNotification', null);
-    this.app.getActiveNav().setRoot('MessageDetailsPage', {message_id: notification.synergyMessageId});
+    this.app.getActiveNav().push('MessageDetailsPage', {message_id: notification.synergyMessageId});
   }
 
   /**
    * Get background notification
    */
   public getBackgroundNotification() {
-    if(!this.ready) {
+    if (!this.ready) {
       return false;
     }
 
     let notification = JSON.parse(localStorage.getItem('backgroundNotification'));
-    if(!notification || notification === null || notification.synergyMessageId === undefined) {
+    if (!notification || notification === null || notification.synergyMessageId === undefined) {
       return false;
     }
 
@@ -142,7 +126,7 @@ export class PushNotificationsProvider {
   }
 
   public showMobileNotification(notification: any) {
-    if(!notification) {
+    if (!notification) {
       return;
     }
 
@@ -154,8 +138,8 @@ export class PushNotificationsProvider {
     let title = '';
     let body = '';
 
-    if(this.device !== undefined && this.device !== null && this.device.platform !== undefined && this.device.platform.toLowerCase() === 'ios') {
-      if(notification.aps !== undefined && notification.aps !== null && notification.aps.alert !== undefined && notification.aps.alert !== null) {
+    if (this.device !== undefined && this.device !== null && this.device.platform !== undefined && this.device.platform.toLowerCase() === 'ios') {
+      if (notification.aps !== undefined && notification.aps !== null && notification.aps.alert !== undefined && notification.aps.alert !== null) {
         title = notification.aps.alert.title;
         body = notification.aps.alert.body;
       }
@@ -166,20 +150,20 @@ export class PushNotificationsProvider {
 
     const alert = this.alertCtrl.create({
       title: "Notification",
-      message: "<span><b>"+body+"</b></span></br> Do you want to open message?",
+      message: "<span><b>" + body + "</b></span></br> Do you want to open message?",
       subTitle: title,
       buttons: [
         {
           text: "Cancel",
-          handler: ()  => {
+          handler: () => {
             console.log('Cancel');
           }
         },
         {
           text: "Open",
           handler: () => {
-            if(notification.synergyMessageId !== undefined) {
-              this.app.getActiveNav().push("MessageDetailsPage", {message_id:  notification.synergyMessageId});
+            if (notification.synergyMessageId !== undefined) {
+              this.app.getActiveNav().push("MessageDetailsPage", {message_id: notification.synergyMessageId});
             }
           }
         }
@@ -189,7 +173,8 @@ export class PushNotificationsProvider {
   }
 
   public registerBackgroundNotification(notification: any) {
-    localStorage.set('backgroundNotification', JSON.parse(notification));
+    localStorage.setItem('backgroundNotification', JSON.stringify(notification));
+    // this.goToMessage(notification);
   }
 
 }

@@ -29,11 +29,12 @@ export class MessageDetailsPage {
   }
 
   ionViewWillEnter() {
-    this.view.showBackButton(true);
+
   }
 
+
   public goToNotifications() {
-    this.navCtrl.pop();
+    this.navCtrl.setRoot('NotificationsPage');
   }
 
   public getMessages(messageId) {

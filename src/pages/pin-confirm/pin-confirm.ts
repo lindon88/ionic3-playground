@@ -94,6 +94,7 @@ export class PinConfirmPage {
         let notification = this.pushNotificationProvider.getBackgroundNotification();
         if(!notification) {
           this.navCtrl.setRoot("HomePage");
+          return;
         }
         this.pushNotificationProvider.goToMessage(notification);
         // this.navCtrl.setRoot("HomePage");
