@@ -131,9 +131,9 @@ export class PushNotificationsProvider {
     }
 
     // check if authentication is required
-    // if(this.authRequired) {
-    //   return;
-    // }
+    if(this.authRequired) {
+      return;
+    }
 
     let title = '';
     let body = '';

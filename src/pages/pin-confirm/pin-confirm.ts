@@ -19,6 +19,7 @@ export class PinConfirmPage {
   }
 
   public ionViewDidLoad() {
+    this.pushNotificationProvider.setAuthenticationRequired(true);
     // init push notifications
     this.pushNotificationProvider.init();
 
@@ -90,13 +91,20 @@ export class PinConfirmPage {
       if(result['result'] === 'SUCCESS') {
         localStorage.setItem('currentPersonId', userId);
         // goto HOME
-        this.deviceRegister();
-        let notification = this.pushNotificationProvider.getBackgroundNotification();
-        if(!notification) {
-          this.navCtrl.setRoot("HomePage");
-          return;
+        try {
+          let notification = this.pushNotificationProvider.getBackgroundNotification();
+          // let currentCorporateId = localStorage.getItem('currentCorporateId');
+          this.deviceRegister();
+          if(!notification) {
+            this.navCtrl.setRoot('HomePage');
+            return;
+          }
+          this.pushNotificationProvider.goToMessage(notification);
+        } catch (ex) {
+          console.log('Error processing: Corporate requested redirect to LOCK screen');
+          this.deviceRegister();
+          this.navCtrl.setRoot('HomePage');
         }
-        this.pushNotificationProvider.goToMessage(notification);
         // this.navCtrl.setRoot("HomePage");
       } else if (result['result'] === 'ERROR') {
         let alert = this.alertCtrl.create({

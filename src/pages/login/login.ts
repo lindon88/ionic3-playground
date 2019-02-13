@@ -78,7 +78,8 @@ export class LoginPage {
                 this.navCtrl.setRoot('HomePage');
                 return;
               }
-              this.pushNotificationProvider.goToMessage(notification);
+              if(result)
+                this.pushNotificationProvider.goToMessage(notification);
             } catch (ex) {
               console.log('Error processing: Corporate requested redirect to LOCK screen');
               this.deviceRegister();

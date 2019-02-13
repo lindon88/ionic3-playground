@@ -30,6 +30,7 @@ export class LandingPage {
   // On init, wait 5s to call redirect method
   ionViewDidLoad() {
     // timeout for calling redirect function
+    this.pushNotificationsProvider.setAuthenticationRequired(true);
     Observable.interval(5000).take(1).subscribe(() => this.redirect());
   }
 
