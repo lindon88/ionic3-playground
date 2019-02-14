@@ -11,6 +11,7 @@ import {MessagesProvider} from "../providers/messages/messages";
 import {ApplicationVersionProvider} from "../providers/application-version/application-version";
 import {PushNotificationsProvider} from "../providers/push-notifications/push-notifications";
 import {FCM} from "@ionic-native/fcm";
+import {ServerProvider} from "../providers/server/server";
 
 @Component({
   templateUrl: 'app.html'
@@ -25,13 +26,14 @@ export class MyApp {
   pages: Array<{ icon: string, title: string, component: any, click: any }>;
   public userInfo: any = JSON.parse(localStorage.getItem('userInfo'));
   public companyId: any = localStorage.getItem('currentCompanyId');
+  public avatarURL: string = null;
 
   public userName: string = '';
   public companies: any;
 
   public notificationsBadge: string;
 
-  constructor(platform: Platform, statusBar: StatusBar, public fcm: FCM, splashScreen: SplashScreen, menuCtrl: MenuController, public appVersion: ApplicationVersionProvider, public events: Events, public employeeProvider: EmployeeProvider, public companyProvider: CompanyProvider, public authenticationProvider: AuthenticationProvider, public messagesProvider: MessagesProvider, public pushNotificationProvider: PushNotificationsProvider) {
+  constructor(platform: Platform, statusBar: StatusBar, public fcm: FCM, splashScreen: SplashScreen, menuCtrl: MenuController, public appVersion: ApplicationVersionProvider, public events: Events, public employeeProvider: EmployeeProvider, public companyProvider: CompanyProvider, public authenticationProvider: AuthenticationProvider, public messagesProvider: MessagesProvider, public pushNotificationProvider: PushNotificationsProvider, public serverProvider: ServerProvider) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -122,9 +124,12 @@ export class MyApp {
    * Get user info
    */
   public getUserInfo() {
+    let date = new Date();
+    let timestamp = date.getTime();
     if (this.userInfo !== undefined && this.userInfo !== null) {
       this.employeeProvider.getEmployee(null, this.userInfo.userId).then((res) => {
         this.user = res;
+        this.avatarURL = this.serverProvider.getServerURL() + 'hrm/employees/avatar/' + this.userInfo.userId + "?v=" + timestamp;
         console.log(this.user);
       }, (err) => {
         console.error(err);
@@ -134,6 +139,7 @@ export class MyApp {
         this.userInfo = userInfo;
         this.employeeProvider.getEmployee(null, this.userInfo.userId).then((res) => {
           this.user = res;
+          this.avatarURL = this.serverProvider.getServerURL() + 'hrm/employees/avatar/' + this.userInfo.userId + "?v=" + timestamp;
           console.log(this.user);
         }, (err) => {
           console.error(err);
