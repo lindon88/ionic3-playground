@@ -19,7 +19,6 @@ export class LoginPage {
   public loginError: boolean;
 
   constructor(public navCtrl: NavController, public platform: Platform, private serverProvider: ServerProvider, public fingerprint:FingerprintAIO, public alertCtrl: AlertController, public authProvider: AuthenticationProvider, public loadingProvider: LoadingProvider, public events: Events, public pushNotificationProvider: PushNotificationsProvider, public remoteDeviceProvider: RemoteDeviceProvider) {
-    this.pushNotificationProvider.setAppReady(true);
   }
 
   ionAfterViewInit() {
@@ -27,6 +26,8 @@ export class LoginPage {
 
     // initialize push notifications
     this.pushNotificationProvider.init();
+
+    this.pushNotificationProvider.setCurrentPage('login');
 
     // init remote device provider
     this.remoteDeviceProvider.init();

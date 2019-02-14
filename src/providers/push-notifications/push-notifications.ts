@@ -12,6 +12,7 @@ declare let window: any;
 export class PushNotificationsProvider {
   ready: boolean = false;
   authRequired: boolean = true;
+  page: string = null;
 
   constructor(public app: App, public http: HttpClient, public remoteDeviceProvider: RemoteDeviceProvider, public events: Events, public messagesProvider: MessagesProvider, public fcm: FCM, public device: Device, public alertCtrl: AlertController) {
   }
@@ -30,7 +31,6 @@ export class PushNotificationsProvider {
 
     // set ready
     this.ready = true;
-    // this.ready = this.getAppReady();
 
     this.handleGetToken();
     this.handleTokenRefresh();
@@ -96,30 +96,22 @@ export class PushNotificationsProvider {
     })
   }
 
-  /**
-   * Set authentication is required
-   * @param status
-   */
-  public setAuthenticationRequired(status: any) {
-    console.log("SET AUTH STATUS: " + status);
-    this.authRequired = status;
-  }
-
-  public setAppReady(status: any) {
-    this.ready = status;
-  }
-
-  public getAppReady() {
-    return this.ready;
-  }
-
   public goToMessage(notification: any) {
-    console.log('READY STATUS - ' + this.ready);
-    if(this.ready === false) {
-      return;
-    }
     localStorage.setItem('backgroundNotification', null);
     this.app.getActiveNav().push('MessageDetailsPage', {message_id: notification.synergyMessageId});
+  }
+
+  public setCurrentPage(page){
+    this.page = page;
+    this.shouldAuthorize();
+  }
+
+  public shouldAuthorize(){
+    if(this.page === 'login' || this.page === 'landing' || this.page === 'pin-confirm'){
+      this.authRequired = true;
+      return;
+    }
+    this.authRequired = false;
   }
 
   /**
@@ -187,7 +179,6 @@ export class PushNotificationsProvider {
 
   public registerBackgroundNotification(notification: any) {
     localStorage.setItem('backgroundNotification', JSON.stringify(notification));
-    // this.goToMessage(notification);
   }
 
 }

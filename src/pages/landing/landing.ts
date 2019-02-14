@@ -24,14 +24,23 @@ export class LandingPage {
   };
 
   constructor(public navCtrl: NavController, private serverProvider: ServerProvider, private apiProvider: ApiProvider, private tokenProvider: TokenProvider, public platform: Platform, public pushNotificationsProvider: PushNotificationsProvider) {
-    this.pushNotificationsProvider.setAppReady(false);
+    // this.pushNotificationsProvider.setAppReady(false);
   }
 
   // On init, wait 5s to call redirect method
   ionViewDidLoad() {
+    this.pushNotificationsProvider.setCurrentPage('landing');
     // timeout for calling redirect function
     Observable.interval(5000).take(1).subscribe(() => this.redirect());
   }
+
+  // ionViewWillEnter() {
+  //   this.pushNotificationsProvider.setAppReady(false);
+  // }
+  //
+  // ionViewWillLeave() {
+  //   this.pushNotificationsProvider.setAppReady(true)
+  // }
 
   /**
    * Based on existing data in local storage, redirect to login or pin confirm page

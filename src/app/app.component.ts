@@ -71,6 +71,17 @@ export class MyApp {
       {icon: 'fa fa-sign-out', title: 'Log out', component: null, click: 'logout'}
     ];
 
+    for(let page = 0; page < this.pages.length; page++) {
+      this.pushNotificationProvider.setCurrentPage(this.pages[page].title);
+    }
+
+    platform.resume.subscribe((result)=>{//Foreground
+      for(let page = 0; page < this.pages.length; page++) {
+        this.pushNotificationProvider.setCurrentPage(this.pages[page].title);
+      }
+      this.pushNotificationProvider.shouldAuthorize();
+    });
+
     if(this.appVersion.getVersion() === undefined || this.appVersion.getVersion() === null) {
       this.appVersion.setDefault();
     }
@@ -82,14 +93,14 @@ export class MyApp {
   }
 
   public shouldAuthorize() {
-    let accessToken = localStorage.getItem('accessToken');
-    let userInfo = localStorage.getItem('userInfo');
-
-    if(accessToken === undefined || accessToken === null || userInfo === undefined || userInfo === null) {
-      this.pushNotificationProvider.setAuthenticationRequired(true);
-    } else {
-      this.pushNotificationProvider.setAuthenticationRequired(false);
-    }
+    // let accessToken = localStorage.getItem('accessToken');
+    // let userInfo = localStorage.getItem('userInfo');
+    //
+    // if(accessToken === undefined || accessToken === null || userInfo === undefined || userInfo === null) {
+    //   this.pushNotificationProvider.setAuthenticationRequired(true);
+    // } else {
+    //   this.pushNotificationProvider.setAuthenticationRequired(false);
+    // }
   }
 
   ngOnInit() {

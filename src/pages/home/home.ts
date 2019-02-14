@@ -3,6 +3,7 @@ import {Events, IonicPage, MenuController, NavController, ViewController} from '
 import {AuthenticationProvider} from "../../providers/authentication/authentication";
 import {MessagesProvider} from "../../providers/messages/messages";
 import {NotificationsCounterProvider} from "../../providers/notifications-counter/notifications-counter";
+import {PushNotificationsProvider} from "../../providers/push-notifications/push-notifications";
 
 @IonicPage()
 @Component({
@@ -12,10 +13,11 @@ import {NotificationsCounterProvider} from "../../providers/notifications-counte
 export class HomePage {
   public notificationsBadge: any;
 
-  constructor(public navCtrl: NavController, public viewCtrl: ViewController, public menuCtrl: MenuController, public notificationsCounter: NotificationsCounterProvider, public authProvider: AuthenticationProvider, public events: Events, public messagesProvider: MessagesProvider) {
+  constructor(public navCtrl: NavController, public viewCtrl: ViewController, public menuCtrl: MenuController, public notificationsCounter: NotificationsCounterProvider, public authProvider: AuthenticationProvider, public events: Events, public messagesProvider: MessagesProvider, public pushNotificationsProvider: PushNotificationsProvider) {
   }
 
   public ionViewDidLoad() {
+    this.pushNotificationsProvider.setCurrentPage('home');
     this.getNotificationsCount();
   }
 

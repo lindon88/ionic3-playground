@@ -16,11 +16,12 @@ export class PinConfirmPage {
   public userInfo: any = JSON.parse(localStorage.getItem('userInfo'));
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public pinProvider: PinProvider, public pushNotificationProvider: PushNotificationsProvider, public remoteDeviceProvider: RemoteDeviceProvider) {
-    this.pushNotificationProvider.setAppReady(true);
+
   }
 
   public ionViewDidLoad() {
-    this.pushNotificationProvider.setAuthenticationRequired(true);
+
+    this.pushNotificationProvider.setCurrentPage('pin-confirm');
     // init push notifications
     this.pushNotificationProvider.init();
 
