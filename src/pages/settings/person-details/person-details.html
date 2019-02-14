@@ -14,7 +14,7 @@
     <ion-item class="avatar-item">
       <ion-avatar>
         <img [src]="avatarURL" alt="avatar">
-        <div class="avatar-camera-holder">
+        <div (click)="openCameraMenu()" class="avatar-camera-holder">
           <i class="fa fa-camera"></i>
         </div>
       </ion-avatar>

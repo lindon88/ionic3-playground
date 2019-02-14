@@ -1,8 +1,9 @@
 import {Component, ViewChild} from '@angular/core';
-import {Content, IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
+import {ActionSheetController, Content, IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import {EmployeeProvider} from "../../../providers/employee/employee";
 import {CountryProvider} from "../../../providers/country/country";
 import {AuthenticationProvider} from "../../../providers/authentication/authentication";
+import {Camera, CameraOptions} from "@ionic-native/camera";
 
 /**
  * Generated class for the PersonDetailsPage page.
@@ -44,7 +45,7 @@ export class PersonDetailsPage {
   // countries
   public countries: any = [];
 
-  constructor(public navCtrl: NavController, public viewCtrl: ViewController, public authProvider: AuthenticationProvider, public navParams: NavParams, private employeeProvider: EmployeeProvider, private countryProvider: CountryProvider) {
+  constructor(public navCtrl: NavController, public viewCtrl: ViewController, public actionSheetCtrl: ActionSheetController, public authProvider: AuthenticationProvider, public navParams: NavParams, private employeeProvider: EmployeeProvider, private countryProvider: CountryProvider, private camera: Camera) {
   }
 
   @ViewChild(Content) content: Content;
@@ -162,6 +163,45 @@ export class PersonDetailsPage {
 
     this.scrollToTop();
 
+  }
+
+  public openCameraMenu() {
+    const cameraDialog = this.actionSheetCtrl.create({
+      title: "Select an option",
+      buttons: [
+        {
+          text: 'Take a picture',
+          icon: 'camera',
+          handler: () => {
+            console.log('Take a picture');
+            this.takePicture();
+          }
+        },
+        {
+          text: 'Browse from gallery',
+          icon: 'images',
+          handler: () => {
+            console.log('Browse from gallery');
+          }
+        }
+      ]
+    });
+    cameraDialog.present();
+  }
+
+  public takePicture() {
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
+    };
+
+    this.camera.getPicture(options).then((imageData) => {
+      console.log('Picture taken');
+    }, (err) => {
+      console.log('Camera issue: ' + err);
+    })
   }
 
   /**
