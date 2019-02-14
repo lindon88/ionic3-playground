@@ -30,6 +30,7 @@ export class PushNotificationsProvider {
 
     // set ready
     this.ready = true;
+    // this.ready = this.getAppReady();
 
     this.handleGetToken();
     this.handleTokenRefresh();
@@ -84,7 +85,7 @@ export class PushNotificationsProvider {
         return;
       }
 
-      if(!this.authRequired) {
+      if(!this.authRequired && notification.wasTapped) {
         this.goToMessage(notification);
       }
 
@@ -104,7 +105,19 @@ export class PushNotificationsProvider {
     this.authRequired = status;
   }
 
+  public setAppReady(status: any) {
+    this.ready = status;
+  }
+
+  public getAppReady() {
+    return this.ready;
+  }
+
   public goToMessage(notification: any) {
+    console.log('READY STATUS - ' + this.ready);
+    if(this.ready === false) {
+      return;
+    }
     localStorage.setItem('backgroundNotification', null);
     this.app.getActiveNav().push('MessageDetailsPage', {message_id: notification.synergyMessageId});
   }

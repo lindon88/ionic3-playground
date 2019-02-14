@@ -24,13 +24,12 @@ export class LandingPage {
   };
 
   constructor(public navCtrl: NavController, private serverProvider: ServerProvider, private apiProvider: ApiProvider, private tokenProvider: TokenProvider, public platform: Platform, public pushNotificationsProvider: PushNotificationsProvider) {
-
+    this.pushNotificationsProvider.setAppReady(false);
   }
 
   // On init, wait 5s to call redirect method
   ionViewDidLoad() {
     // timeout for calling redirect function
-    this.pushNotificationsProvider.setAuthenticationRequired(true);
     Observable.interval(5000).take(1).subscribe(() => this.redirect());
   }
 
@@ -38,6 +37,7 @@ export class LandingPage {
    * Based on existing data in local storage, redirect to login or pin confirm page
    */
   public redirect() {
+
     let userToken = localStorage['accessToken'];
     let serverUrl = localStorage['serverUrl'];
     let pin = localStorage['PIN'];
