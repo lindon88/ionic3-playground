@@ -34,14 +34,6 @@ export class LandingPage {
     Observable.interval(5000).take(1).subscribe(() => this.redirect());
   }
 
-  // ionViewWillEnter() {
-  //   this.pushNotificationsProvider.setAppReady(false);
-  // }
-  //
-  // ionViewWillLeave() {
-  //   this.pushNotificationsProvider.setAppReady(true)
-  // }
-
   /**
    * Based on existing data in local storage, redirect to login or pin confirm page
    */

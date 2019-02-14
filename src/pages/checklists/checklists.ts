@@ -9,7 +9,7 @@ import {
 } from 'ionic-angular';
 import {WorkflowProvider} from "../../providers/workflow/workflow";
 import {DatePipe} from "@angular/common";
-import {ChecklistFilterPopoverPage} from "../checklist-filter-popover/checklist-filter-popover";
+import {ChecklistFilterPopoverPage} from "./checklist-filter-popover/checklist-filter-popover";
 import {LoadingProvider} from "../../providers/loading/loading";
 import {AuthenticationProvider} from "../../providers/authentication/authentication";
 import {NotificationsCounterProvider} from "../../providers/notifications-counter/notifications-counter";

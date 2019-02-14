@@ -3,7 +3,7 @@
     <name>Cover</name>
     <description>Cover by SynergySuite</description>
     <author email="info@synergysuite.com" href="http://ionicframework.com/">SynergySuite</author>
-    <content original-src="index.html" src="http://192.168.100.25:8102" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
