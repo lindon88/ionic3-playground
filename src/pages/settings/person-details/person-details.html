@@ -11,6 +11,14 @@
 <ion-content no-bounce>
   <ion-list class="profile-item">
     <ion-list-header>Personal</ion-list-header>
+    <ion-item class="avatar-item">
+      <ion-avatar>
+        <img [src]="avatarURL" alt="avatar">
+        <div class="avatar-camera-holder">
+          <i class="fa fa-camera"></i>
+        </div>
+      </ion-avatar>
+    </ion-item>
     <ion-item>
       <ion-label>Email</ion-label>
       <ion-input [(ngModel)]="user_email"></ion-input>

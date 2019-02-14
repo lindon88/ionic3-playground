@@ -39,6 +39,8 @@ export class PersonDetailsPage {
   public emergency_country: any;
   public emergency_medical_conditions: any;
 
+  public avatarURL: string;
+
   // countries
   public countries: any = [];
 
@@ -96,6 +98,7 @@ export class PersonDetailsPage {
       this.person = result;
       console.log(result);
       if (result) {
+        this.avatarURL = result.avatarUrl;
         this.user_email = result.email;
         this.home_phone = result.phone;
         this.mobile_phone = result.mobile;
