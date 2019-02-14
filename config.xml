@@ -3,7 +3,7 @@
     <name>Cover</name>
     <description>Cover by SynergySuite</description>
     <author email="info@synergysuite.com" href="http://ionicframework.com/">SynergySuite</author>
-    <content original-src="index.html" src="http://192.168.100.25:8102" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -92,6 +92,7 @@
     <plugin name="cordova-plugin-device" spec="^1.1.4" />
     <plugin name="cordova-plugin-fcm" spec="^2.1.2" />
     <plugin name="cordova-plugin-file" spec="^4.3.3" />
+    <plugin name="cordova-plugin-file-transfer" spec="^1.7.1" />
     <plugin name="cordova-plugin-fingerprint-aio" spec="^1.5.0">
         <variable name="FACEID_USAGE_DESCRIPTION" value=" " />
     </plugin>

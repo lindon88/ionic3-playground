@@ -46,8 +46,9 @@ import { PushNotificationsProvider } from '../providers/push-notifications/push-
 
 import {Device} from "@ionic-native/device";
 import {FCM} from "@ionic-native/fcm";
-import {File} from "@ionic-native/file";
 import {Camera} from "@ionic-native/camera";
+import {Transfer} from "@ionic-native/transfer";
+import {File} from "@ionic-native/file";
 
 @NgModule({
   declarations: [
@@ -106,6 +107,7 @@ import {Camera} from "@ionic-native/camera";
     Device,
     FCM,
     File,
+    Transfer,
     Camera
   ]
 })

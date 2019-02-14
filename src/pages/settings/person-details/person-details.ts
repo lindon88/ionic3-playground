@@ -1,9 +1,18 @@
 import {Component, ViewChild} from '@angular/core';
-import {ActionSheetController, Content, IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
+import {
+  ActionSheetController,
+  AlertController,
+  Content,
+  IonicPage,
+  NavController,
+  NavParams,
+  ViewController
+} from 'ionic-angular';
 import {EmployeeProvider} from "../../../providers/employee/employee";
 import {CountryProvider} from "../../../providers/country/country";
 import {AuthenticationProvider} from "../../../providers/authentication/authentication";
 import {Camera, CameraOptions} from "@ionic-native/camera";
+import {ServerProvider} from "../../../providers/server/server";
 
 /**
  * Generated class for the PersonDetailsPage page.
@@ -45,7 +54,7 @@ export class PersonDetailsPage {
   // countries
   public countries: any = [];
 
-  constructor(public navCtrl: NavController, public viewCtrl: ViewController, public actionSheetCtrl: ActionSheetController, public authProvider: AuthenticationProvider, public navParams: NavParams, private employeeProvider: EmployeeProvider, private countryProvider: CountryProvider, private camera: Camera) {
+  constructor(public navCtrl: NavController, private alertCtrl: AlertController, public viewCtrl: ViewController, public actionSheetCtrl: ActionSheetController, public authProvider: AuthenticationProvider, public navParams: NavParams, private employeeProvider: EmployeeProvider, private countryProvider: CountryProvider, private camera: Camera, public serverProvider: ServerProvider) {
   }
 
   @ViewChild(Content) content: Content;
@@ -99,7 +108,14 @@ export class PersonDetailsPage {
       this.person = result;
       console.log(result);
       if (result) {
-        this.avatarURL = result.avatarUrl;
+        let date = new Date();
+        let timestamp = date.getTime();
+        this.avatarURL = null;
+        if(result.avatarUrl === undefined || result.avatarUrl === null) {
+          this.avatarURL = this.serverProvider.getServerURL() + 'hrm/employees/avatar/' + this.currentPersonId + "?v=" + timestamp;
+        } else {
+          this.avatarURL = this.serverProvider.getServerURL() + 'hrm/employees/avatar/' + this.currentPersonId + "?v=" + timestamp;
+        }
         this.user_email = result.email;
         this.home_phone = result.phone;
         this.mobile_phone = result.mobile;
@@ -174,7 +190,7 @@ export class PersonDetailsPage {
           icon: 'camera',
           handler: () => {
             console.log('Take a picture');
-            this.takePicture();
+            this.takePicture(this.camera.PictureSourceType.CAMERA);
           }
         },
         {
@@ -182,6 +198,7 @@ export class PersonDetailsPage {
           icon: 'images',
           handler: () => {
             console.log('Browse from gallery');
+            this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
           }
         }
       ]
@@ -189,16 +206,40 @@ export class PersonDetailsPage {
     cameraDialog.present();
   }
 
-  public takePicture() {
+  public takePicture(type) {
     const options: CameraOptions = {
       quality: 100,
-      destinationType: this.camera.DestinationType.DATA_URL,
+      sourceType: type,
+      destinationType: this.camera.DestinationType.FILE_URI,
       encodingType: this.camera.EncodingType.JPEG,
+      targetWidth: 450,
+      targetHeight: 450,
+      saveToPhotoAlbum: false,
       mediaType: this.camera.MediaType.PICTURE
     };
 
     this.camera.getPicture(options).then((imageData) => {
       console.log('Picture taken');
+      let params = {
+        file: imageData,
+        companyId: this.currentCompanyId,
+        typeId: 100,
+        objectId: this.person,
+        subTypeId: 10001
+      };
+
+      this.employeeProvider.uploadImage(params, this.currentPersonId).then((response) => {
+        this.getEmployee();
+        let alert = this.alertCtrl.create({
+          title: 'Success',
+          message: 'Photo successfully uploaded!'
+        });
+        alert.present().then(() => {
+          this.getEmployee();
+        });
+      }, (err) => {
+        console.log(err);
+      })
     }, (err) => {
       console.log('Camera issue: ' + err);
     })

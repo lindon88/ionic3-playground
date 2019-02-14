@@ -1,11 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {ServerProvider} from "../server/server";
+import {Transfer, FileUploadOptions, TransferObject} from "@ionic-native/transfer";
+import {File} from "@ionic-native/file";
 
 @Injectable()
 export class EmployeeProvider {
 
-  constructor(public http: HttpClient, public serverProvider: ServerProvider) {
+  constructor(public http: HttpClient, public serverProvider: ServerProvider, private transfer: Transfer, private file: File) {
   }
 
   /**
@@ -80,6 +82,49 @@ export class EmployeeProvider {
         resolve(result);
       }, error => {
         reject(JSON.stringify(error));
+      })
+    })
+  }
+
+  public uploadImage(params: any, employeeId: any) {
+    return new Promise((resolve, reject) => {
+      if(params === undefined || params === null || params.file === undefined || params.file === null || params.file === '') {
+        reject('Not all parameters are defined!');
+      }
+
+      if(params.companyId === undefined || params.companyId === null) {
+        reject('CompanyId is not defined');
+      }
+
+      if(params.typeId === undefined || params.typeId === null) {
+        reject('TypeId is not defined');
+      }
+
+      if(params.objectId === undefined || params.objectId === null) {
+        reject('ObjectId is not defined');
+      }
+
+      if(employeeId === undefined || employeeId === null) {
+        reject('EmployeeId is not defined');
+      }
+
+      let url = this.serverProvider.getServerURL() + 'hrm/employees/avatar/' + employeeId;
+
+      let uploadOptions: FileUploadOptions = {
+        fileKey: 'file',
+        fileName: params.file.substr(params.file.lastIndexOf('/') + 1),
+        mimeType: 'image/jpeg',
+        headers: {
+          'synergy-login-token': localStorage.getItem('accessToken')
+        }
+      };
+
+      const fileTransfer: TransferObject = this.transfer.create();
+
+      fileTransfer.upload(params.file, url, uploadOptions).then((response) => {
+        resolve(response);
+      }, (err) => {
+        reject(err);
       })
     })
   }
