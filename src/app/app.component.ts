@@ -75,7 +75,7 @@ export class MyApp {
       this.pushNotificationProvider.setCurrentPage(this.pages[page].title);
     }
 
-    platform.resume.subscribe((result)=>{//Foreground
+    platform.resume.subscribe((result)=>{
       for(let page = 0; page < this.pages.length; page++) {
         this.pushNotificationProvider.setCurrentPage(this.pages[page].title);
       }

@@ -19,7 +19,7 @@
     <ion-list>
       <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
         <!--<ion-icon name="p.icon_name" md="p.icon_md"></ion-icon> {{p.title}}-->
-        <div *ngIf="notificationsBadge != 0 && p.component === 'NotificationsPage'" class="notifications"><i ngClass="{{p.icon}}"></i><ion-badge class="notificationBadgeSubMenu" color="danger">{{notificationsBadge}}</ion-badge><span class="page-title">{{p.title}}</span></div>
+        <div *ngIf="p.component === 'NotificationsPage'" class="notifications"><i ngClass="{{p.icon}}"></i><ion-badge class="notificationBadgeSubMenu" color="danger">{{notificationsBadge}}</ion-badge><span class="page-title">{{p.title}}</span></div>
         <div *ngIf="p.component !== 'NotificationsPage'"><i ngClass="{{p.icon}}"></i> <span class="page-title">{{p.title}}</span></div>
       </button>
     </ion-list>
