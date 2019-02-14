@@ -32,13 +32,18 @@ export class NotificationsPage {
   }
 
   public getMessages() {
+    this.loadingProvider.showLoader();
     this.messagesProvider.getMessages(this.userId).then((response: any) => {
       this.messages = response.items;
+      this.loadingProvider.hideLoader();
     }, error => {
       console.log(error);
+      this.loadingProvider.hideLoader();
     }).catch(error => {
       console.log(error);
-    })
+      this.loadingProvider.hideLoader();
+    });
+
   }
 
   public readNotification(messageId) {
