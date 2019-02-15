@@ -169,3 +169,19 @@ input {
   color: #f53d3d;
   text-align: center;
 }
+
+ion-item.demo-toggle {
+  background-color: transparent!important;
+  display: table;
+  text-align: center;
+  margin-top: 20px;
+  div.item-inner {
+    border: 0!important;
+    display: inline-block;
+    position: relative;
+    padding-left: 0!important;
+  }
+  ion-toggle {
+    display: inline-block;
+  }
+}
