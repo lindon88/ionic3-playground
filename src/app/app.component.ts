@@ -41,7 +41,11 @@ export class MyApp {
       splashScreen.hide();
       menuCtrl.swipeEnable(false, 'menu1');
 
-      this.shouldAuthorize();
+      // check if user wants to save credentials
+      if(this.keepLoggedIn() == false) {
+        this.deleteCredentials();
+      }
+
       this.pushNotificationProvider.init();
 
       this.events.subscribe('user:logged', (userinfo) => {
@@ -94,17 +98,6 @@ export class MyApp {
 
   }
 
-  public shouldAuthorize() {
-    // let accessToken = localStorage.getItem('accessToken');
-    // let userInfo = localStorage.getItem('userInfo');
-    //
-    // if(accessToken === undefined || accessToken === null || userInfo === undefined || userInfo === null) {
-    //   this.pushNotificationProvider.setAuthenticationRequired(true);
-    // } else {
-    //   this.pushNotificationProvider.setAuthenticationRequired(false);
-    // }
-  }
-
   ngOnInit() {
   }
 
@@ -118,6 +111,38 @@ export class MyApp {
       return;
     }
     this.navCtrl.setRoot(page.component);
+  }
+
+  private keepLoggedIn() {
+    let is_logged = localStorage.getItem('receivePush');
+    return is_logged != 'false';
+  }
+
+  private deleteCredentials() {
+    if (localStorage.getItem('accessToken')) {
+      localStorage.removeItem('accessToken');
+    }
+
+    if (localStorage.getItem('PIN')) {
+      localStorage.removeItem('PIN');
+    }
+
+    if (localStorage.getItem('currentCompanyId')) {
+      localStorage.removeItem('currentCompanyId');
+    }
+
+    if (localStorage.getItem('currentCorporateId')) {
+      localStorage.removeItem('currentCorporateId');
+    }
+
+    if (localStorage.getItem('currentPersonId')) {
+      localStorage.removeItem('currentPersonId');
+    }
+
+    if (localStorage.getItem('userInfo')) {
+      localStorage.removeItem('userInfo');
+    }
+    this.userInfo = null;
   }
 
   /**

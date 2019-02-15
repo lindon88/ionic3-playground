@@ -32,9 +32,18 @@ export class PushNotificationsProvider {
     // set ready
     this.ready = true;
 
+    if(this.receivePushNotifications() === false) {
+      return;
+    }
+
     this.handleGetToken();
     this.handleTokenRefresh();
     this.handleNotification();
+  }
+
+  public receivePushNotifications() {
+    let receive = localStorage.getItem('receivePush');
+    return receive != 'false';
   }
 
   public handleGetToken() {
