@@ -17,6 +17,7 @@ export class LoginPage {
   // vars
   public userinfo: any;
   public loginError: boolean;
+  public demoApp: boolean = false;
 
   constructor(public navCtrl: NavController, public platform: Platform, private serverProvider: ServerProvider, public fingerprint:FingerprintAIO, public alertCtrl: AlertController, public authProvider: AuthenticationProvider, public loadingProvider: LoadingProvider, public events: Events, public pushNotificationProvider: PushNotificationsProvider, public remoteDeviceProvider: RemoteDeviceProvider) {
   }
@@ -176,5 +177,16 @@ export class LoginPage {
     }, error => {
       console.log(error);
     })
+  }
+
+  public toggleDemoOption() {
+    console.log(this.demoApp);
+    if(this.demoApp === true) {
+      this.serverProvider.setServerUrl(this.serverProvider.getSandboxURL());
+      this.serverProvider.setDevServerUrl(this.serverProvider.getSandboxURL());
+    } else {
+      this.serverProvider.setServerUrl(this.serverProvider.getOriginServerURL());
+      this.serverProvider.setDevServerUrl(this.serverProvider.getOriginDevServerURL());
+    }
   }
 }
