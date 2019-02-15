@@ -2,12 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {ServerProvider} from "../server/server";
 import {Transfer, FileUploadOptions, TransferObject} from "@ionic-native/transfer";
-import {File} from "@ionic-native/file";
 
 @Injectable()
 export class EmployeeProvider {
 
-  constructor(public http: HttpClient, public serverProvider: ServerProvider, private transfer: Transfer, private file: File) {
+  constructor(public http: HttpClient, public serverProvider: ServerProvider, private transfer: Transfer) {
   }
 
   /**
