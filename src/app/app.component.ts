@@ -47,21 +47,16 @@ export class MyApp {
       }
 
       this.pushNotificationProvider.init();
-
-      this.events.subscribe('user:logged', (userinfo) => {
-        console.log(userinfo);
-      });
       if(this.userInfo === null || this.userInfo === undefined) {
         this.events.subscribe('user:logged', (userInfo) => {
-          this.userInfo = userInfo;
-          console.log(this.userInfo);
-          this.getUserInfo();
-          this.getAllowedCompanies();
+          this.companyId = localStorage.getItem('currentCompanyId');
+          this.getUserInfo(userInfo.userId);
+          this.getAllowedCompanies(userInfo.userId);
           this.getMessages();
         });
       } else {
-        this.getUserInfo();
-        this.getAllowedCompanies();
+        this.getUserInfo(this.userInfo.userId);
+        this.getAllowedCompanies(this.userInfo.userId);
         this.getMessages();
       }
     });
@@ -94,7 +89,7 @@ export class MyApp {
 
     this.events.subscribe('notification:add', (notification) => {
       this.getMessages();
-    })
+    });
 
   }
 
@@ -148,29 +143,18 @@ export class MyApp {
   /**
    * Get user info
    */
-  public getUserInfo() {
+  public getUserInfo(userId) {
     let date = new Date();
     let timestamp = date.getTime();
-    if (this.userInfo !== undefined && this.userInfo !== null) {
-      this.employeeProvider.getEmployee(null, this.userInfo.userId).then((res) => {
+      this.employeeProvider.getEmployee(null, userId).then((res) => {
+        console.log(res);
         this.user = res;
-        this.avatarURL = this.serverProvider.getServerURL() + 'hrm/employees/avatar/' + this.userInfo.userId + "?v=" + timestamp;
+        this.avatarURL = this.serverProvider.getServerURL() + 'hrm/employees/avatar/' + userId + "?v=" + timestamp;
         console.log(this.user);
       }, (err) => {
         console.error(err);
       })
-    } else {
-      this.events.subscribe('user:logged', (userInfo) => {
-        this.userInfo = userInfo;
-        this.employeeProvider.getEmployee(null, this.userInfo.userId).then((res) => {
-          this.user = res;
-          this.avatarURL = this.serverProvider.getServerURL() + 'hrm/employees/avatar/' + this.userInfo.userId + "?v=" + timestamp;
-          console.log(this.user);
-        }, (err) => {
-          console.error(err);
-        })
-      })
-    }
+
   }
 
   /**
@@ -250,10 +234,12 @@ export class MyApp {
   /**
    * Get allowed companies
    */
-  public getAllowedCompanies() {
-    if (this.userInfo !== undefined && this.userInfo !== null) {
-      this.companyProvider.getAllAllowedCompanies(this.userInfo.userId).then((res) => {
+  public getAllowedCompanies(userId) {
+
+      this.companyProvider.getAllAllowedCompanies(userId).then((res) => {
         this.companies = res;
+        console.log(this.companies);
+        console.log(this.companyId);
         for (let i = 0; i < this.companies.length; i++) {
           if (this.companies[i].id === this.companyId) {
             this.company = this.companies[i];
@@ -263,22 +249,6 @@ export class MyApp {
       }, (err) => {
         console.error(err);
       })
-    } else {
-      this.events.subscribe('user:logged', (userInfo) => {
-        this.userInfo = userInfo;
-        this.companyProvider.getAllAllowedCompanies(this.userInfo.userId).then((res) => {
-          this.companies = res;
-          for (let i = 0; i < this.companies.length; i++) {
-            if (this.companies[i].id === this.companyId) {
-              this.company = this.companies[i];
-              console.log(this.company);
-            }
-          }
-        }, (err) => {
-          console.error(err);
-        })
-      })
-    }
   }
 
   public gotoProfile() {

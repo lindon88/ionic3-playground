@@ -2,12 +2,12 @@
 
   <ion-header class="sidemenu-header">
     <ion-toolbar color="primary" class="sidemenu-toolbar">
-      <ion-title class="sidemenu-title" *ngIf="user && company" style="color: #fff">
+      <ion-title class="sidemenu-title" style="color: #fff">
         <table>
           <tr>
             <td rowspan="2"><img class="avatar-logo-menu" [src]="avatarURL" alt="avatar"></td>
-            <td menuClose (click)="gotoProfile()">{{user.firstName}} {{user.lastName}} <br>
-              {{company.name}}</td>
+            <td menuClose (click)="gotoProfile()"><span *ngIf="user">{{user.firstName}} {{user.lastName}} </span><br>
+              <span *ngIf="company">{{company.name}}</span></td>
           </tr>
         </table>
       </ion-title>
